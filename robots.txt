@@ -2,4 +2,4 @@
 User-agent: * 
 Disallow:
 
-Sitemap: https//www.bestjobs.bg/sitemap.xml
+Sitemap: https://www.bestjobs.bg/sitemap.xml
