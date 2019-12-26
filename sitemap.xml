@@ -3,5 +3,7 @@
 	<url>
 		<loc>https://www.bestjobs.bg</loc>
 		<lastmod>2019-12-16T16:12:20+03:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
 	</url>
 </urlset>
