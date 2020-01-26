@@ -7,13 +7,25 @@
 		<lastmod>2008-03-18T16:12:20+03:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.8</priority>
-	</url>
+	</url>	
 	<url>
 		<loc>https://www.bestjobs.bg/contact/</loc>
+		<lastmod>2008-03-18</lastmod>
+	</url>
+	<url>
+		<loc>https://www.bestjobs.bg/about/</loc>
 		<lastmod>2018-05-25</lastmod>
 	</url>
 	<url>
-		<loc>https://www.bestjobs.bg/kariera/</loc>
+		<loc>https://www.bestjobs.bg/privacy/</loc>
+		<lastmod>2018-05-25</lastmod>
+	</url>
+	<url>
+		<loc>https://www.bestjobs.bg/terms/</loc>
+		<lastmod>2018-05-25</lastmod>
+	</url>
+	<url>
+		<loc>https://www.bestjobs.bg/gdpr/</loc>
 		<lastmod>2018-05-25</lastmod>
 	</url>
 	<url>
