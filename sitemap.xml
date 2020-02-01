@@ -11,7 +11,7 @@
 		<changefreq>daily</changefreq>
 		<priority>0.8</priority>
 		<image:image>
-     		<image:loc>https://www.bestjobs.bg/logo.png</image:loc>
+     		<image:loc>https://www.bestjobs.bg/favicon.ico</image:loc>
    		</image:image>
 		<image:image>
      		<image:loc>https://www.bestjobs.bg/apple-touch-icon.png</image:loc>
