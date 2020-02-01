@@ -10,13 +10,15 @@
 		<lastmod>2008-03-18T16:12:20+03:00</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.8</priority>
-		<image:image>
-     		<image:loc>https://www.bestjobs.bg/favicon.ico</image:loc>
-   		</image:image>
-		<image:image>
-     		<image:loc>https://www.bestjobs.bg/apple-touch-icon.png</image:loc>
-   		</image:image>
-	</url>	
+	</url>
+	<url>
+		<loc>https://www.bestjobs.bg/bg/</loc>
+		<lastmod>2008-03-18</lastmod>
+	</url>
+	<url>
+		<loc>https://www.bestjobs.bg/en/</loc>
+		<lastmod>2008-03-18</lastmod>
+	</url>
 	<url>
 		<loc>https://www.bestjobs.bg/contact/</loc>
 		<lastmod>2008-03-18</lastmod>
