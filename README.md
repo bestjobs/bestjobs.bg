@@ -1,4 +1,4 @@
 # bestjobs.bg
 https://bestjobs.bg
 
-The project was completed: 0.7%
+The project was completed: 0.9%
