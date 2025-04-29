@@ -112,10 +112,6 @@
 		<lastmod>2020-01-01</lastmod>
 	</url>
 	<url>
-		<loc>https://bestjobs.bg/company/offer/republic-bulgaria</loc>
-		<lastmod>2020-01-01</lastmod>
-	</url>
-	<url>
 		<loc>https://bestjobs.bg/company/offer/albena</loc>
 		<lastmod>2020-01-01</lastmod>
 	</url>
@@ -146,5 +142,13 @@
 	<url>
 		<loc>https://bestjobs.bg/job/2021/12/installer-batteries.html</loc>
 		<lastmod>2021-12-12</lastmod>
+	</url>
+	<url>
+		<loc>https://bestjobs.bg/clock</loc>
+		<lastmod>2022-01-01</lastmod>
+	</url>
+	<url>
+		<loc>https://bestjobs.bg/time</loc>
+		<lastmod>2022-01-01</lastmod>
 	</url>
 </urlset>
