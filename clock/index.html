@@ -10,6 +10,15 @@ document.getElementById("emo").innerHTML = d;
 </script>
 
 <h2>Date, Time and Clock</h2>
+
+<form>
+  <label for="start">START TIME:</label><br>
+  <input type="text" id="start" name="start" value="9:26">
+ <br>
+  <label for="end">END TIME:</label><br>
+  <input type="text" id="end" name="end" value="11:26">
+</form>
+<br>
 <p><strong>Your Device's Clock</strong></p>
 <h2><div id="txt"></div></h2>
 
@@ -31,14 +40,6 @@ function checkTime(i) {
 }
 </script>
 
-<form>
-  <label for="start">START TIME:</label><br>
-  <input type="text" id="start" name="start" value="9:26">
- <br>
-  <label for="end">END TIME:</label><br>
-  <input type="text" id="end" name="end" value="11:26">
-</form>
-<br>
 <canvas id="canvas" width="200" height="200" style="background-color:#333">
 Sorry, your browser does not support canvas.
 </canvas>
