@@ -37,5 +37,11 @@
       <description>Завършване на интервюто за работа. Това е възможно най-агресивния вариант за завършване на интервю</description>
       <guid>https://bestjobs.bg/kariera/statii/</guid>
     </item>
+    <item>
+      <title>Biology Quiz by BestJobs.BG</title>
+      <link>https://bestjobs.bg/biology/quiz/</link>
+      <description>Biology Quiz by BestJobs.BG Тестване на знания или подготовка за: национални състезания и олимпиади, матури и кандидатстудентски изпити</description>
+      <guid>https://bestjobs.bg/biology/quiz/</guid>
+    </item>
   </channel>
 </rss>
