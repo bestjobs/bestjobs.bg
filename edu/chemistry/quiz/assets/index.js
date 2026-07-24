@@ -20,7 +20,20 @@ const quizData = [
   
   let currentQuestion = 0;
   let score = 0;
+
+   function showQuestion() {
+    const question = quizData[currentQuestion];
+    questionElement.innerText = question.help;
   
+    optionsElement.innerHTML = "";
+    question.options.forEach(option => {
+      const button = document.createElement("button");
+      button.innerText = option;
+      optionsElement.appendChild(button);
+      button.addEventListener("click", selectAnswer);
+    });
+  }
+
   function showQuestion() {
     const question = quizData[currentQuestion];
     questionElement.innerText = question.question;
