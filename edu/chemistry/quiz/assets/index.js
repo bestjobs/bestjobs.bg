@@ -52,7 +52,7 @@ const quizData = [
   function showResult() {
     quiz.innerHTML = `
       <h1>ПРИКЛЮЧЕН / Quiz Completed!</h1>
-      <h2>РЕЗУЛТАТ / Your score: ${score}/${quizData.length}</h2>
+      <h2>РЕЗУЛТАТ / Your score: ${score}/${quizData.length}</h2> 
     `;
   }
   
