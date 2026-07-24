@@ -7,13 +7,15 @@ const quizData = [
     {
       question: "2. Броят на поделоевете на даден слой с равен на::",
       options: ["а) n;", "б) 2n;", "в) 2n2;", "г) n2;"],
-      answer: "в) 2n2;"
+      answer: "в) 2n2;",
+      help: "Електронният слой K, който съдържа само подслой s, може да има най-много 2 електрона; L слоят, който има s и p подслой, може да има 2+6=8 електрона и т.н. Общата формула е, че n-ият слой може да съдържа до 2n2 електрона.;"
     },
     // Add more questions here...
   ];
   
   const questionElement = document.getElementById("question");
   const optionsElement = document.getElementById("options");
+  const helpElement = document.getElementById("help");
   // const submitButton = document.getElementById("submit");
   
   let currentQuestion = 0;
