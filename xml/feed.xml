@@ -38,10 +38,34 @@
       <guid>https://bestjobs.bg/kariera/statii/</guid>
     </item>
     <item>
+      <title>Образование с BestJobs.BG</title>
+      <link>https://bestjobs.bg/edu/</link>
+      <description>Образование с BestJobs.BG структури и форми Пазар на труда Социално осигуряване и Пенсия Подготвка с учебници и материали Тестваме знания и умения</description>
+      <guid>https://bestjobs.bg/edu/</guid>
+    </item>
+    <item>
+      <title>Биология с BestJobs.BG</title>
+      <link>https://bestjobs.bg/edu/biology/</link>
+      <description>Биология с BestJobs.BG Тестване на знания или подготовка за: национални състезания и олимпиади, матури и кандидатстудентски изпити</description>
+      <guid>https://bestjobs.bg/edu/biology/</guid>
+    </item>
+    <item>
       <title>Биология QUIZ от BestJobs.BG</title>
       <link>https://bestjobs.bg/edu/biology/quiz/</link>
       <description>Биология QUIZ от BestJobs.BG Тестване на знания или подготовка за: национални състезания и олимпиади, матури и кандидатстудентски изпити</description>
       <guid>https://bestjobs.bg/edu/biology/quiz/</guid>
+    </item>
+    <item>
+      <title>Химия с BestJobs.BG</title>
+      <link>https://bestjobs.bg/edu/chemistry/</link>
+      <description>Химия с BestJobs.BG Тестване на знания или подготовка за: национални състезания и олимпиади, матури и кандидатстудентски изпити</description>
+      <guid>https://bestjobs.bg/edu/chemistry/</guid>
+    </item>
+    <item>
+      <title>Химия QUIZ с BestJobs.BG</title>
+      <link>https://bestjobs.bg/edu/chemistry/quiz/</link>
+      <description>Химия QUIZ с BestJobs.BG Тестване на знания или подготовка за: национални състезания и олимпиади, матури и кандидатстудентски изпити</description>
+      <guid>https://bestjobs.bg/edu/chemistry/quiz/</guid>
     </item>
   </channel>
 </rss>
