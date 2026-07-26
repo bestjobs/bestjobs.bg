@@ -53,7 +53,7 @@ const quizData = [
 
   function showHelp() {
     const help = quizData[currentQuestion];
-    questionElement.innerText = question.question;
+    questionElement.innerText = question.help;
   
     optionsElement.innerHTML = "";
     question.options.forEach(option => {
