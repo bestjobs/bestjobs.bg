@@ -48,7 +48,7 @@ const quizData = [
       showResult();
     }
   }
-
+  
   function showResult() {
     quiz.innerHTML = `
       <h1>ПРИКЛЮЧЕН / Quiz Completed!</h1>
