@@ -9,7 +9,7 @@ const quizData = [
       options: ["а) n;", "б) 2n;", "в) 2n<sup>2</sup>;", "г) n<sup>2</sup>;"],
       answer: "в) 2n<sup>2</sup>;"
     },
-    // Add more questions here...
+    // Add more questions here....
   ];
   
   const questionElement = document.getElementById("question");
