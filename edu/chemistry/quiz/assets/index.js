@@ -6,8 +6,8 @@ const quizData = [
     },
     {
       question: "2. Броят на подслоевете на даден слой е равен на:  HELP: Общата формула е, че n-ият слой може да съдържа до 2n2 електрона.",
-      options: ["а) n;", "б) 2n;", "в) 2n2;", "г) n2;"],
-      answer: "в) 2n2;"
+      options: ["а) n;", "б) 2n;", "в) 2n<sup>2</sup>;", "г) n<sup>2</sup>;"],
+      answer: "в) 2n<sup>2</sup>;"
     },
     // Add more questions here...
   ];
