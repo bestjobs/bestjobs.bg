@@ -34,11 +34,9 @@
     </style>
 </head>
 <body>
-
-<div class="container">
-    <h1>QUIZ Интерактивна Подготовка за Медицински Университети с BestJobs.BG 2027</h1>
-
-    <div id="setup-menu" class="menu-box">
+<header><div class="container">
+    <h1>QUIZ Интерактивна Подготовка за Медицински Университети с BestJobs.BG 2027</h1></header>
+    <main><div id="setup-menu" class="menu-box">
         <div id="selection-fields">
             <p>
                 <label><b>Изберете университет:</b></label>
@@ -72,7 +70,7 @@
     <div id="nav-container">
         <a id="btn-next" class="link link-next" onclick="loadNextQuestion()" title="Преминаване към следващия пореден изпитен въпрос">➡️ Следващ въпрос</a>
     </div>
-</div>
+</div></main>
 <script>
     var isTestStarted = false;
     var currentQuestions = [];
@@ -278,6 +276,6 @@
         link.innerText = isBlock ? '💡 Покажи ТЕОРЕТИЧЕН КОНСПЕКТ' : '✖️ Скрий ТЕОРЕТИЧЕН КОНСПЕКТ';
     }
 </script>
-<a href="/" title="HOME">bestjobs.bg</a> &copy; 2026
+<footer><a href="/" title="HOME">bestjobs.bg</a> &copy; 2026</footer>
 </body>
 </html>
