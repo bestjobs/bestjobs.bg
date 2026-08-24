@@ -1,27 +1,281 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-<meta charset="UTF-8">
-<meta name="theme-color" content="#fff">
-<meta name="robots" content="index, follow">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>QUIZ с BestJobs.BG</title>
-<meta name="description" content="QUIZ с BestJobs.BG Тестваме знанията и уменията си">
-<link rel="canonical" href="https://bestjobs.bg/quiz/">
-<link rel="icon" href="/favicon.ico">
-<link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon.png">
-<style>
-body {
-font-family: Arial, sans-serif;
-font-size: larger;
-background-color: rgb(214, 117, 117);
-}
-@media screen and (min-width:600px)
-</style>
+    <meta charset="UTF-8"><meta name="theme-color" content="#fff"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
+    <title>МУ Изпитен Справочник 2027</title>
+    <link rel="canonical" href="https://bestjobs.bg/quiz/"><link rel="icon" href="/favicon.ico"><link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon.png">
+    <style>
+        body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f6f6; color: #2c3e50; padding: 15px; margin: 0; }
+        .container { width: 100%; max-width: 100%; margin: 0; box-sizing: border-box; }
+        .menu-box { background: #ffffff; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); box-sizing: border-box; }
+        select { padding: 10px; font-size: 1rem; width: 100%; margin-bottom: 15px; border: 2px solid #eaeded; border-radius: 6px; outline: none; background: #ffffff; }
+        .timer-inline { font-size: 1.1rem; font-weight: bold; color: #cb4335; display: none; margin-left: 10px; vertical-align: middle; }
+        .action-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+        .score-title { color: #117a65; font-size: 1.5rem; font-weight: bold; margin-bottom: 10px; }
+        .score-grade { font-size: 1.8rem; font-weight: bold; color: #cb4335; margin-top: 15px; padding: 5px; border-bottom: 2px solid #cb4335; display: inline-block; }
+        
+        .link { color: #0b5345; font-weight: bold; text-decoration: underline; cursor: pointer; display: inline-block; margin-right: 15px; margin-bottom: 10px; }
+        
+        .link-next { color: #2c3e50 !important; font-size: 1.1rem; margin-top: 20px; text-align: center; width: 100%; display: none; border: 1px dashed #2c3e50; padding: 10px 0; border-radius: 6px; background: #ffffff; }
+        .link-action { color: #27ae60; font-size: 0.9rem; }
+        .link-sol { color: #3b82f6; font-size: 0.9rem; }
+        
+        .question-card { background: #ffffff; padding: 25px; border-radius: 8px; margin-bottom: 20px; border-left: 6px solid #117a65; box-shadow: 0 1px 3px rgba(0,0,0,0.05); box-sizing: border-box; width: 100%; }
+        .option-item { border: 2px solid #eaeded; padding: 14px; margin-top: 8px; cursor: pointer; border-radius: 6px; box-sizing: border-box; }
+        
+        .correct { border-color: #27ae60 !important; background-color: #e8f8f5 !important; color: #27ae60; font-weight: bold; }
+        .incorrect { border-color: #cb4335 !important; background-color: #fdedec !important; color: #cb4335; }
+        .reason-box { margin-top: 5px; color: #7f8c8d; font-size: 0.9rem; display: none; }
+        .solution-box { background: #f8fafc; border-left: 4px solid #3b82f6; padding: 15px; margin-top: 10px; display: none; box-sizing: border-box; }
+        .card-buttons { margin-top: 15px; display: flex; flex-wrap: wrap; gap: 5px; border-top: 1px dashed #eaeded; padding-top: 12px; }
+        
+        #nav-container { display: none; }
+    </style>
 </head>
 <body>
-<noscript>Включете / Enable JavaScript</noscript>
-<div id="root"></div>
-<script type="module" src="/quiz/src/index.js"></script>
+
+<div class="container">
+    <h2>Интерактивна Подготовка за Медицински Университети</h2>
+
+    <div id="setup-menu" class="menu-box">
+        <div id="selection-fields">
+            <p>
+                <label><b>Изберете университет:</b></label>
+                <select id="university-select">
+                    <option value="sofia">Медицински Университет — София</option>
+                    <option value="varna">Медицински Университет — Варна</option>
+                    <option value="plovdiv">Медицински Университет — Пловдив</option>
+                    <option value="pleven">Медицински Университет — Плевен</option>
+                    <option value="stara-zagora">Тракийски Университет — Стара Загора (МФ)</option>
+                    <option value="burgas">Университет "Проф. д-р Асен Златаров" — Бургас (МФ)</option>
+                    <option value="su">Софийски Университет "Св. Климент Охридски" (МФ)</option>
+                </select>
+            </p>
+            <p>
+                <label><b>Изберете предмет:</b></label>
+                <select id="subject-select">
+                    <option value="biology">Биология (8. - 12. клас — Профил)</option>
+                    <option value="chemistry">Химия (Обща, Неорганична и Органична)</option>
+                </select>
+            </p>
+        </div>
+        
+        <div class="action-row">
+            <a id="btn-start" class="link" onclick="handleStartButton()" title="Кликнете тук, за да заредите въпросите и да стартирате хронометъра на изпита">🎬 Старт на теста</a>
+            <div id="exam-timer" class="timer-inline">⏱️ <span id="timer-display">00:00:00</span></div>
+        </div>
+    </div>
+
+    <div id="quiz-container"></div>
+    
+    <div id="nav-container">
+        <a id="btn-next" class="link link-next" onclick="loadNextQuestion()" title="Преминаване към следващия пореден изпитен въпрос">➡️ Следващ въпрос</a>
+    </div>
+</div>
+<script>
+    var isTestStarted = false;
+    var currentQuestions = [];
+    var currentQuestionIndex = 0;
+    var correctAnswersCount = 0;
+    var isCurrentQuestionAnswered = false;
+    var timerInterval = null;
+    var totalSeconds = 0;
+
+    function handleStartButton() {
+        var btn = document.getElementById('btn-start');
+        var selectFields = document.getElementById('selection-fields');
+        var container = document.getElementById('quiz-container');
+        var navBlock = document.getElementById('nav-container');
+
+        if (!isTestStarted) {
+            var university = document.getElementById('university-select').value;
+            var subject = document.getElementById('subject-select').value;
+            
+            var scriptId = "dynamic-db-script";
+            var oldScript = document.getElementById(scriptId);
+            if (oldScript) oldScript.remove();
+
+            var scriptSrc = "db_" + university + ".js";
+            
+            var script = document.createElement('script');
+            script.id = scriptId;
+            script.src = scriptSrc;
+            
+            script.onload = function() {
+                if (typeof quizDatabase !== 'undefined' && quizDatabase[subject]) {
+                    currentQuestions = quizDatabase[subject].slice();
+                    shuffleArray(currentQuestions); // Разбъркване за изпитна симулация
+                } else {
+                    currentQuestions = [];
+                }
+
+                if (currentQuestions.length === 0) {
+                    container.innerHTML = '<div class="menu-box" style="text-align:center;"><p><b>Няма въведени изпитни въпроси за този предмет във файл ' + scriptSrc + ' все още.</b></p></div>';
+                    isTestStarted = false;
+                    btn.innerText = "🎬 Старт на теста";
+                    selectFields.style.display = "block";
+                    navBlock.style.display = "none";
+                    if (timerInterval) clearInterval(timerInterval);
+                    document.getElementById('exam-timer').style.display = "none";
+                    return;
+                }
+
+                isTestStarted = true;
+                btn.innerText = "🔄 Рестартирай теста";
+                selectFields.style.display = "none";
+                navBlock.style.display = "block";
+                
+                correctAnswersCount = 0;
+                startChronometer();
+                currentQuestionIndex = 0;
+                renderCurrentQuestion();
+            };
+            
+            script.onerror = function() {
+                container.innerHTML = '<div class="menu-box" style="text-align:center;"><p><b>Грешка: Файлът ' + scriptSrc + ' не е намерен в папката!</b></p></div>';
+            };
+
+            document.head.appendChild(script);
+
+        } else {
+            isTestStarted = false;
+            btn.innerText = "🎬 Старт на теста";
+            selectFields.style.display = "block";
+            navBlock.style.display = "none";
+            container.innerHTML = "";
+            stopChronometer();
+        }
+    }
+
+    function shuffleArray(array) {
+        for (var i = array.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+    }
+
+    function startChronometer() {
+        if (timerInterval) clearInterval(timerInterval);
+        totalSeconds = 0;
+        document.getElementById('timer-display').innerText = "00:00:00";
+        document.getElementById('exam-timer').style.display = "inline-block";
+        
+        timerInterval = setInterval(function() {
+            totalSeconds++;
+            var hours = Math.floor(totalSeconds / 3600);
+            var minutes = Math.floor((totalSeconds % 3600) / 60);
+            var seconds = totalSeconds % 60;
+            
+            if (hours < 10) hours = "0" + hours;
+            if (minutes < 10) minutes = "0" + minutes;
+            if (seconds < 10) seconds = "0" + seconds;
+            
+            document.getElementById('timer-display').innerText = hours + ":" + minutes + ":" + seconds;
+        }, 1000);
+    }
+
+    function stopChronometer() {
+        if (timerInterval) clearInterval(timerInterval);
+        document.getElementById('exam-timer').style.display = "none";
+    }
+
+    function calculateGrade(correct, total) {
+        if (total === 0) return "2.00";
+        var percentage = correct / total;
+        var grade = 2 + 4 * percentage;
+        if (percentage < 0.50) grade = 2.00;
+        return grade.toFixed(2);
+    }
+
+    function getGradeText(gradeStr) {
+        var g = parseFloat(gradeStr);
+        if (g >= 5.50) return "Отличен";
+        if (g >= 4.50) return "Много добър";
+        if (g >= 3.50) return "Добър";
+        if (g >= 3.00) return "Среден";
+        return "Слаб";
+    }
+
+    function renderCurrentQuestion() {
+        var container = document.getElementById('quiz-container');
+        document.getElementById('btn-next').style.display = "none";
+        isCurrentQuestionAnswered = false;
+        
+        if (currentQuestionIndex >= currentQuestions.length) {
+            if (timerInterval) clearInterval(timerInterval); 
+            var finalTime = document.getElementById('timer-display').innerText;
+            var gradeScore = calculateGrade(correctAnswersCount, currentQuestions.length);
+            var gradeText = getGradeText(gradeScore);
+            
+            container.innerHTML = '<div class="menu-box" style="text-align:center;"><div class="score-title">🎉 Изпитът приключи!</div><p>Познати въпроси: <b>' + correctAnswersCount + ' от ' + currentQuestions.length + '</b></p><p>Време за решаване: <b>' + finalTime + '</b></p><div class="score-grade">Оценка: ' + gradeText + ' ' + gradeScore + '</div></div>';
+            document.getElementById('nav-container').style.display = "none";
+            return;
+        }
+
+        var q = currentQuestions[currentQuestionIndex];
+        var html = '<div class="question-card"><small style="color:#7f8c8d; font-weight:bold;">' + q.topic + ' (' + (currentQuestionIndex + 1) + '/' + currentQuestions.length + ')</small><h3>' + q.question + '</h3><div>';
+        
+        for (var j = 0; j < q.options.length; j++) {
+            html += '<div class="option-item" data-correct="' + q.options[j].isCorrect + '" onclick="checkOption(this)">' + q.options[j].text + '<div class="reason-box">' + q.options[j].reason + '</div></div>';
+        }
+        
+        html += '</div><div class="card-buttons"><a class="link link-action" onclick="revealCardAnswer(this)" title="Показва верния отговор и причините за грешните опции">👁️ Виж правилния отговор</a>';
+        if (q.isTask) {
+            html += '<a class="link link-sol" onclick="toggleSolution(this)" title="Разгръща подробния лекционен материал">💡 Покажи ТЕОРЕТИЧЕН КОНСПЕКТ</a><div class="solution-box">' + q.solution + '</div>';
+        }
+        html += '</div></div>';
+        container.innerHTML = html;
+    }
+
+    function checkOption(element) {
+        if (isCurrentQuestionAnswered) return;
+        isCurrentQuestionAnswered = true;
+        
+        var card = element.closest('.question-card');
+        var siblings = card.getElementsByClassName('option-item');
+        var isUserCorrect = element.getAttribute('data-correct') === 'true';
+        
+        if (isUserCorrect) correctAnswersCount++;
+        
+        for (var i = 0; i < siblings.length; i++) {
+            siblings[i].style.pointerEvents = 'none';
+            if (siblings[i].getAttribute('data-correct') === 'true') siblings[i].classList.add('correct');
+            var reason = siblings[i].getElementsByClassName('reason-box');
+            if (reason && reason.length > 0) reason[0].style.display = 'block';
+        }
+        if (!isUserCorrect) element.classList.add('incorrect');
+        document.getElementById('btn-next').style.display = "block";
+    }
+
+    function revealCardAnswer(btn) {
+        if (isCurrentQuestionAnswered) return;
+        isCurrentQuestionAnswered = true;
+        
+        var card = btn.closest('.question-card');
+        var items = card.getElementsByClassName('option-item');
+        
+        for (var i = 0; i < items.length; i++) {
+            items[i].style.pointerEvents = 'none';
+            if (items[i].getAttribute('data-correct') === 'true') items[i].classList.add('correct');
+            var reason = items[i].getElementsByClassName('reason-box');
+            if (reason && reason.length > 0) reason[0].style.display = 'block';
+        }
+        document.getElementById('btn-next').style.display = "block";
+    }
+
+    function loadNextQuestion() {
+        currentQuestionIndex++;
+        renderCurrentQuestion();
+    }
+
+    function toggleSolution(link) {
+        var box = link.nextElementSibling;
+        var isBlock = box.style.display === 'block';
+        box.style.display = isBlock ? 'none' : 'block';
+        link.innerText = isBlock ? '💡 Покажи ТЕОРЕТИЧЕН КОНСПЕКТ' : '✖️ Скрий ТЕОРЕТИЧЕН КОНСПЕКТ';
+    }
+</script>
 </body>
 </html>
