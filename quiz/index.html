@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-    <meta charset="UTF-8"><meta name="theme-color" content="#fff"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
+    <meta charset="UTF-8"><meta name="theme-color" content="#fff"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
     <title>QUIZ Интерактивна Подготовка за Медицински Университети с BestJobs.BG</title>
     <meta name="description" content="QUIZ Интерактивна Подготовка за Медицински Университети с BestJobs.BG 2027">
     <link rel="canonical" href="https://bestjobs.bg/quiz/"><link rel="icon" href="/favicon.ico"><link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon.png">
     <style>
+        /* Олекотен CSS: Използва вградените системни шрифтове за пестене на памет и батерия */
         body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f6f6; color: #2c3e50; padding: 15px; margin: 0; }
         .container { width: 100%; max-width: 100%; margin: 0; box-sizing: border-box; }
         .menu-box { background: #ffffff; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); box-sizing: border-box; }
-        select { padding: 10px; font-size: 1rem; width: 100%; margin-bottom: 15px; border: 2px solid #eaeded; border-radius: 6px; outline: none; background: #ffffff; }
+        select { padding: 10px; font-size: 1rem; width: 100%; margin-bottom: 15px; border: 2px solid #eaeded; border-radius: 6px; outline: none; background: #ffffff; display: block; margin-top: 5px; }
+        label { font-weight: bold; display: block; }
+        
         .timer-inline { font-size: 1.1rem; font-weight: bold; color: #cb4335; display: none; margin-left: 10px; vertical-align: middle; }
         .action-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+        
         .score-title { color: #117a65; font-size: 1.5rem; font-weight: bold; margin-bottom: 10px; }
         .score-grade { font-size: 1.8rem; font-weight: bold; color: #cb4335; margin-top: 15px; padding: 5px; border-bottom: 2px solid #cb4335; display: inline-block; }
         
@@ -24,6 +29,7 @@
         .question-card { background: #ffffff; padding: 25px; border-radius: 8px; margin-bottom: 20px; border-left: 6px solid #117a65; box-shadow: 0 1px 3px rgba(0,0,0,0.05); box-sizing: border-box; width: 100%; }
         .option-item { border: 2px solid #eaeded; padding: 14px; margin-top: 8px; cursor: pointer; border-radius: 6px; box-sizing: border-box; }
         
+        /* Хардуерно чисти класове без тежки графични преливания */
         .correct { border-color: #27ae60 !important; background-color: #e8f8f5 !important; color: #27ae60; font-weight: bold; }
         .incorrect { border-color: #cb4335 !important; background-color: #fdedec !important; color: #cb4335; }
         .reason-box { margin-top: 5px; color: #7f8c8d; font-size: 0.9rem; display: none; }
@@ -34,12 +40,14 @@
     </style>
 </head>
 <body>
+
 <header><div class="container">
     <h1>QUIZ Интерактивна Подготовка за Медицински Университети с BestJobs.BG 2027</h1></header>
-    <main><div id="setup-menu" class="menu-box">
+<main>
+    <div id="setup-menu" class="menu-box">
         <div id="selection-fields">
             <p>
-                <label><b>Изберете университет:</b></label>
+                <label for="university-select">Изберете университет:</label>
                 <select id="university-select">
                     <option value="sofia">Медицински Университет — София</option>
                     <option value="varna">Медицински Университет — Варна</option>
@@ -51,7 +59,7 @@
                 </select>
             </p>
             <p>
-                <label><b>Изберете предмет:</b></label>
+                <label for="subject-select">Изберете предмет:</label>
                 <select id="subject-select">
                     <option value="biology">Биология (8. - 12. клас — Профил)</option>
                     <option value="chemistry">Химия (Обща, Неорганична и Органична)</option>
@@ -70,7 +78,8 @@
     <div id="nav-container">
         <a id="btn-next" class="link link-next" onclick="loadNextQuestion()" title="Преминаване към следващия пореден изпитен въпрос">➡️ Следващ въпрос</a>
     </div>
-</div></main>
+</div>
+</main>
 <script>
     var isTestStarted = false;
     var currentQuestions = [];
