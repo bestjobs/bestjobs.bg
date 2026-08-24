@@ -22,16 +22,17 @@
         
         .link { color: #0b5345; font-weight: bold; text-decoration: underline; cursor: pointer; display: inline-block; margin-right: 15px; margin-bottom: 10px; }
         
-        .link-next { color: #2c3e50 !important; font-size: 1.1rem; margin-top: 20px; text-align: center; width: 100%; display: none; border: 1px dashed #2c3e50; padding: 10px 0; border-radius: 6px; background: #ffffff; }
+        /* Премахнато !important — използва се по-висока специфичност на CSS селекторите при необходимост */
+        .link-next { color: #2c3e50; font-size: 1.1rem; margin-top: 20px; text-align: center; width: 100%; display: none; border: 1px dashed #2c3e50; padding: 10px 0; border-radius: 6px; background: #ffffff; }
         .link-action { color: #27ae60; font-size: 0.9rem; }
         .link-sol { color: #3b82f6; font-size: 0.9rem; }
         
         .question-card { background: #ffffff; padding: 25px; border-radius: 8px; margin-bottom: 20px; border-left: 6px solid #117a65; box-shadow: 0 1px 3px rgba(0,0,0,0.05); box-sizing: border-box; width: 100%; }
         .option-item { border: 2px solid #eaeded; padding: 14px; margin-top: 8px; cursor: pointer; border-radius: 6px; box-sizing: border-box; }
         
-        /* Хардуерно чисти класове без тежки графични преливания */
-        .correct { border-color: #27ae60 !important; background-color: #e8f8f5 !important; color: #27ae60; font-weight: bold; }
-        .incorrect { border-color: #cb4335 !important; background-color: #fdedec !important; color: #cb4335; }
+        /* Хардуерно чисти класове без тежки графични преливания и без !important */
+        .correct { border-color: #27ae60; background-color: #e8f8f5; color: #27ae60; font-weight: bold; }
+        .incorrect { border-color: #cb4335; background-color: #fdedec; color: #cb4335; }
         .reason-box { margin-top: 5px; color: #7f8c8d; font-size: 0.9rem; display: none; }
         .solution-box { background: #f8fafc; border-left: 4px solid #3b82f6; padding: 15px; margin-top: 10px; display: none; box-sizing: border-box; }
         .card-buttons { margin-top: 15px; display: flex; flex-wrap: wrap; gap: 5px; border-top: 1px dashed #eaeded; padding-top: 12px; }
