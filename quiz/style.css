@@ -37,7 +37,6 @@ button:hover { background: var(--primary-hover); }
 .info-section { background: #ffffff; padding: 20px; border-radius: 8px; border: 1px solid var(--border); margin-top: 20px; }
 .info-section h2 { font-size: 1.1rem; color: var(--primary); margin-top: 0; margin-bottom: 12px; border-bottom: 1px dashed var(--border); padding-bottom: 6px; }
 .info-section p, .info-section li { font-size: 0.9rem; color: #475569; margin-bottom: 8px; }
-
 .q-card { background: #ffffff; padding: 20px; border-radius: 8px; border: 1px solid var(--border); border-top: 4px solid var(--primary); margin-top: 20px; display: none; }
 .active { display: block !important; }
 .opt { border: 1px solid var(--border); padding: 12px; cursor: pointer; border-radius: 6px; margin-top: 8px; }
