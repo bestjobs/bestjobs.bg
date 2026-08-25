@@ -5,7 +5,7 @@ var correctCnt = 0;
 var startTime = 0;
 var currentBookDatabase = null;
 
-// 🛡️ Антибот регистри и времеви контроли
+// 🛡️ Антибот регистри и времеви контроли (Rate Limiting)
 var lastClickTime = 0;
 var botDetectionsCount = 0;
 
@@ -42,6 +42,8 @@ async function decryptAES256(encryptedBase64, saltBase64, ivBase64, secretKey) {
 async function initStaticQuiz() {
     var uni = document.getElementById('university-select').value;
     var sub = document.getElementById('subject-select').value;
+    
+    // 🛡️ Проверка за наличие на ключ в URL адреса (след знака #)
     var cryptoSecretPass = window.location.hash.substring(1);
     
     if (!cryptoSecretPass) {
@@ -55,70 +57,90 @@ async function initStaticQuiz() {
     var oldScript = document.getElementById("dynamic-db-script");
     if (oldScript) oldScript.remove();
 
+    // 🔄 Преди старт на ново зареждане, изчистваме остатъчните RAM данни от предходни опити
+    if (typeof quizDatabase !== 'undefined') {
+        try { quizDatabase = undefined; } catch(e) {}
+    }
+
     var scriptSrc = "db_" + uni + ".js";
     var script = document.createElement('script');
     script.id = "dynamic-db-script";
     script.src = scriptSrc;
     
+    // 🛡️ СТРИКТНА ПОПРАВКА: Прихващане на грешки при липсващ или дефектен файл на сървъра
+    script.onerror = function() {
+        alert("⚠️ Избраният изпитен справочник (" + scriptSrc + ") в момента не е наличен на сървъра.");
+    };
+    
     script.onload = async function() {
-        if (typeof quizDatabase !== 'undefined') {
-            currentBookDatabase = quizDatabase; 
-            var rawEncryptedPool = quizDatabase[sub] || [];
-            activePool = [];
+        // Проверка дали променливата е дефинирана и съдържа данни в RAM паметта
+        if (typeof quizDatabase === 'undefined' || quizDatabase === null) {
+            alert("❌ Грешка: Базата данни е повредена или не съдържа валидна изпитна структура.");
+            return;
+        }
 
-            try {
-                for (var i = 0; i < rawEncryptedPool.length; i++) {
-                    var item = rawEncryptedPool[i];
-                    var decryptedTopic = await decryptAES256(item.t, item.salt, item.iv, cryptoSecretPass);
-                    var decryptedQuestion = await decryptAES256(item.q, item.salt, item.iv, cryptoSecretPass);
-                    var decryptedSolution = await decryptAES256(item.s, item.salt, item.iv, cryptoSecretPass);
+        currentBookDatabase = quizDatabase; 
+        var rawEncryptedPool = quizDatabase[sub] || [];
+        activePool = [];
 
-                    if (!decryptedQuestion) {
-                        alert("🔒 Неуспешно декриптиране. Въведеният лицензен ключ е грешен.");
-                        return;
-                    }
+        if (rawEncryptedPool.length === 0) {
+            alert("⚠️ В този справочник все още няма въведени въпроси за избрания предмет.");
+            return;
+        }
 
-                    var decryptedOptions = [];
-                    for (var j = 0; j < item.o.length; j++) {
-                        decryptedOptions.push({
-                            x: await decryptAES256(item.o[j].x, item.salt, item.iv, cryptoSecretPass),
-                            c: item.o[j].c,
-                            r: await decryptAES256(item.o[j].r, item.salt, item.iv, cryptoSecretPass)
-                        });
-                    }
+        try {
+            for (var i = 0; i < rawEncryptedPool.length; i++) {
+                var item = rawEncryptedPool[i];
+                var decryptedTopic = await decryptAES256(item.t, item.salt, item.iv, cryptoSecretPass);
+                var decryptedQuestion = await decryptAES256(item.q, item.salt, item.iv, cryptoSecretPass);
+                var decryptedSolution = await decryptAES256(item.s, item.salt, item.iv, cryptoSecretPass);
 
-                    activePool.push({ t: decryptedTopic, q: decryptedQuestion, k: item.k, s: decryptedSolution, o: decryptedOptions });
+                if (!decryptedQuestion) {
+                    alert("🔒 Неуспешно декриптиране. Въведеният лицензен ключ е грешен.");
+                    return;
                 }
-            } catch (err) {
-                alert("Криптографска грешка при декриптиране."); return;
-            }
-            
-            // 🎲 Разбъркват се ЕДИНСТВЕНО ВЪПРОСИТЕ (Картите), отговорите вътре остават твърдо А, Б, В, Г по книгата
-            for (var i = activePool.length - 1; i > 0; i--) {
-                var j = Math.floor(Math.random() * (i + 1));
-                var tmp = activePool[i]; activePool[i] = activePool[j]; activePool[j] = tmp;
-            }
 
-            document.getElementById('g-pdf').style.display = "block";
-            var infoPanel = document.getElementById('info-panel');
-            if (infoPanel) infoPanel.style.display = 'none';
+                var decryptedOptions = [];
+                for (var j = 0; j < item.o.length; j++) {
+                    decryptedOptions.push({
+                        x: await decryptAES256(item.o[j].x, item.salt, item.iv, cryptoSecretPass),
+                        c: item.o[j].c,
+                        r: await decryptAES256(item.o[j].r, item.salt, item.iv, cryptoSecretPass)
+                    });
+                }
 
-            activeIdx = 0; correctCnt = 0;
-            startTime = performance.now(); 
-            
-            buildQuizDOM();
-            showQuestion(0);
-
-            try {
-                window.history.replaceState(null, document.title, window.location.origin + "/quiz/" + window.location.search);
-            } catch (e) {
-                window.location.hash = ""; 
+                activePool.push({ t: decryptedTopic, q: decryptedQuestion, k: item.k, s: decryptedSolution, o: decryptedOptions });
             }
+        } catch (err) {
+            alert("❌ Криптографска грешка при декриптиране. Проверете ключа."); 
+            return;
+        }
+        
+        // 🎲 Разбъркват се ЕДИНСТВЕНО ВЪПРОСИТЕ (Картите), отговорите остават 100% твърди по книжното издание
+        for (var i = activePool.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var tmp = activePool[i]; activePool[i] = activePool[j]; activePool[j] = tmp;
+        }
 
-            var statusBox = document.getElementById('crypto-status-indicator');
-            if (statusBox) {
-                statusBox.innerHTML = '<div class="crypto-secure-badge">🛡️ Справочникът е декриптиран: AES-256-GCM (Локална RAM среда) | Локация: /quiz/</div>';
-            }
+        document.getElementById('g-pdf').style.display = "block";
+        var infoPanel = document.getElementById('info-panel');
+        if (infoPanel) infoPanel.style.display = 'none';
+
+        activeIdx = 0; correctCnt = 0;
+        startTime = performance.now(); 
+        
+        buildQuizDOM();
+        showQuestion(0);
+
+        try {
+            window.history.replaceState(null, document.title, window.location.origin + "/quiz/" + window.location.search);
+        } catch (e) {
+            window.location.hash = ""; 
+        }
+
+        var statusBox = document.getElementById('crypto-status-indicator');
+        if (statusBox) {
+            statusBox.innerHTML = '<div class="crypto-secure-badge">🛡️ Справочникът е декриптиран: AES-256-GCM (Локална RAM среда) | Локация: /quiz/</div>';
         }
     };
     document.head.appendChild(script);
@@ -130,7 +152,7 @@ function buildQuizDOM() {
     for (var i = 0; i < activePool.length; i++) {
         var q = activePool[i];
         html += '<div id="q-idx-' + i + '" class="q-card"><small style="font-weight:600; color:#64748b; text-transform:uppercase;">' + q.t + ' (Въпрос ' + (i + 1) + '/' + activePool.length + ')</small><h3>' + q.q + '</h3>';
-        // Опциите се рендират последователно без промяна в индекса, гарантирайки съвпадение с книжното издание
+        // Рендиране без разместване - подредбата следва точно въведеното по учебник
         for (var j = 0; j < q.o.length; j++) {
             html += '<div class="opt" data-c="' + q.o[j].c + '" onclick="evalOpt(this, ' + i + ')">' + q.o[j].x + '<div class="reason">ℹ️ ' + q.o[j].r + '</div></div>';
         }
@@ -157,6 +179,7 @@ function showQuestion(idx) {
 }
 
 function evalOpt(el, qIdx) {
+    // 🛡️ Антибот Rate Limiting филтър срещу бързо кликане
     var currentTime = Date.now();
     if (currentTime - lastClickTime < 250) {
         botDetectionsCount++;
@@ -194,13 +217,15 @@ function revealAns(qIdx) {
 
 function skipQ(qIdx) {
     var card = document.getElementById('q-idx-' + qIdx); if (card.getAttribute('data-answered')) return;
-    var skipped = activePool.splice(qIdx, 1); activePool.push(skipped);
+    // 🔄 Кръгов SKIP алгоритъм: Премества елемента в края на опашката без загуба
+    var skipped = activePool.splice(qIdx, 1)[0]; activePool.push(skipped);
     buildQuizDOM(); showQuestion(activeIdx);
 }
 
 function toggleS(btn) { var box = btn.nextElementSibling.nextElementSibling; box.style.display = (box.style.display === 'block') ? 'none' : 'block'; }
 function printL(qIdx) { document.getElementById('print-area').innerHTML = '<div class="print-l">' + activePool[qIdx].s + '</div>'; window.print(); }
 
+// 📋 Глобален износ на целия справочник (Раздел I и Раздел II наведнъж)
 async function printAllLectures() {
     var cryptoSecretPass = window.location.hash.substring(1) || prompt("Въведете лицензен ключ за достъп до пълния справочник:");
     if (!cryptoSecretPass || !currentBookDatabase) return;
