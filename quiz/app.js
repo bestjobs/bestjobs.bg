@@ -43,12 +43,16 @@ async function initStaticQuiz() {
     var uni = document.getElementById('university-select').value;
     var sub = document.getElementById('subject-select').value;
     
-    // 🛡️ Извличане на секретния ключ от сигурния URL фрагмент (след знака #)
+    // 🛡️ Проверка за наличие на ключ в URL адреса
     var cryptoSecretPass = window.location.hash.substring(1);
     
+    // 🔔 КОРЕКЦИЯ: Интелигентен пасивен прозорец за директен вход при чист URL
     if (!cryptoSecretPass) {
-        alert("🔒 Грешка в достъпа: Невалиден или липсващ лицензен ключ в URL адреса на сайта!");
-        return;
+        cryptoSecretPass = prompt("🔒 Моля, въведете Вашия официален Лицензен Ключ за достъп до справочника:");
+        if (!cryptoSecretPass || cryptoSecretPass.trim() === "") {
+            alert("🔒 Грешка: Достъпът е отказан поради липса на лицензен ключ!");
+            return;
+        }
     }
 
     var oldScript = document.getElementById("dynamic-db-script");
@@ -72,8 +76,9 @@ async function initStaticQuiz() {
                     var decryptedQuestion = await decryptAES256(item.q, item.salt, item.iv, cryptoSecretPass);
                     var decryptedSolution = await decryptAES256(item.s, item.salt, item.iv, cryptoSecretPass);
 
+                    // Валидация на декриптирането за защита от грешен ключ
                     if (!decryptedQuestion) {
-                        alert("🔒 Неуспешно декриптиране. Грешен ключ в URL или повредена база данни.");
+                        alert("🔒 Неуспешно декриптиране. Въведеният лицензен ключ е грешен.");
                         return;
                     }
 
@@ -92,7 +97,7 @@ async function initStaticQuiz() {
                 alert("Криптографска грешка при декриптиране."); return;
             }
             
-            // 🎲 Математическо разбъркване на Фишер-Йейтс
+            // 🎲 Разбъркване на Фишер-Йейтс
             for (var i = activePool.length - 1; i > 0; i--) {
                 var j = Math.floor(Math.random() * (i + 1));
                 var tmp = activePool[i]; activePool[i] = activePool[j]; activePool[j] = tmp;
@@ -108,7 +113,7 @@ async function initStaticQuiz() {
             buildQuizDOM();
             showQuestion(0);
 
-            // 🛡️ Скриване на паролата от адресната лента
+            // 🛡️ Почистване на URL историята без презареждане
             try {
                 window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
             } catch (e) { window.location.hash = ""; }
@@ -192,7 +197,7 @@ function revealAns(qIdx) {
 
 function skipQ(qIdx) {
     var card = document.getElementById('q-idx-' + qIdx); if (card.getAttribute('data-answered')) return;
-    // 🔄 Кръгов SKIP алгоритъм: Премества елемента в края на опашката
+    // 🔄 Кръгов SKIP алгоритъм: Премества елемента в края на опашката без загуба
     var skipped = activePool.splice(qIdx, 1)[0]; activePool.push(skipped);
     buildQuizDOM(); showQuestion(activeIdx);
 }
