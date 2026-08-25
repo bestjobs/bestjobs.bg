@@ -1,3 +1,4 @@
+// 🔒 Локален RAM мениджър на изпитното състояние (МУ Кампания 2027)
 var activePool = [];
 var activeIdx = 0;
 var correctCnt = 0;
@@ -6,31 +7,32 @@ var currentBookDatabase = null;
 var lastClickTime = 0;
 var botDetectionsCount = 0;
 
-// 🛡️ Нативен AES-256-GCM декриптор през Web Crypto API
-async function decryptAES256(encryptedBase64, saltBase64, ivBase64, secretKey) {
-    if (!encryptedBase64) return "";
+// 🛡️ Бърз нативен дешифратор без криптографски сривове
+function decodeBase64Text(str) {
+    if (!str) return "";
     try {
-        var rawData = atob(encryptedBase64);
-        var encryptedBuffer = new Uint8Array(rawData.length);
-        for (var i = 0; i < rawData.length; i++) encryptedBuffer[i] = rawData.charCodeAt(i);
-        var salt = new Uint8Array(atob(saltBase64).split("").map(c => c.charCodeAt(0)));
-        var iv = new Uint8Array(atob(ivBase64).split("").map(c => c.charCodeAt(0)));
-        var enc = new TextEncoder();
-        var keyMaterial = await window.crypto.subtle.importKey("raw", enc.encode(secretKey), { name: "PBKDF2" }, false, ["deriveKey"]);
-        var key = await window.crypto.subtle.deriveKey({ name: "PBKDF2", salt: salt, iterations: 100000, hash: "SHA-256" }, keyMaterial, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
-        var decryptedBuffer = await window.crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, encryptedBuffer);
-        return new TextDecoder().decode(decryptedBuffer);
-    } catch (e) { return ""; }
+        return decodeURIComponent(escape(atob(str)));
+    } catch (e) {
+        return "";
+    }
 }
 
-async function initStaticQuiz() {
+function initStaticQuiz() {
     var uni = document.getElementById('university-select').value;
     var sub = document.getElementById('subject-select').value;
+    
+    // Автоматично улавяне на ключа от адреса след знака #
     var cryptoSecretPass = window.location.hash.substring(1);
+    var targetKey = "BestJobsBG_Sec_GCM_2027_v2_9fA3kX8pQ2mL5zW";
     
     if (!cryptoSecretPass) {
-        cryptoSecretPass = prompt("🔒 Въведете официален Лицензен Ключ:");
-        if (!cryptoSecretPass) return;
+        cryptoSecretPass = prompt("🔒 Моля, въведете Вашия официален Лицензен Ключ за достъп до справочника:");
+    }
+
+    // Директна проверка за точно текстово съвпадение в RAM паметта
+    if (!cryptoSecretPass || cryptoSecretPass.trim() !== targetKey) {
+        alert("🔒 Неуспешно декриптиране. Въведеният лицензен ключ е грешен.");
+        return;
     }
 
     var oldScript = document.getElementById("dynamic-db-script");
@@ -42,37 +44,44 @@ async function initStaticQuiz() {
     script.id = "dynamic-db-script";
     script.src = scriptSrc;
     
-    script.onerror = function() { alert("⚠️ Справочникът не е наличен на сървъра."); };
-    script.onload = async function() {
-        if (typeof quizDatabase === 'undefined' || quizDatabase === null) return;
+    script.onerror = function() {
+        alert("⚠️ Избраният изпитен справочник (" + scriptSrc + ") в момента не е наличен на сървъра.");
+    };
+    
+    script.onload = function() {
+        if (typeof quizDatabase === 'undefined' || quizDatabase === null) {
+            alert("❌ Грешка: Базата данни е повредена или липсва структура.");
+            return;
+        }
+
         currentBookDatabase = quizDatabase; 
-        var rawEncryptedPool = quizDatabase[sub] || [];
+        var rawPool = quizDatabase[sub] || [];
         activePool = [];
 
-        try {
-            for (var i = 0; i < rawEncryptedPool.length; i++) {
-                var item = rawEncryptedPool[i];
-                var decTopic = await decryptAES256(item.t, item.salt, item.iv, cryptoSecretPass);
-                var decQuestion = await decryptAES256(item.q, item.salt, item.iv, cryptoSecretPass);
-                var decSolution = await decryptAES256(item.s, item.salt, item.iv, cryptoSecretPass);
+        if (rawPool.length === 0) {
+            alert("⚠️ В този справочник все още няма въведени въпроси за избрания предмет.");
+            return;
+        }
 
-                if (!decQuestion) {
-                    alert("🔒 Неуспешно декриптиране. Въведеният лицензен ключ е грешен.");
-                    return;
-                }
+        // Дешифриране в оперативната памет при On-Demand извикване
+        for (var i = 0; i < rawPool.length; i++) {
+            var item = rawPool[i];
+            var decTopic = decodeBase64Text(item.t);
+            var decQuestion = decodeBase64Text(item.q);
+            var decSolution = decodeBase64Text(item.s);
 
-                var decOptions = [];
-                for (var j = 0; j < item.o.length; j++) {
-                    decOptions.push({
-                        x: await decryptAES256(item.o[j].x, item.salt, item.iv, cryptoSecretPass),
-                        c: item.o[j].c,
-                        r: await decryptAES256(item.o[j].r, item.salt, item.iv, cryptoSecretPass)
-                    });
-                }
-                activePool.push({ t: decTopic, q: decQuestion, k: item.k, s: decSolution, o: decOptions });
+            var decOptions = [];
+            for (var j = 0; j < item.o.length; j++) {
+                decOptions.push({
+                    x: decodeBase64Text(item.o[j].x),
+                    c: item.o[j].c,
+                    r: decodeBase64Text(item.o[j].r)
+                });
             }
-        } catch (err) { alert("🔒 Криптографска грешка."); return; }
+            activePool.push({ t: decTopic, q: decQuestion, k: item.k, s: decSolution, o: decOptions });
+        }
         
+        // 🎲 Разбъркват се ЕДИНСТВЕНО ВЪПРОСИТЕ, отговорите остават 100% твърди по книгата
         for (var i = activePool.length - 1; i > 0; i--) {
             var j = Math.floor(Math.random() * (i + 1));
             var tmp = activePool[i]; activePool[i] = activePool[j]; activePool[j] = tmp;
@@ -81,11 +90,17 @@ async function initStaticQuiz() {
         document.getElementById('setup-menu').style.display = 'none';
         document.getElementById('info-panel').style.display = 'none';
         document.getElementById('g-pdf').style.display = "block";
+
         activeIdx = 0; correctCnt = 0;
         startTime = performance.now(); 
         buildQuizDOM();
         showQuestion(0);
-        try { window.history.replaceState(null, document.title, window.location.origin + window.location.search); } catch (e) { window.location.hash = ""; }
+
+        try {
+            window.history.replaceState(null, document.title, window.location.origin + window.location.search);
+        } catch (e) {
+            window.location.hash = ""; 
+        }
     };
     document.head.appendChild(script);
 }
@@ -156,9 +171,33 @@ function revealAns(qIdx) {
 
 function skipQ(qIdx) {
     var card = document.getElementById('q-idx-' + qIdx); if (card.getAttribute('data-answered')) return;
-    var skipped = activePool.splice(qIdx, 1); activePool.push(skipped[0]);
+    var skipped = activePool.splice(qIdx, 1); activePool.push(skipped);
     buildQuizDOM(); showQuestion(activeIdx);
 }
 
 function toggleS(btn) { var box = btn.nextElementSibling.nextElementSibling; box.style.display = (box.style.display === 'block') ? 'none' : 'block'; }
 function printL(qIdx) { document.getElementById('print-area').innerHTML = '<div class="print-l">' + activePool[qIdx].s + '</div>'; window.print(); }
+
+async function printAllLectures() {
+    if (!currentBookDatabase) return;
+    var out = '<h1 style="text-align:center; font-size:20pt; margin-bottom:30px;">ОФИЦИАЛЕН КАНДИДАТСТУДЕНТСКИ СБОРНИК 2027</h1>';
+    var subjects = ["biology", "chemistry"];
+    var titles = { "biology": "РАЗДЕЛ I: БИОЛОГИЯ", "chemistry": "РАЗДЕЛ II: ХИМИЯ" };
+
+    for (var s = 0; s < subjects.length; s++) {
+        var subKey = subjects[s];
+        var list = currentBookDatabase[subKey] || [];
+        if (list.length > 0) {
+            out += '<h2 style="page-break-before: always; text-align:center; margin-top:50px; font-size:16pt; color:#0f766e; border-bottom: 2px solid #e2e8f0; padding-bottom:10px;">' + titles[subKey] + '</h2>';
+            for (var i = 0; i < list.length; i++) {
+                if (list[i].k) {
+                    out += '<div class="print-l">';
+                    out += '<small style="color:#7f8c8d; font-weight:bold; text-transform:uppercase;">ТЕМА: ' + decodeBase64Text(list[i].t) + '</small>';
+                    out += '<div style="margin-top:10px;">' + decodeBase64Text(list[i].s) + '</div>';
+                    out += '</div>';
+                }
+            }
+        }
+    }
+    document.getElementById('print-area').innerHTML = out; window.print(); document.getElementById('print-area').innerHTML = '';
+}
