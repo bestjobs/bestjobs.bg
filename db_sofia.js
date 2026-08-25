@@ -1,1 +1,29 @@
-var quizDatabase = {"biology":[{"salt":"OBtr2xsFpjkI5+vIVd7jeA==","iv":"rQOxZpAHJlWHHZHt","t":"gdO7kVDna3XfAlHEjhoLwpSFQwbYnUtrSqPnGQnRmRc/0s9NAfEQqVo=","q":"bm66IdN9Mx3/88CyzPjqT1uH/GHd9SOnHT4RIWk0aihQF5sXSvWu1Uj1xNATYDlr5J7AY4rOkNsqtY5pAZZTi57WRUxaRprUDgcEiAl9axRhLIkXeQ==","k":true,"s":"","o":[{"x":"hJQApt5UdxbrT2yT0mEvn33+oG18pAmuBdZ4tNrO+tr+5CBpzsRAUnrynQ==","c":false,"r":""},{"x":"XsZVZ+xSkUHp/QqUkBwue6SPHG0FHBcwoTyLIypCHG/OKIPG9tZI","c":false,"r":""},{"x":"nVMSo8slMl0pnX2ycHfoqo9351wRsR0K5cLP2SMXXStzUj1rnDfvYmDe9Q==","c":true,"r":""},{"x":"VoiNd3stVKk/Fq9Qn39xqw7VVS008T0H1Nw9QoevJjJ8enQHl2m1","c":false,"r":""}]},{"salt":"NVvHa/o0/1bt1WIb5CNBPA==","iv":"GeNNnRaIDJsShbcm","t":"7Re69CwEQsbCASKBWd4tdjcdrpulWb/YIwfEAwr7QmSnN5ETPnb6EpI=","q":"ltabnJP8SxIWfuMP+2Cw8vvfWRB3Tyq5LGxKuAVSPsoribsHKpT0Xs0FQyWpkGJ2j/nMNnBYJdq5WTHKyp/yOQuv3YHorgCynyWqvX4bNg==","k":true,"s":"","o":[{"x":"58g0/mhPyhwHwjT/5dD3ko62l1VhGhFvCWTJL3J2czU=","c":false,"r":""},{"x":"74ky1Oy6jzn/jz5G/iiPazu7l5Oe08FPhNvYYweiME8=","c":false,"r":""},{"x":"8Cn6in8hFbf9PoAHdv+RZG5AZ5uGR+tSR1MPj5vDPyLufPQTDmU=","c":true,"r":""},{"x":"M36YVfk7uFsXlzR0QkIduY/RjUZrcvqmZPlJFpILT7s4ri+g3A3yi0EF7Xft+A==","c":false,"r":""}]}],"chemistry":[]};
+var quizDatabase = {
+    "biology": [
+        {
+            "t": "Съединителна тъкан",
+            "q": "Коя от посочените разновидности НЕ е вид съединителна тъкан?",
+            "k": true,
+            "s": "<h3>Тема: Съединителна тъкан</h3><p>Изградена е от голямо количество междуклетъчно вещество и клетки...</p>",
+            "o": [
+                { "x": "1. Хрущялна тъкан", "c": false, "r": "Грешно. Хрущялната тъкан е основна разновидност." },
+                { "x": "2. Костна тъкан", "c": false, "r": "Грешно. Костната тъкан е твърда съединителна тъкан." },
+                { "x": "3. Епителна тъкан", "c": true, "r": "Вярно! Епителната тъкан е самостоятелен вид тъкан." },
+                { "x": "4. Мастна тъкан", "c": false, "r": "Грешно. Мастната тъкан е специализирана форма." }
+            ]
+        },
+        {
+            "t": "Клетъчни органели",
+            "q": "Кой клетъчен органел е известен като „енергийната централа“ на клетката?",
+            "k": true,
+            "s": "<h3>Тема: Митохондрии</h3><p>Митохондриите са двумембранни органели, в които се синтезира АТФ...</p>",
+            "o": [
+                { "x": "1. Рибозома", "c": false, "r": "Грешно. Рибозомите извършват белтъчен синтез." },
+                { "x": "2. Лизозома", "c": false, "r": "Грешно. Лизозомите имат храносмилателна функция." },
+                { "x": "3. Митохондрий", "c": true, "r": "Вярно! Митохондриите осигуряват клетъчната енергия." },
+                { "x": "4. Апарат на Голджи", "c": false, "r": "Грешно. Участва в секрецията и пакетирането." }
+            ]
+        }
+    ],
+    "chemistry": []
+};
