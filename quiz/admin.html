@@ -9,7 +9,10 @@
         body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); padding: 20px; margin: 0; }
         .container { max-width: 800px; margin: 0 auto; }
         .main-card { background: var(--surface); padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        h1 { color: var(--primary); font-size: 1.6rem; text-align: center; margin-top: 0; margin-bottom: 20px; font-weight: 800; }
+        .header-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border); padding-bottom: 15px; margin-bottom: 20px; }
+        h1 { color: var(--primary); font-size: 1.6rem; margin: 0; font-weight: 800; }
+        .back-link { text-decoration: none; color: #475569; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 5px; padding: 6px 12px; border: 1px solid var(--border); border-radius: 6px; background: #fff; }
+        .back-link:hover { background: #f1f5f9; color: var(--text); }
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
         label { font-weight: 700; display: block; margin-top: 15px; font-size: 0.8rem; text-transform: uppercase; color: #64748b; }
         input, select, textarea { width: 100%; padding: 12px; margin-top: 6px; border: 1px solid var(--border); border-radius: 8px; box-sizing: border-box; font-size: 0.95rem; outline: none; }
@@ -41,7 +44,11 @@
 <body>
 <div class="container">
     <div class="main-card">
-        <h1>🛡️ Мулти-Криптогенератор за Справочници</h1>
+        <div class="header-row">
+            <h1>🛡️ Мулти-Криптогенератор за Справочници</h1>
+            <!-- 🔗 Обратна връзка към индекса на сайта -->
+            <a href="index.html" class="back-link" title="Назад към въпросника">🏠 Към изпита</a>
+        </div>
         
         <div class="grid-3">
             <div>
@@ -69,11 +76,11 @@
             </div>
         </div>
 
-        <!-- 📋 ОБНОВЕНО УПЪТВАНЕ СЪОБРАЗНО ИЗИСКВАНИЯТА ЗА ХАРТИЕНОТО ИЗДАННИЕ -->
+        <!-- 📋 ОБНОВЕНО УПЪТВАНЕ СЪС СТРИКТНИ ИНСТРУКЦИИ -->
         <div class="guide-box">
             <h3>📋 Инструкции за групово зареждане на въпроси от Текст, Word или PDF:</h3>
             <ol>
-                <li><b>Секретен ключ:</b> Въведете актуалния продуктов мастер лиценз в полето най-горе.</li>
+                <li><b>Секретен ключ:</b> Администраторите въвеждат актуалния продуктов мастер лиценз в полето най-горе. Не е за всеки!</li>
                 <li><b>Синтаксис за импортиране:</b> Копирайте изпитния масив и го поставете в полето за групово зареждане. Всеки нов въпрос задължително трябва да започва с ключовата дума <b>Въпрос:</b>, последван от четирите фиксирани отговора, разположени на нови редове под него.</li>
                 <li><b>Фиксиран ред на отговорите:</b> Системата запазва подредбата на отговорите (1, 2, 3, 4) абсолютно статична, за да съответства на хартиената книга.</li>
                 <li><b>Маркиране на верния отговор:</b> След като натиснете бутона за парсване, използвайте кръглите бутони (Radio селекторите) пред отговорите на всяка карта, за да посочите кой е верният по официален ключ.</li>
