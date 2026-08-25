@@ -3,38 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0f766e">
-    
-    <!-- 🛡️ Стриктна CSP директива за максимална сигурност и локална обработка -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
-    
-    <!-- 🔍 Стандартни SEO Мета Тагове за Изпитна Кампания 2027 -->
     <title>Интерактивна Подготовка за Медицински Университети с BestJobs.BG</title>
-    <meta name="description" content="Официален интерактивен справочник за кандидат-студенти по медицина. Онлайн изпитни тестове и развити теоретични лекции по Биология и Химия за МУ-София, МУ-Варна, МУ-Пловдив и Плевен.">
-    <meta name="keywords" content="медицински университет, кандидатстудентски изпити медицина, тестове биология му софия, изпитни задачи химия, развити теми биология медицина, му варна, му пловдив, bestjobs">
-    <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://bestjobs.bg/quiz/">
-    
-    <!-- 👤 Споделяне в социалните мрежи (Open Graph / Facebook / LinkedIn) -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://bestjobs.bg/quiz">
-    <meta property="og:title" content="Интерактивна Подготовка за Медицински Университети с BestJobs.BG">
-    <meta property="og:description" content="Подгответе се за кандидатстудентските изпити по медицина с военен клас сигурност. Интерактивни тестове с цифрови отговори и пълен теоретичен конспект за печат в PDF.">
-    <meta property="og:image" content="https://bestjobs.bg">
-    <meta property="og:locale" content="bg_BG">
-    <meta property="og:site_name" content="BestJobs.BG">
-
-    <!-- 🐦 Споделяне в X (Twitter Cards) -->
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Интерактивна Подготовка за Медицински Университети с BestJobs.BG">
-    <meta name="twitter:description" content="Онлайн симулация на изпитите по Биология и Химия за всички медицински факултети в България. Автономно декриптиране в паметта и експорт на конспекти.">
-    <meta name="twitter:image" content="https://bestjobs.bg">
-    
-    <!-- 🎯 Локални брандинг икони -->
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" sizes="192x192" href="apple-touch-icon.png">
-    
-    <!-- Връзка към стиловия файл -->
+    <meta property="og:url" content="https://bestjobs.bg/quiz/">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -42,7 +13,6 @@
     <main class="container">
         <h1>Интерактивна Подготовка за Медицински Университети с BestJobs.BG</h1>
         <section id="setup-menu" class="menu-box">
-            <!-- 🏛️ Селекционен модул -->
             <div>
                 <label for="university-select">Изберете университет:</label>
                 <select id="university-select">
@@ -50,16 +20,13 @@
                     <option value="varna">МУ - Варна</option>
                     <option value="plovdiv">МУ - Пловдив</option>
                     <option value="pleven">МУ - Плевен</option>
-                    <option value="stara-zagora">Тракийски У - Ст. Загора (МФ)</option>
-                    <option value="burgas">У-т "Ас. Златаров" - Бургас (МФ)</option>
-                    <option value="su">СУ "Св. Климент Охридски" (МФ)</option>
                 </select>
             </div>
             <div>
                 <label for="subject-select" style="margin-top:15px; display:block;">Изберете предмет:</label>
                 <select id="subject-select">
-                    <option value="biology">Биология (8-12 клас)</option>
-                    <option value="chemistry">Химия (Обща, Неорганична, Органична)</option>
+                    <option value="biology">Биология</option>
+                    <option value="chemistry">Химия</option>
                 </select>
             </div>
             <div style="margin-top: 20px;">
@@ -68,44 +35,11 @@
             </div>
         </section>
         <div id="crypto-status-indicator"></div>
-        <!-- 📘 ИНФОРМАЦИОНЕН ПАНЕЛ: Инструкции, Сигурност и Поверителност -->
-        <div id="info-panel">
-            <section class="info-section">
-                <h2>📘 Ръководство за употреба</h2>
-                <ol>
-                    <li><b>Избор на параметри:</b> Маркирайте факултет и предмет от менютата горе.</li>
-                    <li><b>Старт на сесията:</b> Натиснете бутона „Старт на изпита“ за On-Demand извикване на съответния справочник.</li>
-                    <li><b>Решаване:</b> Въпросите се появяват един по един. При избор на опция системата незабавно валидира отговора и отваря поле с подробна аргументация.</li>
-                    <li><b>Прескачане (Skip):</b> Ако изпитате затруднение, натиснете бутона „Пропусни“. Въпросът автоматично ще се премести най-отзад в изпитната опашка, без да се губи.</li>
-                    <li><b>Печат в PDF:</b> Под всяка изпитна задача с прикачена развита тема се появява бутон „PDF“. Бутонът в главното меню пък компилира целия теоретичен справочник наведнъж (и Биология, и Химия).</li>
-                </ol>
-            </section>
-
-            <section class="info-section">
-                <h2>🛡️ Защитни механизми и Архитектура</h2>
-                <ul>
-                    <li><b>Антихакерска защита (XSS Имунитет):</b> Текстовите данни преминават през строга нативна санитаризация, елиминирайки рисковете от инжектиране на зловреден код.</li>
-                    <li><b>Антибот алгоритъм (Rate Limiting):</b> Ако автоматизиран скрипт или парсер се опита да източи лекциите със софтуерна скорост (под 250 милисекунди), платформата автоматично блокира сесията.</li>
-                    <li><b>Zero GPU/CPU Load:</b> Изчислението на времето за работа се извършва пасивно при приключване, което гарантира нулев разход на батерия и процесорно време по време на теста.</li>
-                </ul>
-            </section>
-
-            <section class="info-section text-accent">
-                <h2>🔒 100% Поверителност (Zero-Tracker политика)</h2>
-                <p>Платформата е разработена с фокус върху пълната анонимност. В нея <b>няма вградени бисквитки (Cookies)</b>, проследяващи пиксели или рекламни кодове. Цялата изпитна сесия се калкулира и съхранява в реално време единствено в оперативната памет (RAM) на Вашето локално устройство. Данните Ви не напускат браузъра и не се изпращат към външни сървъри – това гарантира пълно съответствие с изискванията на GDPR.</p>
-            </section>
-        </div>
-
-        <!-- Контейнер за динамично вграждане на изпитните карти -->
         <div id="quiz-space"></div>
     </main>
-
-    <!-- Официален футър на платформата -->
     <footer>
-        <a href="/" title="HOME">bestjobs.bg</a> &copy; 2026
+        <a href="https://bestjobs.bg/quiz/" title="HOME">bestjobs.bg/quiz/</a> &copy; 2026
     </footer>
-
-    <!-- Връзка към софтуерния алгоритъм -->
     <script src="app.js"></script>
 </body>
 </html>
