@@ -43,7 +43,7 @@ async function initStaticQuiz() {
     var uni = document.getElementById('university-select').value;
     var sub = document.getElementById('subject-select').value;
     
-    // 🛡️ Проверка за наличие на ключ в URL адреса
+    // 🛡️ Проверка за наличие на ключ в URL адреса (след знака #)
     var cryptoSecretPass = window.location.hash.substring(1);
     
     // 🔔 КОРЕКЦИЯ: Интелигентен пасивен прозорец за директен вход при чист URL
@@ -113,7 +113,7 @@ async function initStaticQuiz() {
             buildQuizDOM();
             showQuestion(0);
 
-            // 🛡️ КОРЕКЦИЯ: Почистване на URL историята строго в рамките на директория /quiz/
+            // 🛡️ КОРЕКЦИЯ: Почистване на URL историята строго в рамките на правилния адрес /quiz/
             try {
                 window.history.replaceState(
                     null, 
