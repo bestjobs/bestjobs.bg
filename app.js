@@ -1,4 +1,4 @@
-// 🔒 Пасивен мениджър на изпитното състояние (МУ Кампания 2027)
+// 🔒 Директен мениджър на изпитното състояние (МУ Кампания 2027)
 var activePool = [];
 var activeIdx = 0;
 var correctCnt = 0;
@@ -8,51 +8,23 @@ var currentBookDatabase = null;
 // 🛡️ Антибот регистри и времеви контроли (Rate Limiting)
 var lastClickTime = 0;
 var botDetectionsCount = 0;
-
-// 🛡️ Нативен асинхронен AES-256-GCM декриптор (Web Crypto API)
-async function decryptAES256(encryptedBase64, saltBase64, ivBase64, secretKey) {
-    if (!encryptedBase64) return "";
-    try {
-        var rawData = atob(encryptedBase64);
-        var encryptedBuffer = new Uint8Array(rawData.length);
-        for (var i = 0; i < rawData.length; i++) encryptedBuffer[i] = rawData.charCodeAt(i);
-
-        var salt = new Uint8Array(atob(saltBase64).split("").map(c => c.charCodeAt(0)));
-        var iv = new Uint8Array(atob(ivBase64).split("").map(c => c.charCodeAt(0)));
-
-        var enc = new TextEncoder();
-        var keyMaterial = await window.crypto.subtle.importKey(
-            "raw", enc.encode(secretKey), { name: "PBKDF2" }, false, ["deriveKey"]
-        );
-
-        var key = await window.crypto.subtle.deriveKey(
-            { name: "PBKDF2", salt: salt, iterations: 100000, hash: "SHA-256" },
-            keyMaterial, { name: "AES-GCM", length: 256 }, false, ["decrypt"]
-        );
-
-        var decryptedBuffer = await window.crypto.subtle.decrypt(
-            { name: "AES-GCM", iv: iv }, key, encryptedBuffer
-        );
-
-        return new TextDecoder().decode(decryptedBuffer);
-    } catch (e) {
-        return "";
-    }
-}
-// 🎯 Основен задвижващ крипто-мениджър
-async function initStaticQuiz() {
+// 🎯 Олекотен задвижващ мениджър с директна текстова проверка на ключа
+function initStaticQuiz() {
     var uni = document.getElementById('university-select').value;
     var sub = document.getElementById('subject-select').value;
     
-    // Прихващане на ключа от URL фрагмента (след знака #)
+    // Автоматично улавяне на ключа от адреса след знака #
     var cryptoSecretPass = window.location.hash.substring(1);
+    var targetKey = "BestJobsBG_Sec_GCM_2027_v2_9fA3kX8pQ2mL5zW";
     
     if (!cryptoSecretPass) {
         cryptoSecretPass = prompt("🔒 Моля, въведете Вашия официален Лицензен Ключ за достъп до справочника:");
-        if (!cryptoSecretPass || cryptoSecretPass.trim() === "") {
-            alert("🔒 Грешка: Достъпът е отказан поради липса на лицензен ключ!");
-            return;
-        }
+    }
+
+    // Стриктна проверка за точно съвпадение без криптографски сривове
+    if (!cryptoSecretPass || cryptoSecretPass.trim() !== targetKey) {
+        alert("🔒 Неуспешно декриптиране. Въведеният лицензен ключ е грешен.");
+        return;
     }
 
     var oldScript = document.getElementById("dynamic-db-script");
@@ -71,52 +43,39 @@ async function initStaticQuiz() {
         alert("⚠️ Избраният изпитен справочник (" + scriptSrc + ") в момента не е наличен на сървъра.");
     };
     
-    script.onload = async function() {
+    script.onload = function() {
         if (typeof quizDatabase === 'undefined' || quizDatabase === null) {
-            alert("❌ Грешка: Базата данни е повредена или липсва изпитна структура.");
+            alert("❌ Грешка: Базата данни е повредена или липсва структура.");
             return;
         }
 
         currentBookDatabase = quizDatabase; 
-        var rawEncryptedPool = quizDatabase[sub] || [];
+        var rawPool = quizDatabase[sub] || [];
         activePool = [];
 
-        try {
-            // Асинхронно RAM декриптиране на всеки елемент от книгата
-            for (var i = 0; i < rawEncryptedPool.length; i++) {
-                var item = rawEncryptedPool[i];
-                var decryptedTopic = await decryptAES256(item.t, item.salt, item.iv, cryptoSecretPass);
-                var decryptedQuestion = await decryptAES256(item.q, item.salt, item.iv, cryptoSecretPass);
-                var decryptedSolution = await decryptAES256(item.s, item.salt, item.iv, cryptoSecretPass);
-
-                if (!decryptedQuestion) {
-                    alert("🔒 Неуспешно декриптиране. Въведеният лицензен ключ е грешен.");
-                    return;
-                }
-
-                var decryptedOptions = [];
-                for (var j = 0; j < item.o.length; j++) {
-                    decryptedOptions.push({
-                        x: await decryptAES256(item.o[j].x, item.salt, item.iv, cryptoSecretPass),
-                        c: item.o[j].c,
-                        r: await decryptAES256(item.o[j].r, item.salt, item.iv, cryptoSecretPass)
-                    });
-                }
-
-                activePool.push({ t: decryptedTopic, q: decryptedQuestion, k: item.k, s: decryptedSolution, o: decryptedOptions });
-            }
-        } catch (err) {
-            alert("❌ Криптографска грешка при декриптиране. Проверете ключа."); 
+        if (rawPool.length === 0) {
+            alert("⚠️ В този справочник все още няма въведени въпроси за избрания предмет.");
             return;
         }
+
+        // Чисто прехвърляне на текстовите данни директно от оперативната памет (RAM)
+        for (var i = 0; i < rawPool.length; i++) {
+            activePool.push({
+                t: rawPool[i].t,
+                q: rawPool[i].q,
+                k: rawPool[i].k,
+                s: rawPool[i].s,
+                o: rawPool[i].o
+            });
+        }
         
-        // Разбъркват се ЕДИНСТВЕНО ВЪПРОСИТЕ, отговорите остават твърди по книгата
+        // 🎲 Разбъркват се ЕДИНСТВЕНО ВЪПРОСИТЕ, отговорите остават 100% твърди по книгата
         for (var i = activePool.length - 1; i > 0; i--) {
             var j = Math.floor(Math.random() * (i + 1));
             var tmp = activePool[i]; activePool[i] = activePool[j]; activePool[j] = tmp;
         }
 
-        // Автоматично изчистване на екрана от менюта за пълна чистота
+        // Автоматично скриване на селекционните менюта и информационния панел
         var setupMenu = document.getElementById('setup-menu');
         if (setupMenu) setupMenu.style.display = 'none';
         
@@ -141,7 +100,7 @@ async function initStaticQuiz() {
     document.head.appendChild(script);
 }
 
-// 🏛️ ОЛЕКОТЕН ДОМ ГЕНЕРАТОР: Използва текстови линкове за навигация
+// 🏛️ DOM ГЕНЕРАТОР: Подмяна на бутоните с олекотени текстови линкове
 function buildQuizDOM() {
     var space = document.getElementById('quiz-space');
     var html = '';
@@ -152,7 +111,7 @@ function buildQuizDOM() {
             html += '<div class="opt" data-c="' + q.o[j].c + '" onclick="evalOpt(this, ' + i + ')">' + q.o[j].x + '<div class="reason">ℹ️ ' + q.o[j].r + '</div></div>';
         }
         
-        html += '<div class="card-nav" style="gap: 15px; font-size: 0.9rem; margin-top: 20px; border-top: 1px solid var(--border); padding-top: 14px; display: flex; flex-wrap: wrap;">' +
+        html += '<div class="card-nav" style="gap: 15px; font-size: 0.9rem;">' +
                 '<a href="#" onclick="revealAns(' + i + '); return false;" style="color: var(--primary); font-weight: 600; text-decoration: none;">👁️ Виж отговора</a>' +
                 '<a href="#" onclick="skipQ(' + i + '); return false;" style="color: #d35400; font-weight: 600; text-decoration: none;">➡️ Пропусни</a>';
         if (q.k) {
@@ -189,7 +148,6 @@ function showQuestion(idx) {
 }
 
 function evalOpt(el, qIdx) {
-    // 🛡️ Антибот Rate Limiting филтър срещу бързо кликане
     var currentTime = Date.now();
     if (currentTime - lastClickTime < 250) {
         botDetectionsCount++;
@@ -227,7 +185,6 @@ function revealAns(qIdx) {
 
 function skipQ(qIdx) {
     var card = document.getElementById('q-idx-' + qIdx); if (card.getAttribute('data-answered')) return;
-    // 🔄 Кръгов SKIP алгоритъм: Премества елемента в края на опашката без загуба на данни
     var skipped = activePool.splice(qIdx, 1); activePool.push(skipped);
     buildQuizDOM(); showQuestion(activeIdx);
 }
@@ -235,7 +192,6 @@ function skipQ(qIdx) {
 function toggleS(btn) { var box = btn.nextElementSibling.nextElementSibling; box.style.display = (box.style.display === 'block') ? 'none' : 'block'; }
 function printL(qIdx) { document.getElementById('print-area').innerHTML = '<div class="print-l">' + activePool[qIdx].s + '</div>'; window.print(); }
 
-// 📋 Глобален износ на целия справочник (Раздел I и Раздел II наведнъж)
 async function printAllLectures() {
     var cryptoSecretPass = window.location.hash.substring(1) || prompt("Въведете лицензен ключ за достъп до пълния справочник:");
     var targetKey = "BestJobsBG_Sec_GCM_2027_v2_9fA3kX8pQ2mL5zW";
@@ -253,11 +209,9 @@ async function printAllLectures() {
             out += '<h2 style="page-break-before: always; text-align:center; margin-top:50px; font-size:16pt; color:#0f766e; border-bottom: 2px solid #e2e8f0; padding-bottom:10px;">' + titles[subKey] + '</h2>';
             for (var i = 0; i < list.length; i++) {
                 if (list[i].k) {
-                    var decTopic = await decryptAES256(list[i].t, list[i].salt, list[i].iv, cryptoSecretPass);
-                    var decSol = await decryptAES256(list[i].s, list[i].salt, list[i].iv, cryptoSecretPass);
                     out += '<div class="print-l">';
-                    out += '<small style="color:#7f8c8d; font-weight:bold; text-transform:uppercase;">ТЕМА: ' + decTopic + '</small>';
-                    out += '<div style="margin-top:10px;">' + decSol + '</div>';
+                    out += '<small style="color:#7f8c8d; font-weight:bold; text-transform:uppercase;">ТЕМА: ' + list[i].t + '</small>';
+                    out += '<div style="margin-top:10px;">' + list[i].s + '</div>';
                     out += '</div>';
                 }
             }
