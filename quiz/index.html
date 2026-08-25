@@ -4,15 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0f766e">
+    
+    <!-- 🛡️ Стриктна CSP директива за максимална сигурност и локална обработка -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
+    
+    <!-- 🔍 Изискани SEO и Канонични Мета Тагове (Кампания 2027) -->
     <title>Интерактивна Подготовка за Медицински Университети с BestJobs.BG</title>
+    <meta name="description" content="QUIZ Интерактивна Подготовка за Медицински Университети с BestJobs.BG 2027">
+    <link rel="canonical" href="https://bestjobs.bg/quiz/">
+    
+    <!-- 👤 Оптимизирано споделяне в социалните мрежи (Open Graph / Facebook / LinkedIn) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bestjobs.bg/quiz/">
+    <meta property="og:title" content="Интерактивна Подготовка за Медицински Университети с BestJobs.BG">
+    <meta property="og:description" content="QUIZ Интерактивна Подготовка за Медицински Университети с BestJobs.BG 2027">
+    <meta property="og:image" content="https://bestjobs.bg">
+    <meta property="og:locale" content="bg_BG">
+    <meta property="og:site_name" content="BestJobs.BG">
+    
+    <!-- 🎯 Локални брандинг икони и Favicon -->
+    <link rel="icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="192x192" href="/apple-touch-icon.png">
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <!-- Контейнер за генериране на PDF печатния поток -->
     <div id="print-area"></div>
+
     <main class="container">
-        <h1>Интерактивна Подготовка за Медицински Университети</h1>
+        <h1>Интерактивна Подготовка за Медицински Университети с BestJobs.BG</h1>
+        
         <section id="setup-menu" class="menu-box">
+            <!-- 🏛️ Меню за On-Demand извикване на 7-те официални факултета -->
             <div>
                 <label for="university-select">Изберете университет:</label>
                 <select id="university-select">
@@ -25,6 +50,7 @@
                     <option value="su">СУ "Св. Климент Охридски" (МФ)</option>
                 </select>
             </div>
+            
             <div>
                 <label for="subject-select" style="margin-top:15px; display:block;">Изберете предмет:</label>
                 <select id="subject-select">
@@ -32,28 +58,37 @@
                     <option value="chemistry">Химия (Обща, Неорганична, Органична)</option>
                 </select>
             </div>
+            
             <div style="margin-top: 20px;">
                 <button onclick="initStaticQuiz()">🎬 Старт на изпита</button>
                 <button id="g-pdf" onclick="printAllLectures()" style="background:#334155; display:none; margin-top:10px;">📋 Запиши целия СПРАВОЧНИК (PDF)</button>
             </div>
         </section>
+
+        <!-- 🔒 Динамичен криптографски индикатор за статус -->
         <div id="crypto-status-indicator"></div>
+
+        <!-- 📘 Ръководство за употреба -->
         <div id="info-panel">
             <section class="info-section">
                 <h2>📘 Ръководство за употреба</h2>
                 <ol>
-                    <li><b>Избор:</b> Маркирайте факултет и предмет.</li>
+                    <li><b>Избор:</b> Маркирайте факултет и предмет от менютата горе.</li>
                     <li><b>Старт:</b> Натиснете „Старт на изпита“ за On-Demand извикване.</li>
-                    <li><b>Решаване:</b> Интерактивно валидиране на отговорите.</li>
-                    <li><b>Печат:</b> Използвайте бутоните за PDF експорт.</li>
+                    <li><b>Решаване:</b> Провеждайте интерактивно валидиране на отговорите.</li>
+                    <li><b>Печат:</b> Използвайте бутона за пълен PDF експорт.</li>
                 </ol>
             </section>
         </div>
+
+        <!-- Контейнер за динамично вграждане на изпитните карти -->
         <div id="quiz-space"></div>
     </main>
+
     <footer>
         <a href="https://bestjobs.bg/quiz/" title="HOME">bestjobs.bg/quiz/</a> &copy; 2026
     </footer>
+
     <script src="app.js"></script>
 </body>
 </html>
