@@ -20,7 +20,6 @@ body {
 h1 { font-size: 1.3rem; text-align: center; color: var(--primary); margin-bottom: 20px; font-weight: 800; padding: 0 10px; }
 .menu-box { background: #ffffff; padding: 20px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
 
-/* 📱 Оптимизирани за докосване менюта и бутони */
 select, button { 
     padding: 14px; font-size: 1rem; width: 100%; 
     border: 1px solid var(--border); border-radius: 8px; 
@@ -30,40 +29,40 @@ select, button {
 button { background: var(--primary); color: white; font-weight: 700; cursor: pointer; margin-top: 10px; border: none; transition: background 0.2s ease; }
 button:hover, button:active { background: var(--primary-hover); }
 
-.crypto-secure-badge {
-    background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 4px solid #16a34a;
-    border-radius: 8px; padding: 12px; margin-top: 20px;
-    font-size: 0.85rem; color: #166534; font-weight: 600; line-height: 1.4;
-}
-
 .info-section { background: #ffffff; padding: 20px; border-radius: 12px; border: 1px solid var(--border); margin-top: 20px; }
 .info-section h2 { font-size: 1.05rem; color: var(--primary); margin-top: 0; margin-bottom: 12px; border-bottom: 1px dashed var(--border); padding-bottom: 6px; }
 .info-section p, .info-section li { font-size: 0.9rem; color: #475569; margin-bottom: 8px; line-height: 1.5; }
-/* 📱 Мобилни карти за въпроси с по-широк сензорен обхват */
+
 .q-card { background: #ffffff; padding: 20px; border-radius: 12px; border: 1px solid var(--border); border-top: 4px solid var(--primary); margin-top: 20px; display: none; }
 .active { display: block !important; }
-
-/* 🎯 Оптимизирани изпитни опции - лесни за натискане на смартфон */
+/* 🎯 Изчистени сензорни опции за изпитни отговори */
 .opt { 
     border: 1px solid var(--border); padding: 14px; cursor: pointer; border-radius: 8px; margin-top: 10px; 
     font-size: 0.95rem; line-height: 1.4; transition: all 0.15s ease; -webkit-tap-highlight-color: transparent;
 }
-.opt:active { background: #f8fafc; }
+.opt:hover { background: #f8fafc; border-color: #cbd5e1; }
 
 .correct { border-color: #10b981 !important; background: var(--correct-bg) !important; color: #065f46; font-weight: 600; }
 .incorrect { border-color: #ef4444 !important; background: var(--incorrect-bg) !important; color: #991b1b; }
 .reason, .sol-box { display: none; margin-top: 8px; font-size: 0.85rem; color: #475569; line-height: 1.4; }
 .sol-box { background: #f8fafc; border-left: 3px solid #3b82f6; padding: 14px; border-radius: 0 8px 8px 0; margin-top: 12px; }
 
-/* 📱 Адаптивен Flex-Wrap панел за навигационните бутони */
-.card-nav { margin-top: 20px; border-top: 1px solid var(--border); padding-top: 14px; display: flex; flex-wrap: wrap; gap: 8px; }
-.btn-lbl { 
-    font-size: 0.85rem; padding: 10px 14px; border: 1px solid var(--border); border-radius: 6px; 
-    cursor: pointer; background: #fff; color: #475569; font-weight: 600; text-align: center;
-    flex: 1 1 auto; min-height: 40px; display: inline-flex; align-items: center; justify-content: center;
-    -webkit-tap-highlight-color: transparent; transition: background 0.15s ease;
+/* 🔗 ПРЕЦИЗИРАН ДИЗАЙН НА ТЕКСТОВИТЕ ЛИНКОВЕ */
+.card-nav { 
+    margin-top: 20px; border-top: 1px solid var(--border); padding-top: 14px; 
+    display: flex; flex-wrap: wrap; align-items: center; gap: 12px; 
 }
-.btn-lbl:active { background: #f1f5f9; }
+.card-nav a { 
+    font-size: 0.85rem; font-weight: 600; text-decoration: none; 
+    transition: color 0.15s ease; -webkit-tap-highlight-color: transparent; 
+}
+.card-nav a:hover { text-decoration: underline; }
+.card-nav a:active { opacity: 0.7; }
+
+/* 📐 Дискретно разграничително наклонено чертиче между линковете */
+.card-nav a:not(:last-child):after {
+    content: " /"; color: #cbd5e1; margin-left: 12px; display: inline-block; pointer-events: none; text-decoration: none !important;
+}
 
 footer { text-align: center; margin-top: 40px; padding: 25px 10px; font-size: 0.85rem; color: #94a3b8; border-top: 1px solid var(--border); line-height: 1.6; }
 footer a { color: #94a3b8; text-decoration: none; font-weight: 600; }
@@ -73,7 +72,7 @@ footer a { color: #94a3b8; text-decoration: none; font-weight: 600; }
 /* 🖨️ Правила за чист експорт и автоматично разделяне на страници в PDF (А4) */
 @media print {
     body { background: #fff; color: #000; padding: 0; margin: 0; }
-    main, .card-nav, button, select, label, footer, .info-section, .crypto-secure-badge { display: none !important; }
+    main, .card-nav, button, select, label, footer, .info-section { display: none !important; }
     #print-area { display: block !important; }
     .print-l { page-break-after: always; padding: 15px 0; margin-bottom: 25px; page-break-inside: avoid; }
     .print-l:last-child { page-break-after: avoid; }
