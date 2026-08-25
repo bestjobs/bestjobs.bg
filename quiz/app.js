@@ -42,11 +42,8 @@ async function decryptAES256(encryptedBase64, saltBase64, ivBase64, secretKey) {
 async function initStaticQuiz() {
     var uni = document.getElementById('university-select').value;
     var sub = document.getElementById('subject-select').value;
-    
-    // 🛡️ Проверка за наличие на ключ в URL адреса (след знака #)
     var cryptoSecretPass = window.location.hash.substring(1);
     
-    // 🔔 КОРЕКЦИЯ: Интелигентен пасивен прозорец за директен вход при чист URL
     if (!cryptoSecretPass) {
         cryptoSecretPass = prompt("🔒 Моля, въведете Вашия официален Лицензен Ключ за достъп до справочника:");
         if (!cryptoSecretPass || cryptoSecretPass.trim() === "") {
@@ -76,7 +73,6 @@ async function initStaticQuiz() {
                     var decryptedQuestion = await decryptAES256(item.q, item.salt, item.iv, cryptoSecretPass);
                     var decryptedSolution = await decryptAES256(item.s, item.salt, item.iv, cryptoSecretPass);
 
-                    // Валидация на декриптирането за защита от грешен ключ
                     if (!decryptedQuestion) {
                         alert("🔒 Неуспешно декриптиране. Въведеният лицензен ключ е грешен.");
                         return;
@@ -97,7 +93,6 @@ async function initStaticQuiz() {
                 alert("Криптографска грешка при декриптиране."); return;
             }
             
-            // 🎲 Разбъркване на Фишер-Йейтс
             for (var i = activePool.length - 1; i > 0; i--) {
                 var j = Math.floor(Math.random() * (i + 1));
                 var tmp = activePool[i]; activePool[i] = activePool[j]; activePool[j] = tmp;
@@ -165,7 +160,6 @@ function showQuestion(idx) {
 }
 
 function evalOpt(el, qIdx) {
-    // 🛡️ Антибот Rate Limiting филтър
     var currentTime = Date.now();
     if (currentTime - lastClickTime < 250) {
         botDetectionsCount++;
@@ -203,7 +197,6 @@ function revealAns(qIdx) {
 
 function skipQ(qIdx) {
     var card = document.getElementById('q-idx-' + qIdx); if (card.getAttribute('data-answered')) return;
-    // 🔄 Кръгов SKIP алгоритъм: Премества елемента в края на опашката без загуба
     var skipped = activePool.splice(qIdx, 1); activePool.push(skipped);
     buildQuizDOM(); showQuestion(activeIdx);
 }
@@ -211,7 +204,6 @@ function skipQ(qIdx) {
 function toggleS(btn) { var box = btn.nextElementSibling.nextElementSibling; box.style.display = (box.style.display === 'block') ? 'none' : 'block'; }
 function printL(qIdx) { document.getElementById('print-area').innerHTML = '<div class="print-l">' + activePool[qIdx].s + '</div>'; window.print(); }
 
-// 📋 Глобален износ на целия справочник (Раздел I и Раздел II наведнъж)
 async function printAllLectures() {
     var cryptoSecretPass = window.location.hash.substring(1) || prompt("Въведете лицензен ключ за достъп до пълния справочник:");
     if (!cryptoSecretPass || !currentBookDatabase) return;
