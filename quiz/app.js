@@ -1,4 +1,4 @@
-// 🔒 Пасивен мениджър на изпитното състояние (МУ Кампания 2027) 
+// 🔒 Пасивен мениджър на изпитното състояние (МУ Кампания 2027)
 var activePool = [];
 var activeIdx = 0;
 var correctCnt = 0;
@@ -93,6 +93,7 @@ async function initStaticQuiz() {
                 alert("Криптографска грешка при декриптиране."); return;
             }
             
+            // 🎲 Разбъркват се ЕДИНСТВЕНО ВЪПРОСИТЕ (Картите), отговорите вътре остават твърдо А, Б, В, Г по книгата
             for (var i = activePool.length - 1; i > 0; i--) {
                 var j = Math.floor(Math.random() * (i + 1));
                 var tmp = activePool[i]; activePool[i] = activePool[j]; activePool[j] = tmp;
@@ -108,20 +109,15 @@ async function initStaticQuiz() {
             buildQuizDOM();
             showQuestion(0);
 
-            // 🛡️ КОРЕКЦИЯ: Почистване на URL историята строго в рамките на правилния адрес /quiz/
             try {
-                window.history.replaceState(
-                    null, 
-                    document.title, 
-                    window.location.origin + "/quiz/" + window.location.search
-                );
+                window.history.replaceState(null, document.title, window.location.origin + "/quiz/" + window.location.search);
             } catch (e) {
                 window.location.hash = ""; 
             }
 
             var statusBox = document.getElementById('crypto-status-indicator');
             if (statusBox) {
-                statusBox.innerHTML = '<div class="crypto-secure-badge">🛡️ Справочникът е декриптиран: AES-256-GCM (Военно ниво на защита) | Локация: /quiz/</div>';
+                statusBox.innerHTML = '<div class="crypto-secure-badge">🛡️ Справочникът е декриптиран: AES-256-GCM (Локална RAM среда) | Локация: /quiz/</div>';
             }
         }
     };
@@ -134,6 +130,7 @@ function buildQuizDOM() {
     for (var i = 0; i < activePool.length; i++) {
         var q = activePool[i];
         html += '<div id="q-idx-' + i + '" class="q-card"><small style="font-weight:600; color:#64748b; text-transform:uppercase;">' + q.t + ' (Въпрос ' + (i + 1) + '/' + activePool.length + ')</small><h3>' + q.q + '</h3>';
+        // Опциите се рендират последователно без промяна в индекса, гарантирайки съвпадение с книжното издание
         for (var j = 0; j < q.o.length; j++) {
             html += '<div class="opt" data-c="' + q.o[j].c + '" onclick="evalOpt(this, ' + i + ')">' + q.o[j].x + '<div class="reason">ℹ️ ' + q.o[j].r + '</div></div>';
         }
