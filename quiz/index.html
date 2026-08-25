@@ -178,7 +178,6 @@
         document.getElementById('timer-display').innerText = "00:00:00";
         document.getElementById('exam-timer').style.display = "inline-block";
         
-        // Ниска консумация: извършва минимални стрингови операции веднъж на секунда
         timerInterval = setInterval(function() {
             totalSeconds++;
             var hours = Math.floor(totalSeconds / 3600);
@@ -217,7 +216,9 @@
 
     function renderCurrentQuestion() {
         var container = document.getElementById('quiz-container');
+        var navBlock = document.getElementById('nav-container');
         document.getElementById('btn-next').style.display = "none";
+        navBlock.style.display = "none";
         isCurrentQuestionAnswered = false;
         
         if (currentQuestionIndex >= currentQuestions.length) {
@@ -227,15 +228,16 @@
             var gradeText = getGradeText(gradeScore);
             
             container.innerHTML = '<div class="menu-box" style="text-align:center;"><div class="score-title">🎉 Изпитът приключи!</div><p>Познати въпроси: <b>' + correctAnswersCount + ' от ' + currentQuestions.length + '</b></p><p>Време за решаване: <b>' + finalTime + '</b></p><div class="score-grade">Оценка: ' + gradeText + ' ' + gradeScore + '</div></div>';
-            document.getElementById('nav-container').style.display = "none";
             return;
         }
 
         var q = currentQuestions[currentQuestionIndex];
         var html = '<div class="question-card"><small style="color:#7f8c8d; font-weight:bold;">' + q.topic + ' (' + (currentQuestionIndex + 1) + '/' + currentQuestions.length + ')</small><h3>' + q.question + '</h3><div>';
         
+        // ПОПРАВКА: Правилно разчитане на масива от обекти за опциите
         for (var j = 0; j < q.options.length; j++) {
-            html += '<div class="option-item" data-correct="' + q.options[j].isCorrect + '" onclick="checkOption(this)">' + q.options[j].text + '<div class="reason-box">' + q.options[j].reason + '</div></div>';
+            var o = q.options[j];
+            html += '<div class="option-item" data-correct="' + o.isCorrect + '" onclick="checkOption(this)">' + o.text + '<div class="reason-box">' + o.reason + '</div></div>';
         }
         
         html += '</div><div class="card-buttons"><a class="link link-action" onclick="revealCardAnswer(this)" title="Показва верния отговор и причините за грешните опции">👁️ Виж правилния отговор</a>';
@@ -258,12 +260,19 @@
         
         for (var i = 0; i < siblings.length; i++) {
             siblings[i].style.pointerEvents = 'none';
-            if (siblings[i].getAttribute('data-correct') === 'true') siblings[i].classList.add('correct');
+            if (siblings[i].getAttribute('data-correct') === 'true') {
+                siblings[i].classList.add('correct');
+            }
             var reason = siblings[i].getElementsByClassName('reason-box');
-            if (reason && reason.length > 0) reason.style.display = 'block';
+            if (reason && reason.length > 0) {
+                reason[0].style.display = 'block'; // ПОПРАВКА: Правилно извикване на елемента от колекцията чрез индекс [0]
+            }
         }
         if (!isUserCorrect) element.classList.add('incorrect');
+        
+        // Отключване и визуализиране на долната навигация
         document.getElementById('btn-next').style.display = "block";
+        document.getElementById('nav-container').style.display = "block";
     }
 
     function revealCardAnswer(btn) {
@@ -275,11 +284,18 @@
         
         for (var i = 0; i < items.length; i++) {
             items[i].style.pointerEvents = 'none';
-            if (items[i].getAttribute('data-correct') === 'true') items[i].classList.add('correct');
+            if (items[i].getAttribute('data-correct') === 'true') {
+                items[i].classList.add('correct');
+            }
             var reason = items[i].getElementsByClassName('reason-box');
-            if (reason && reason.length > 0) reason.style.display = 'block';
+            if (reason && reason.length > 0) {
+                reason[0].style.display = 'block'; // ПОПРАВКА: Правилно извикване на елемента от колекцията чрез индекс [0]
+            }
         }
+        
+        // Отключване и визуализиране на долната навигация
         document.getElementById('btn-next').style.display = "block";
+        document.getElementById('nav-container').style.display = "block";
     }
 
     function loadNextQuestion() {
