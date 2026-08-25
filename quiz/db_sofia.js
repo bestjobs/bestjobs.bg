@@ -1,18 +1,1 @@
-var quizDatabase = {
-    "biology": [
-        {
-            "salt": "YTBjMmQzZTRmNWc2aDdpOA==",
-            "iv": "bTluOGI3djZjNng1",
-            "t": "UzFkMmYzZzVoNmo3azhsOXo0UHV5Q1orSVBlV3hDMEpSTXhSMU8rZXZWVEF2",
-            "q": "WkdWeWNuVndiRzl1WldVbWRYUnpZVzVuYVc1bFlYUnBiMjV6Y0hKdmRXTjBlV05sYzE5cGJuUnZjbTFsZEdsdmJpQjNiM0prWDNkeFpYSTZ=",
-            "k": true,
-            "s": "PGgzPlTDgZth0L3QuDog0...0KHRitC10LTQuNC90LjRgtC10LvQvdCwINGC0YrQutCw0L08L2gzPjxwPlHRitC10LTQuNC90LjRgtC10LvQvdCw0YLQsCDRgtGK0LrQsNC9ICg8aT50ZXh0dXMgY29uanVuY3RpdnVzPC9pPikgcNGA0L7QuNC30LvQuNC30LAg0L7RgiDQvNC10LfQtdC90YXQuNC80LAuLi48L3A+",
-            "o": [
-                { "x": "MS4g0LrQvtGB0YLQuNGC0LUsINGF0YDRg9GJ0Y/Qu9C40YLQtSDQuCDQutGA0YrQstGC0LA7", "c": true, "r": "0JLRj9GA0L3QviEg0KLQvtCy0LAg0YHQsCDQvtGB0L3QvtCy0L3QuNGC0LUg0YDQsNC30L3QvtCy0LjQtNC90L7RgdGC0Lgu" },
-                { "x": "Mi4g0LrQvtGB0YLQuNGC0LUsINC4INC80YPRgdC60YPQu9C40YLQtTs=", "c": false, "r": "0JPRgNC10YjQvdC+LiDQnNGD0YHQutGD0LvQuNGC0LUg0YHQsCDQvNGD0YHQutGD0LvQvdCwINGC0YrQutCw0L0u" },
-                { "x": "My4g0LrQvtGB0YLQuNGC0LUsINGF0YDRg9GJ0Y/Qu9C40YLQtSDQuCDQtdC/0LjQtNC10YDQvNC40YHQwDs=", "c": false, "r": "0JPRgNC10YjQvdC+LiDQldC/0LjQtNC10YDQvNC40YHQstGC0Y8g0LUg0Lg0YpQs9GA0LDQtNC10L0g0L7RgiDQtdC/0LjRgtC10Lsu" },
-                { "x": "NC4g0LrQvtGB0YLQuNGC0LUsINGF0YDRg9GJ0Y/Qu9C40YLQtSDQuCDQsNC70LLQtdC+0LvQuNGC0LUu", "c": false, "r": "0JPRgNC10YjQvdC+LiDQkNC70LLQtdC+0LvQuNGC0LUg0YHQsCDQtdC/0LjRgtC10LvQvdCwINGC0YrQutCw0L0u" }
-            ]
-        }
-    ]
-};
+var quizDatabase = {"biology":[{"salt":"ztVq1kpdhguMNS9YiPgWPA==","iv":"16d9HskymZlvdgNe","t":"LUGQ7esXSGUvlmTnB8hJjc4gaZB3Y/yTvYbM0out2VCfoLn+ZBWY3yIXD8wfrpp38/8p","q":"hixRJhW4NvXfYymOUQW2Pzr5GKfI2L2r04TWVki7KOvmgIh5MCCWVXIDqUaP9tIi3LadHL+ghhzh5AkpMAPPPA9mrDPnGxkTm9n9BU81OCn3+QCKHIlq03cyRsa7gFzs5CKszVZGhG9l+Sg/4nRPo6A63o+PkMsXfTkGuy138A==","k":true,"s":"9xoA6QtPy8B0qApSpIGLDo+mwKqnWXO4D0DcZGtezK6iRTN5Mm6/Hxd3WehMfkMKf3XT9WXyNQHGQdkVJodUr6nOfBH9TvUYTgaeeMdyOICobhn0p5z5JZAB+FuBUgcE","o":[{"x":"C6h4sVmuHfLVN3/5SpkoD1vKAyUunYh7QGppvS6QGME9U74YPN/Sjg+8fQ==","c":false,"r":"Пояснение към отговора"},{"x":"kb4MxUSwhBRCZGyKskarCfoKfzn6OrA6s/aMrleQxpg0rL766K52","c":false,"r":"Пояснение към отговора"},{"x":"5j2bnLt8A5/HDgRdCfZO9g/NFdQxCUqpgjqZTgUN77STFAzYuc0V23AKBA==","c":true,"r":"Пояснение към отговора"},{"x":"p/TFh5e65tnx9MnXK4DAYV/il4zeEGM1gMF55YP9Sb/75/qtEHiC","c":false,"r":"Пояснение към отговора"}]}],"chemistry":[]};
