@@ -17,139 +17,47 @@ body {
 }
 
 .container { max-width: 680px; margin: 0 auto; }
-
 h1 { font-size: 1.4rem; text-align: center; color: var(--primary); margin-bottom: 20px; font-weight: 800; }
-
 .menu-box { background: #ffffff; padding: 20px; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
 
 select, button { 
-    padding: 10px; 
-    font-size: 0.95rem; 
-    width: 100%; 
-    border: 1px solid var(--border); 
-    border-radius: 6px; 
-    background: #fff; 
-    color: var(--text); 
-    outline: none; 
-    box-sizing: border-box;
+    padding: 12px; font-size: 0.95rem; width: 100%; 
+    border: 1px solid var(--border); border-radius: 6px; 
+    background: #fff; color: var(--text); outline: none; box-sizing: border-box;
 }
-
 button { background: var(--primary); color: white; font-weight: bold; cursor: pointer; margin-top: 10px; border: none; }
 button:hover { background: var(--primary-hover); }
 
-/* Пасивен индикатор за AES-256-GCM сигурност */
 .crypto-secure-badge {
-    background: #f0fdf4;
-    border: 1px solid #bbf7d0;
-    border-left: 4px solid #16a34a;
-    border-radius: 6px;
-    padding: 10px 14px;
-    margin-top: 20px;
-    font-size: 0.85rem;
-    color: #166534;
-    font-weight: 600;
+    background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 4px solid #16a34a;
+    border-radius: 6px; padding: 10px 14px; margin-top: 20px;
+    font-size: 0.85rem; color: #166534; font-weight: 600;
 }
 
-/* Стилизиране на информационния панел */
-.info-section {
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    margin-top: 20px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
+.info-section { background: #ffffff; padding: 20px; border-radius: 8px; border: 1px solid var(--border); margin-top: 20px; }
+.info-section h2 { font-size: 1.1rem; color: var(--primary); margin-top: 0; margin-bottom: 12px; border-bottom: 1px dashed var(--border); padding-bottom: 6px; }
+.info-section p, .info-section li { font-size: 0.9rem; color: #475569; margin-bottom: 8px; }
 
-.info-section h2 {
-    font-size: 1.1rem;
-    color: var(--primary);
-    margin-top: 0;
-    margin-bottom: 12px;
-    border-bottom: 1px dashed var(--border);
-    padding-bottom: 6px;
-}
-
-.info-section p, .info-section li {
-    font-size: 0.9rem;
-    color: #475569;
-    margin-bottom: 8px;
-}
-
-.info-section ol, .info-section ul {
-    padding-left: 20px;
-    margin: 0;
-}
-
-.text-accent {
-    border-left: 4px solid var(--primary);
-}
-
-.q-card { background: #ffffff; padding: 20px; border-radius: 8px; border: 1px solid var(--border); border-top: 4px solid var(--primary); margin-top: 20px; display: none; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-
+.q-card { background: #ffffff; padding: 20px; border-radius: 8px; border: 1px solid var(--border); border-top: 4px solid var(--primary); margin-top: 20px; display: none; }
 .active { display: block !important; }
-
-.opt { border: 1px solid var(--border); padding: 12px; cursor: pointer; border-radius: 6px; margin-top: 8px; transition: background 0.1s; }
-.opt:hover { background: #f8fafc; }
-
+.opt { border: 1px solid var(--border); padding: 12px; cursor: pointer; border-radius: 6px; margin-top: 8px; }
 .correct { border-color: #10b981 !important; background: var(--correct-bg) !important; color: #065f46; font-weight: 600; }
-
 .incorrect { border-color: #ef4444 !important; background: var(--incorrect-bg) !important; color: #991b1b; }
-
 .reason, .sol-box { display: none; margin-top: 6px; font-size: 0.85rem; color: #475569; }
+.sol-box { background: #f8fafc; border-left: 3px solid #3b82f6; padding: 12px; margin-top: 12px; }
+.card-nav { margin-top: 15px; border-top: 1px solid var(--border); padding-top: 10px; display: flex; gap: 10px; }
+.btn-lbl { font-size: 0.8rem; padding: 6px 10px; border: 1px solid var(--border); border-radius: 4px; cursor: pointer; background: #fff; color: #475569; font-weight: 600; }
 
-.sol-box { background: #f8fafc; border-left: 3px solid #3b82f6; padding: 12px; margin-top: 12px; border-radius: 0 4px 4px 0; }
-
-.card-nav { margin-top: 15px; border-top: 1px solid var(--border); padding-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; }
-
-.btn-lbl { font-size: 0.8rem; padding: 6px 10px; border: 1px solid var(--border); border-radius: 4px; cursor: pointer; background: #fff; text-decoration: none; color: #475569; font-weight: 600; }
-.btn-lbl:hover { background: #f1f5f9; color: var(--text); }
-
-footer {
-    text-align: center;
-    margin-top: 40px;
-    padding: 20px 0;
-    font-size: 0.85rem;
-    color: #94a3b8;
-    border-top: 1px solid var(--border);
-}
-
-footer a {
-    color: #94a3b8;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-footer a:hover {
-    color: var(--primary);
-}
+footer { text-align: center; margin-top: 40px; padding: 20px 0; font-size: 0.85rem; color: #94a3b8; border-top: 1px solid var(--border); }
+footer a { color: #94a3b8; text-decoration: none; font-weight: 600; }
 
 #print-area { display: none; }
 
-/* 🖨️ Пасивни стилове за висококачествен печат и автоматично номериране */
+/* 🖨️ Правила за чист експорт и автоматично разделяне на страници в PDF */
 @media print {
-    @page {
-        size: A4 portrait;
-        margin: 20mm 15mm 20mm 15mm;
-        @bottom-right {
-            content: "Страница " counter(page) " от " counter(pages);
-            font-family: system-ui, sans-serif;
-            font-size: 9pt;
-            color: #7f8c8d;
-        }
-        @top-left {
-            content: "Официален изпитен конспект — Кампания 2027";
-            font-family: system-ui, sans-serif;
-            font-weight: bold;
-            font-size: 9pt;
-            color: #0f766e;
-            border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 5px;
-            width: 100%;
-        }
-    }
     body { background: #fff; color: #000; }
-    main, .card-nav, button, select, label, footer, .info-section, #info-panel, .crypto-secure-badge { display: none !important; }
+    main, .card-nav, button, select, label, footer, .info-section, .crypto-secure-badge { display: none !important; }
     #print-area { display: block !important; }
-    .print-l { page-break-after: always; border-left: 3px solid #000; padding-left: 10px; margin-bottom: 20px; page-break-inside: avoid; }
+    .print-l { page-break-after: always; padding: 10px 0; margin-bottom: 20px; page-break-inside: avoid; }
     .print-l:last-child { page-break-after: avoid; }
 }
