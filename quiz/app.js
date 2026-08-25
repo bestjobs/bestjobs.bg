@@ -43,10 +43,10 @@ async function initStaticQuiz() {
     var uni = document.getElementById('university-select').value;
     var sub = document.getElementById('subject-select').value;
     
-    // 🛡️ Първоначален опит за извличане на ключа от URL фрагмента (след #)
+    // 🛡️ Проверка за наличие на ключ в URL адреса
     var cryptoSecretPass = window.location.hash.substring(1);
     
-    // 🔔 КОРЕКЦИЯ: Ако потребителят влиза от чист URL, системата извежда диалогов прозорец
+    // 🔔 КОРЕКЦИЯ: Интелигентен пасивен прозорец за директен вход при чист URL
     if (!cryptoSecretPass) {
         cryptoSecretPass = prompt("🔒 Моля, въведете Вашия официален Лицензен Ключ за достъп до справочника:");
         if (!cryptoSecretPass || cryptoSecretPass.trim() === "") {
@@ -76,7 +76,7 @@ async function initStaticQuiz() {
                     var decryptedQuestion = await decryptAES256(item.q, item.salt, item.iv, cryptoSecretPass);
                     var decryptedSolution = await decryptAES256(item.s, item.salt, item.iv, cryptoSecretPass);
 
-                    // Валидация на ключа за сигурност
+                    // Валидация на декриптирането за защита от грешен ключ
                     if (!decryptedQuestion) {
                         alert("🔒 Неуспешно декриптиране. Въведеният лицензен ключ е грешен.");
                         return;
@@ -113,7 +113,7 @@ async function initStaticQuiz() {
             buildQuizDOM();
             showQuestion(0);
 
-            // 🛡️ ПОПРАВКА: Изчистване на URL историята строго в рамките на директория /quiz/
+            // 🛡️ КОРЕКЦИЯ: Почистване на URL историята строго в рамките на директория /quiz/
             try {
                 window.history.replaceState(
                     null, 
@@ -225,14 +225,12 @@ async function printAllLectures() {
         var list = currentBookDatabase[subKey] || [];
         if (list.length > 0) {
             out += '<h2 style="page-break-before: always; text-align:center; margin-top:50px; font-size:16pt; color:#0f766e; border-bottom: 2px solid #e2e8f0; padding-bottom:10px;">' + titles[subKey] + '</h2>';
-            var count = 0;
             for (var i = 0; i < list.length; i++) {
                 if (list[i].k) {
-                    count++;
                     var decTopic = await decryptAES256(list[i].t, list[i].salt, list[i].iv, cryptoSecretPass);
                     var decSol = await decryptAES256(list[i].s, list[i].salt, list[i].iv, cryptoSecretPass);
                     out += '<div class="print-l">';
-                    out += '<small style="color:#7f8c8d; font-weight:bold; text-transform:uppercase;">ТЕМА №' + count + ': ' + decTopic + '</small>';
+                    out += '<small style="color:#7f8c8d; font-weight:bold; text-transform:uppercase;">ТЕМА: ' + decTopic + '</small>';
                     out += '<div style="margin-top:10px;">' + decSol + '</div>';
                     out += '</div>';
                 }
