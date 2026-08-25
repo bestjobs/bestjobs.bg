@@ -1,4 +1,4 @@
-// 🔒 Локален RAM мениджър на изпитното състояние (МУ Кампания 2027)
+// 🔒 Директен RAM мениджър на изпитното състояние (МУ Кампания 2027)
 var activePool = [];
 var activeIdx = 0;
 var correctCnt = 0;
@@ -7,7 +7,7 @@ var currentBookDatabase = null;
 var lastClickTime = 0;
 var botDetectionsCount = 0;
 
-// 🛡️ Бърз нативен дешифратор без криптографски сривове
+// 🛡️ Бърз нативен дешифратор за кодираните текстове по книгата
 function decodeBase64Text(str) {
     if (!str) return "";
     try {
@@ -17,23 +17,10 @@ function decodeBase64Text(str) {
     }
 }
 
+// 🎯 Автоматичен задвижващ мениджър - БЕЗ блокиращи прозорци и грешки
 function initStaticQuiz() {
     var uni = document.getElementById('university-select').value;
     var sub = document.getElementById('subject-select').value;
-    
-    // Автоматично улавяне на ключа от адреса след знака #
-    var cryptoSecretPass = window.location.hash.substring(1);
-    var targetKey = "BestJobsBG_Sec_GCM_2027_v2_9fA3kX8pQ2mL5zW";
-    
-    if (!cryptoSecretPass) {
-        cryptoSecretPass = prompt("🔒 Моля, въведете Вашия официален Лицензен Ключ за достъп до справочника:");
-    }
-
-    // Директна проверка за точно текстово съвпадение в RAM паметта
-    if (!cryptoSecretPass || cryptoSecretPass.trim() !== targetKey) {
-        alert("🔒 Неуспешно декриптиране. Въведеният лицензен ключ е грешен.");
-        return;
-    }
 
     var oldScript = document.getElementById("dynamic-db-script");
     if (oldScript) oldScript.remove();
@@ -63,39 +50,45 @@ function initStaticQuiz() {
             return;
         }
 
-        // Дешифриране в оперативната памет при On-Demand извикване
+        // Автоматично демаскиране на текстовите структури в локалната RAM памет
         for (var i = 0; i < rawPool.length; i++) {
             var item = rawPool[i];
-            var decTopic = decodeBase64Text(item.t);
-            var decQuestion = decodeBase64Text(item.q);
-            var decSolution = decodeBase64Text(item.s);
-
-            var decOptions = [];
-            for (var j = 0; j < item.o.length; j++) {
-                decOptions.push({
-                    x: decodeBase64Text(item.o[j].x),
-                    c: item.o[j].c,
-                    r: decodeBase64Text(item.o[j].r)
-                });
-            }
-            activePool.push({ t: decTopic, q: decQuestion, k: item.k, s: decSolution, o: decOptions });
+            activePool.push({
+                t: decodeBase64Text(item.t),
+                q: decodeBase64Text(item.q),
+                k: item.k,
+                s: decodeBase64Text(item.s),
+                o: [
+                    { x: decodeBase64Text(item.o[0].x), c: item.o[0].c, r: decodeBase64Text(item.o[0].r) },
+                    { x: decodeBase64Text(item.o[1].x), c: item.o[1].c, r: decodeBase64Text(item.o[1].r) },
+                    { x: decodeBase64Text(item.o[2].x), c: item.o[2].c, r: decodeBase64Text(item.o[2].r) },
+                    { x: decodeBase64Text(item.o[3].x), c: item.o[3].c, r: decodeBase64Text(item.o[3].r) }
+                ]
+            });
         }
         
-        // 🎲 Разбъркват се ЕДИНСТВЕНО ВЪПРОСИТЕ, отговорите остават 100% твърди по книгата
+        // 🎲 Разбъркват се ЕДИНСТВЕНО ВЪПРОСИТЕ, отговорите остават твърди по книгата
         for (var i = activePool.length - 1; i > 0; i--) {
             var j = Math.floor(Math.random() * (i + 1));
             var tmp = activePool[i]; activePool[i] = activePool[j]; activePool[j] = tmp;
         }
 
-        document.getElementById('setup-menu').style.display = 'none';
-        document.getElementById('info-panel').style.display = 'none';
-        document.getElementById('g-pdf').style.display = "block";
+        // Автоматично скриване на селекционните менюта и упътвания за максимален фокус
+        var setupMenu = document.getElementById('setup-menu');
+        if (setupMenu) setupMenu.style.display = 'none';
+        
+        var infoPanel = document.getElementById('info-panel');
+        if (infoPanel) infoPanel.style.display = 'none';
+
+        var pdfBtn = document.getElementById('g-pdf');
+        if (pdfBtn) pdfBtn.style.display = "block";
 
         activeIdx = 0; correctCnt = 0;
         startTime = performance.now(); 
         buildQuizDOM();
         showQuestion(0);
 
+        // Почистване на адресната лента след старт
         try {
             window.history.replaceState(null, document.title, window.location.origin + window.location.search);
         } catch (e) {
@@ -115,10 +108,10 @@ function buildQuizDOM() {
             html += '<div class="opt" data-c="' + q.o[j].c + '" onclick="evalOpt(this, ' + i + ')">' + q.o[j].x + '<div class="reason">ℹ️ ' + q.o[j].r + '</div></div>';
         }
         html += '<div class="card-nav" style="gap: 15px; font-size: 0.9rem;">' +
-                '<a href="#" onclick="revealAns(' + i + '); return false;" style="color: var(--primary); font-weight: 600; text-decoration: none;">👁️ Виж отговора</a> / ' +
+                '<a href="#" onclick="revealAns(' + i + '); return false;" style="color: var(--primary); font-weight: 600; text-decoration: none;">👁️ Виж отговора</a>' +
                 '<a href="#" onclick="skipQ(' + i + '); return false;" style="color: #d35400; font-weight: 600; text-decoration: none;">➡️ Пропусни</a>';
         if (q.k) {
-            html += ' / <a href="#" onclick="toggleS(this); return false;" style="color: #3b82f6; font-weight: 600; text-decoration: none;">💡 Теория</a> / ' +
+            html += '<a href="#" onclick="toggleS(this); return false;" style="color: #3b82f6; font-weight: 600; text-decoration: none;">💡 Теория</a>' +
                     '<a href="#" onclick="printL(' + i + '); return false;" style="color: #e74c3c; font-weight: 600; text-decoration: none;">📥 PDF</a>' +
                     '<div class="sol-box">' + q.s + '</div>';
         }
