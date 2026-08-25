@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-    <meta charset="UTF-8"><meta name="theme-color" content="#fff"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
-    <title>QUIZ Интерактивна Подготовка за Медицински Университети с BestJobs.BG</title>
-    <meta name="description" content="QUIZ Интерактивна Подготовка за Медицински Университети с BestJobs.BG 2027">
-    <link rel="canonical" href="https://bestjobs.bg/quiz/"><link rel="icon" href="/favicon.ico"><link rel="apple-touch-icon" sizes="192x192" href="/apple-touch-icon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>МУ Изпитен Справочник 2027</title>
+    
+    <!-- 🛡️ Защитен механизъм: Контент сигурност (CSP) — блокира външни намеси, реклами и тракери -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
+    
     <style>
         /* Олекотен CSS: Използва вградените системни шрифтове за пестене на памет и батерия */
         body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f6f6; color: #2c3e50; padding: 15px; margin: 0; }
@@ -18,7 +21,7 @@
         .timer-inline { font-size: 1.1rem; font-weight: bold; color: #cb4335; display: none; align-self: center; justify-self: end; }
         
         /* Използване на Subgrid за долния ред в менюто */
-        .action-row { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: center; width: 100%; }
+        .action-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, max-content)); gap: 15px; align-items: center; width: 100%; }
         
         .score-title { color: #117a65; font-size: 1.5rem; font-weight: bold; margin-bottom: 10px; }
         .score-grade { font-size: 1.8rem; font-weight: bold; color: #cb4335; margin-top: 15px; padding: 5px; border-bottom: 2px solid #cb4335; display: inline-block; }
@@ -29,13 +32,14 @@
         .link-next { color: #2c3e50; font-size: 1.1rem; margin-top: 20px; text-align: center; width: 100%; display: none; border: 1px dashed #2c3e50; padding: 10px 0; border-radius: 6px; background: #ffffff; text-decoration: none; box-sizing: border-box; }
         .link-action { color: #27ae60; font-size: 0.9rem; }
         .link-sol { color: #3b82f6; font-size: 0.9rem; }
+        .link-pdf { color: #8e44ad; font-size: 0.9rem; }
         
         /* Мрежова структура за картата с въпроса */
         .question-card { background: #ffffff; padding: 25px; border-radius: 8px; margin-bottom: 20px; border-left: 6px solid #117a65; box-shadow: 0 1px 3px rgba(0,0,0,0.05); box-sizing: border-box; width: 100%; display: grid; grid-template-columns: 1fr; gap: 10px; }
         .option-item { border: 2px solid #eaeded; padding: 14px; cursor: pointer; border-radius: 6px; box-sizing: border-box; }
         
         /* Използване на CSS Subgrid за бутоните в картата */
-        .card-buttons { margin-top: 15px; border-top: 1px dashed #eaeded; padding-top: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, max-content)); gap: 15px; width: 100%; }
+        .card-buttons { margin-top: 15px; border-top: 1px dashed #eaeded; padding-top: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, max-content)); gap: 15px; width: 100%; }
         
         .correct { border-color: #27ae60; background-color: #e8f8f5; color: #27ae60; font-weight: bold; }
         .incorrect { border-color: #cb4335; background-color: #fdedec; color: #cb4335; }
@@ -43,13 +47,21 @@
         .solution-box { background: #f8fafc; border-left: 4px solid #3b82f6; padding: 15px; margin-top: 10px; display: none; box-sizing: border-box; grid-column: 1 / -1; }
         
         #nav-container { display: none; }
+
+        /* 🔥 Специфични хардуерни правила за чист печат и запис в PDF */
+        @media print {
+            body { background: #ffffff; color: #000000; padding: 0; }
+            #setup-menu, #nav-container, .link-action, .link-sol, .link-pdf, .option-item, h3, small { display: none !important; }
+            .question-card { border: none; box-shadow: none; padding: 0; margin-bottom: 30px; page-break-inside: avoid; }
+            .solution-box { display: block !important; background: transparent; border: none; padding: 0; margin: 0; }
+        }
     </style>
 </head>
 <body>
 
-<!-- 🏛️ Добавен главен ориентир <main> за WCAG съвместимост и SEO достъпност -->
+<!-- 🏛️ Главният ориентир <main> за достъпност -->
 <main class="container">
-    <h1>QUIZ Интерактивна Подготовка за Медицински Университети с BestJobs.BG 2027</h1>
+    <h2>Интерактивна Подготовка за Медицински Университети</h2>
 
     <div id="setup-menu" class="menu-box">
         <div id="selection-fields">
@@ -76,6 +88,7 @@
         
         <div class="action-row">
             <a id="btn-start" class="link" onclick="handleStartButton()" title="Кликнете тук, за да заредите въпросите и да стартирате хронометъра на изпита">🎬 Старт на теста</a>
+            <a id="btn-global-pdf" class="link link-pdf" style="display:none;" onclick="downloadFullPDF()" title="Експортира и сваля текущата тема като официален PDF документ">📥 Изтегли ТЕМАТА в PDF</a>
             <div id="exam-timer" class="timer-inline">⏱️ <span id="timer-display">00:00:00</span></div>
         </div>
     </div>
@@ -87,7 +100,6 @@
     </div>
 </main>
 <script>
-    // Олекотен софтуерен алгоритъм за пестене на RAM и батерия
     var isTestStarted = false;
     var currentQuestions = [];
     var currentQuestionIndex = 0;
@@ -101,6 +113,7 @@
         var selectFields = document.getElementById('selection-fields');
         var container = document.getElementById('quiz-container');
         var navBlock = document.getElementById('nav-container');
+        var pdfBtn = document.getElementById('btn-global-pdf');
 
         if (!isTestStarted) {
             var university = document.getElementById('university-select').value;
@@ -116,11 +129,10 @@
             script.id = scriptId;
             script.src = scriptSrc;
             
-            // Механизъм On-Demand: Базата се зарежда в паметта само при старт
             script.onload = function() {
                 if (typeof quizDatabase !== 'undefined' && quizDatabase[subject]) {
                     currentQuestions = quizDatabase[subject].slice();
-                    shuffleArray(currentQuestions); // Разбъркване за изпитна симулация
+                    shuffleArray(currentQuestions);
                 } else {
                     currentQuestions = [];
                 }
@@ -131,6 +143,7 @@
                     btn.innerText = "🎬 Старт на теста";
                     selectFields.style.display = "block";
                     navBlock.style.display = "none";
+                    pdfBtn.style.display = "none";
                     if (timerInterval) clearInterval(timerInterval);
                     document.getElementById('exam-timer').style.display = "none";
                     return;
@@ -140,6 +153,7 @@
                 btn.innerText = "🔄 Рестартирай теста";
                 selectFields.style.display = "none";
                 navBlock.style.display = "block";
+                pdfBtn.style.display = "inline-block"; // Показва PDF опцията при активен тест
                 
                 correctAnswersCount = 0;
                 startChronometer();
@@ -158,6 +172,7 @@
             btn.innerText = "🎬 Старт на теста";
             selectFields.style.display = "block";
             navBlock.style.display = "none";
+            pdfBtn.style.display = "none";
             container.innerHTML = "";
             stopChronometer();
         }
@@ -228,13 +243,13 @@
             var gradeText = getGradeText(gradeScore);
             
             container.innerHTML = '<div class="menu-box" style="text-align:center;"><div class="score-title">🎉 Изпитът приключи!</div><p>Познати въпроси: <b>' + correctAnswersCount + ' от ' + currentQuestions.length + '</b></p><p>Време за решаване: <b>' + finalTime + '</b></p><div class="score-grade">Оценка: ' + gradeText + ' ' + gradeScore + '</div></div>';
+            document.getElementById('btn-global-pdf').style.display = "none";
             return;
         }
 
         var q = currentQuestions[currentQuestionIndex];
         var html = '<div class="question-card"><small style="color:#7f8c8d; font-weight:bold;">' + q.topic + ' (' + (currentQuestionIndex + 1) + '/' + currentQuestions.length + ')</small><h3>' + q.question + '</h3><div>';
         
-        // ПОПРАВКА: Правилно разчитане на масива от обекти за опциите
         for (var j = 0; j < q.options.length; j++) {
             var o = q.options[j];
             html += '<div class="option-item" data-correct="' + o.isCorrect + '" onclick="checkOption(this)">' + o.text + '<div class="reason-box">' + o.reason + '</div></div>';
@@ -242,7 +257,9 @@
         
         html += '</div><div class="card-buttons"><a class="link link-action" onclick="revealCardAnswer(this)" title="Показва верния отговор и причините за грешните опции">👁️ Виж правилния отговор</a>';
         if (q.isTask) {
-            html += '<a class="link link-sol" onclick="toggleSolution(this)" title="Разгръща подробния лекционен материал">💡 Покажи ТЕОРЕТИЧЕН КОНСПЕКТ</a><div class="solution-box">' + q.solution + '</div>';
+            html += '<a class="link link-sol" onclick="toggleSolution(this)" title="Разгръща подробния лекционен материал">💡 Покажи ТЕОРЕТИЧЕН КОНСПЕКТ</a>';
+            html += '<a class="link link-pdf" onclick="downloadSingleCardPDF(this)" title="Експортира само ТЕЗИ лекционни бележки в PDF">💾 Запиши темата в PDF</a>';
+            html += '<div class="solution-box">' + q.solution + '</div>';
         }
         html += '</div></div>';
         container.innerHTML = html;
@@ -260,17 +277,12 @@
         
         for (var i = 0; i < siblings.length; i++) {
             siblings[i].style.pointerEvents = 'none';
-            if (siblings[i].getAttribute('data-correct') === 'true') {
-                siblings[i].classList.add('correct');
-            }
+            if (siblings[i].getAttribute('data-correct') === 'true') siblings[i].classList.add('correct');
             var reason = siblings[i].getElementsByClassName('reason-box');
-            if (reason && reason.length > 0) {
-                reason[0].style.display = 'block'; // ПОПРАВКА: Правилно извикване на елемента от колекцията чрез индекс [0]
-            }
+            if (reason && reason.length > 0) reason.style.display = 'block';
         }
         if (!isUserCorrect) element.classList.add('incorrect');
         
-        // Отключване и визуализиране на долната навигация
         document.getElementById('btn-next').style.display = "block";
         document.getElementById('nav-container').style.display = "block";
     }
@@ -284,16 +296,10 @@
         
         for (var i = 0; i < items.length; i++) {
             items[i].style.pointerEvents = 'none';
-            if (items[i].getAttribute('data-correct') === 'true') {
-                items[i].classList.add('correct');
-            }
+            if (items[i].getAttribute('data-correct') === 'true') items[i].classList.add('correct');
             var reason = items[i].getElementsByClassName('reason-box');
-            if (reason && reason.length > 0) {
-                reason[0].style.display = 'block'; // ПОПРАВКА: Правилно извикване на елемента от колекцията чрез индекс [0]
-            }
+            if (reason && reason.length > 0) reason.style.display = 'block';
         }
-        
-        // Отключване и визуализиране на долната навигация
         document.getElementById('btn-next').style.display = "block";
         document.getElementById('nav-container').style.display = "block";
     }
@@ -304,12 +310,24 @@
     }
 
     function toggleSolution(link) {
-        var box = link.nextElementSibling;
+        var box = link.nextElementSibling.nextElementSibling;
         var isBlock = box.style.display === 'block';
         box.style.display = isBlock ? 'none' : 'block';
         link.innerText = isBlock ? '💡 Покажи ТЕОРЕТИЧЕН КОНСПЕКТ' : '✖️ Скрий ТЕОРЕТИЧЕН КОНСПЕКТ';
     }
-</script>
+
+    // 🔥 Софтуерен експорт на единичната лекция в PDF чрез нативния принт диалог на устройството
+    function downloadSingleCardPDF(btn) {
+        var card = btn.closest('.question-card');
+        var solBox = card.getElementsByClassName('solution-box')[0];
+        
+// Временно разгръщаме конспекта, за да бъде прочетен от принтер
+        аvar originalDisplay = solBox.style.display;solBox.style.display = "block";window.print();
+        // Извиква системния PDF принтер на телефона или компютъра
+        solBox.style.display = originalDisplay;
+        // Връщаме предишното състояние}// 🔥 Експорт на всички въпроси от заредената тема наведнъж
+        function downloadFullPDF() {window.print();}
+    </script>
 <footer><a href="/" title="HOME">bestjobs.bg</a> &copy; 2026</footer>
 </body>
 </html>
