@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AES-256-GCM Интелигентен Мулти-Генератор | BestJobs.BG</title>
+    <style>
+        :root { --primary: #0f766e; --bg: #f8fafc; --surface: #ffffff; --text: #1e293b; --border: #cbd5e1; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); padding: 20px; margin: 0; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .main-card { background: var(--surface); padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .header-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border); padding-bottom: 15px; margin-bottom: 20px; }
+        h1 { color: var(--primary); font-size: 1.5rem; margin: 0; font-weight: 800; }
+        .back-link { text-decoration: none; color: #475569; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 5px; padding: 6px 12px; border: 1px solid var(--border); border-radius: 6px; background: #fff; }
+        .back-link:hover { background: #f1f5f9; color: var(--text); }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
+        label { font-weight: 700; display: block; margin-top: 15px; font-size: 0.8rem; text-transform: uppercase; color: #64748b; }
+        input, select, textarea { width: 100%; padding: 12px; margin-top: 6px; border: 1px solid var(--border); border-radius: 8px; box-sizing: border-box; font-size: 0.95rem; outline: none; }
+        input:focus, select:focus, textarea:focus { border-color: var(--primary); }
+        textarea { height: 120px; font-family: inherit; resize: vertical; }
+        
+        .guide-box { background: #eff6ff; border: 1px solid #bfdbfe; border-left: 4px solid #3b82f6; padding: 15px 20px; border-radius: 8px; margin-top: 20px; }
+        .guide-box h3 { margin-top: 0; color: #1e3a8a; font-size: 1.05rem; }
+        .guide-box ol { margin: 5px 0; padding-left: 20px; font-size: 0.9rem; color: #1e40af; }
+        .guide-box li { margin-bottom: 4px; }
+        
+        .import-zone { background: #f1f5f9; padding: 20px; border-radius: 8px; margin-top: 20px; border: 1px dashed var(--border); }
+        .import-zone h3 { margin-top: 0; color: #334155; font-size: 1.1rem; }
+        
+        .q-wrapper { background: var(--surface); border: 1px solid var(--border); border-top: 4px solid var(--primary); padding: 20px; border-radius: 8px; margin-top: 20px; position: relative; }
+        .remove-btn { position: absolute; top: 12px; right: 12px; background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
+        .remove-btn:hover { background: #dc2626; }
+        
+        .opt-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+        .opt-row input[type="text"] { margin-top: 0; flex: 1; }
+        .opt-row input[type="radio"] { width: auto; margin: 0; cursor: pointer; transform: scale(1.2); }
+        
+        .action-btn { background: #334155; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; width: 100%; font-weight: 600; font-size: 0.95rem; }
+        .action-btn:hover { background: #1e293b; }
+        .download-btn { background: var(--primary); color: white; padding: 16px; border: none; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 25px; text-transform: uppercase; font-weight: bold; font-size: 1rem; letter-spacing: 0.5px; }
+        .download-btn:hover { background: #115e59; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="main-card">
+        <div class="header-row">
+            <h1>🛡️ Мулти-Криптогенератор за Справочници</h1>
+            <!-- 🔗 Локализиран линк към новия главен адрес -->
+            <a href="index.html" class="back-link" title="Назад към въпросника">🏠 Към изпита</a>
+        </div>
+        
+        <div class="grid-3">
+            <div>
+                <label>🔑 Лицензен Мастер Ключ</label>
+                <input type="password" id="enc-key" placeholder="Въведете Секретния Лицензен Ключ...">
+            </div>
+            <div>
+                <label>💾 Справочник (Износ)</label>
+                <select id="uni-filename">
+                    <option value="db_sofia.js">Книга за МУ — София</option>
+                    <option value="db_varna.js">Книга за МУ —  Варна</option>
+                    <option value="db_plovdiv.js">Книга за МУ — Пловдив</option>
+                    <option value="db_pleven.js">Книга за МУ — Плевен</option>
+                    <option value="db_stara-zagora.js">Книга за Тракийски У</option>
+                    <option value="db_burgas.js">Книга за У — Бургас</option>
+                    <option value="db_su.js">Книга за СУ</option>
+                </select>
+            </div>
+            <div>
+                <label>📚 Изпитен раздел</label>
+                <select id="subject-select">
+                    <option value="biology">Биология (Профил)</option>
+                    <option value="chemistry">Химия</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="guide-box">
+            <h3>📋 Инструкции за групово зареждане на въпроси от Текст, Word или PDF:</h3>
+            <ol>
+                <li><b>Секретен ключ:</b> Администраторите въвеждат актуалния продуктов мастер лиценз в полето най-горе. Не е за всеки!</li>
+                <li><b>Синтаксис за импортиране:</b> Копирайте изпитния масив и го поставете в полето за групово зареждане. Всеки нов въпрос задължително трябва да започва с ключовата дума <b>Въпрос:</b>, последван от четирите фиксирани отговора, разположени на нови редове под него.</li>
+                <li><b>Фиксиран ред на отговорите:</b> Системата запазва подредбата на отговорите (1, 2, 3, 4) абсолютно статична, за да съответства на хартиената книга.</li>
+                <li><b>Маркиране на верния отговор:</b> След като натиснете бутона за парсване, използвайте кръглите бутони (Radio селекторите) пред отговорите на всяка карта, за да посочите кой е верният по официален ключ.</li>
+                <li><b>Автоматично филтриране:</b> Напълно празните карти се прескачат и премахват автоматично от софтуера при изтегляне.</li>
+            </ol>
+        </div>
+
+        <div class="import-zone">
+            <h3>📥 Групово зареждане от Текст, Word или PDF</h3>
+            <textarea id="bulk-text-input" placeholder="Въпрос: Кои тъкани изграждат костите?&#10;Костна и хрущялна тъкан&#10;Мускулна тъкан&#10;Епителна тъкан&#10;Нервна тъкан"></textarea>
+            <button class="action-btn" onclick="parseBulkText()">⚡ Автоматично разчитане и парсване</button>
+        </div>
+
+        <div id="questions-container"></div>
+        
+        <button class="action-btn" style="background: #64748b;" onclick="addNewQuestionCard()">➕ Ръчно добавяне на въпрос</button>
+        <button class="download-btn" onclick="generateAndDownloadCryptoDB()">🔒 Криптирай справочника и изтегли файл</button>
+    </div>
+</div>
+<script>
+    let questionCounter = 0;
+
+    // ➕ Динамично генериране на изпитна карта с Radio бутони за фиксирани отговори
+    function addNewQuestionCard(data = null) {
+        questionCounter++; 
+        const container = document.getElementById('questions-container'), card = document.createElement('div');
+        card.className = 'q-wrapper'; 
+        card.id = `q-card-${questionCounter}`;
+        
+        let optsHTML = "";
+        for(let i = 1; i <= 4; i++) {
+            let checkedAttr = (i === 1) ? "checked" : "";
+            optsHTML += `
+            <div class="opt-row">
+                <input type="radio" name="correct-ans-${questionCounter}" value="${i}" ${checkedAttr}>
+                <input type="text" class="opt-${i}-text" placeholder="Фиксиран Отговор ${i} по книгата" value="${data && data.options[i-1] ? data.options[i-1].text : ""}">
+            </div>`;
+        }
+        
+        card.innerHTML = `<button class="remove-btn" onclick="this.parentElement.remove()">✖ Премахни</button>
+        <input type="text" class="q-topic" placeholder="Изпитна Тема (напр. Съединителна тъкан)" value="${data ? data.topic : ""}"><input type="text" class="q-text" placeholder="Текст на Изпитния Въпрос" value="${data ? data.question : ""}"><select class="has-theory"><option value="true">Включи теоретичен конспект</option><option value="false">Без теоретичен конспект</option></select><textarea class="q-theory" placeholder="Въведете развитата лекция / Текст на темата">${data ? data.theory : ""}</textarea>${optsHTML}`;
+        container.appendChild(card);
+    }
+
+    // 📥 Интелигентен Bulk Import парсер
+    function parseBulkText() {
+        const text = document.getElementById('bulk-text-input').value, blocks = text.split(/Въпрос:/i);
+        for(let i = 1; i < blocks.length; i++) {
+            const lines = blocks[i].trim().split('\n'); if(lines.length < 2) continue;
+            let options = []; for(let j=1; j<=4; j++) options.push({text: lines[j] || ""});
+            addNewQuestionCard({ topic: "Групов импорт", question: lines[0] || "", theory: "", options: options });
+        }
+    }
+
+    // 🛡️ Нативно Web Crypto API AES-256-GCM криптиране
+    async function encryptGCM(text, password) {
+        if (!text) return { enc: "", salt: "", iv: "" }; 
+        const enc = new TextEncoder(), salt = window.crypto.getRandomValues(new Uint8Array(16)), iv = window.crypto.getRandomValues(new Uint8Array(12));
+        const keyMaterial = await window.crypto.subtle.importKey("raw", enc.encode(password), { name: "PBKDF2" }, false, ["deriveKey"]);
+        const key = await window.crypto.subtle.deriveKey({ name: "PBKDF2", salt: salt, iterations: 100000, hash: "SHA-256" }, keyMaterial, { name: "AES-GCM", length: 256 }, false, ["encrypt"]);
+        const ciphertext = await window.crypto.subtle.encrypt({ name: "AES-GCM", iv: iv }, key, enc.encode(text));
+        return { enc: btoa(String.fromCharCode(...new Uint8Array(ciphertext))), salt: btoa(String.fromCharCode(...salt)), iv: btoa(String.fromCharCode(...iv)) };
+    }
+
+    // 🔒 АВТОМАТИЗИРАНО КРИПТИРАНЕ С ЧЕТЕНЕ НА СЕЛЕКТОР ЗА ВЕРЕН ОТГОВОР
+    async function generateAndDownloadCryptoDB() {
+        const pass = document.getElementById('enc-key').value;
+        if(!pass || pass.trim() === "") { alert("🔒 Моля, първо въведете Лицензния Мастер Ключ в горното поле!"); return; }
+        
+        const cards = document.getElementsByClassName('q-wrapper'), db = { biology: [], chemistry: [] }, sub = document.getElementById('subject-select').value;
+        let activeValidCardsCount = 0;
+
+        for (let card of cards) {
+            const currentCardId = card.id.replace("q-card-", "");
+            const topicVal = card.querySelector('.q-topic').value, qVal = card.querySelector('.q-text').value;
+            
+            if (!topicVal.trim() && !qVal.trim()) continue; // АВТОМАТИЧНО ПРЕМАХВАНЕ НА ПРАЗНИ КАРТИ
+
+            activeValidCardsCount++;
+            const topicMeta = await encryptGCM(topicVal, pass), qEnc = await encryptGCM(qVal, pass), sEnc = await encryptGCM(card.querySelector('.q-theory').value, pass), opts=[];
+            
+            const correctRadio = card.querySelector(`input[name="correct-ans-${currentCardId}"]:checked`);
+            const correctIndex = correctRadio ? parseInt(correctRadio.value) : 1;
+
+            for(let i = 1; i <= 4; i++) { 
+                const optText = card.querySelector(`.opt-${i}-text`).value;
+                const optEnc = await encryptGCM(optText, pass);
+                opts.push({ x: optEnc.enc, c: i === correctIndex, r: "" }); 
+            }
+            
+            db[sub].push({ salt: topicMeta.salt, iv: topicMeta.iv, t: topicMeta.enc, q: qEnc.enc, k: card.querySelector('.has-theory').value === "true", s: sEnc.enc, o: opts });
+        }
+
+        if(activeValidCardsCount === 0) { alert("⚠️ Списъкът е празен или съдържа само празни карти!"); return; }
+        const blob = new Blob(["var quizDatabase = " + JSON.stringify(db) + ";"], { type: "application/javascript" });
+        const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = document.getElementById('uni-filename').value; a.click();
+    }
+</script>
+</body>
+</html>
