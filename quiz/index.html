@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f766e">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
     <title>Интерактивна Подготовка за Медицински Университети с BestJobs.BG</title>
-    <link rel="canonical" href="https://bestjobs.bg/quiz/">
-    <meta property="og:url" content="https://bestjobs.bg/quiz/">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="print-area"></div>
     <main class="container">
-        <h1>Интерактивна Подготовка за Медицински Университети с BestJobs.BG</h1>
+        <h1>Интерактивна Подготовка за Медицински Университети</h1>
         <section id="setup-menu" class="menu-box">
             <div>
                 <label for="university-select">Изберете университет:</label>
@@ -20,21 +20,35 @@
                     <option value="varna">МУ - Варна</option>
                     <option value="plovdiv">МУ - Пловдив</option>
                     <option value="pleven">МУ - Плевен</option>
+                    <option value="stara-zagora">Тракийски У - Ст. Загора (МФ)</option>
+                    <option value="burgas">У-т "Ас. Златаров" - Бургас (МФ)</option>
+                    <option value="su">СУ "Св. Климент Охридски" (МФ)</option>
                 </select>
             </div>
             <div>
                 <label for="subject-select" style="margin-top:15px; display:block;">Изберете предмет:</label>
                 <select id="subject-select">
-                    <option value="biology">Биология</option>
-                    <option value="chemistry">Химия</option>
+                    <option value="biology">Биология (8-12 клас)</option>
+                    <option value="chemistry">Химия (Обща, Неорганична, Органична)</option>
                 </select>
             </div>
             <div style="margin-top: 20px;">
                 <button onclick="initStaticQuiz()">🎬 Старт на изпита</button>
-                <button id="g-pdf" onclick="printAllLectures()" style="background:#334155; display:none;">📋 Запиши (PDF)</button>
+                <button id="g-pdf" onclick="printAllLectures()" style="background:#334155; display:none; margin-top:10px;">📋 Запиши целия СПРАВОЧНИК (PDF)</button>
             </div>
         </section>
         <div id="crypto-status-indicator"></div>
+        <div id="info-panel">
+            <section class="info-section">
+                <h2>📘 Ръководство за употреба</h2>
+                <ol>
+                    <li><b>Избор:</b> Маркирайте факултет и предмет.</li>
+                    <li><b>Старт:</b> Натиснете „Старт на изпита“ за On-Demand извикване.</li>
+                    <li><b>Решаване:</b> Интерактивно валидиране на отговорите.</li>
+                    <li><b>Печат:</b> Използвайте бутоните за PDF експорт.</li>
+                </ol>
+            </section>
+        </div>
         <div id="quiz-space"></div>
     </main>
     <footer>
