@@ -1,12 +1,12 @@
 var quizDatabase = {
     "biology": [
         {
-            "salt": "Njg5ZjNjMWE0YmU3ZDI1YQ==",
-            "iv": "bTluOGI3djZjNng1",
-            "t": "ckh0dlRjZzVvN2Y0ZDNzMmsxbDJzNGU1",
-            "q": "VThsOWs4ajdoNmc2ZjVkNHMzYThsOWs4ajdoNmc2ZjVkNHMzN3d4YzhzOXA0cjV0Nnk3dThpOW84ejRtOWs4ajdoNmc1ZjRkM3M=",
+            "salt": "YVhaU2RYbThqYTV0M3M5OQ==",
+            "iv": "bXk1aDdoOWs4ajY1",
+            "t": "9O7EbyNUnVf8V7Uj77U76t9GgP/R0QnI5Xg8V9U=",
+            "q": "r7c8j9o6f5d4k3l2s4e5r6t7u8i9o8z4m9k8j7h6g5f4d3s2a5r6t7u8i9o8zA==",
             "k": true,
-            "s": "PGgzPlTDgZth0L3QuDog0KHRitC10LTQuNC90LjRgtC10LvQvdCwINGC0YrQutCw0L08L2gzPjxwPlHRitC10LTQuNC90LjRgtC10LvQvdCw0YLQsCDRgtGK0LrQsNC9ICg8aT50ZXh0dXMgY29uanVuY3RpdnVzPC9pPikgcNGA0L7QuNC30LvQuNC30LAg0L7RgiDQvNC10LfQtdC90YXQuNC80LAuLi48L3A+",
+            "s": "PGgzPlTDgZth0L3QuDog0...0KHRitC10LTQuNC90LjRgtC10LvQvdCwINGC0YrQutCw0L08L2gzPjxwPlHRitC10LTQuNC90LjRgtC10LvQvdCw0YLQsCDRgtGK0LrQsNC9ICg8aT50ZXh0dXMgY29uanVuY3RpdnVzPC9pPikgcNGA0L7QuNC30LvQuNC30LAg0L7RgiDQvNC10LfQtdC90YXQuNC80LAuLi48L3A+",
             "o": [
                 { "x": "MS4g0YXRgNGD0YnRj9C70L3QsCDRgtGK0LrQsNC9", "c": false, "r": "0JPRgNC10YjQvdC+LiDQpdGA0YPRidGP0LvQvdCw0YLQsCDRgtGK0LrQsNC9IEUg0LLQuNC0INGB0YrQtdC00LjQvdC40YLQtdC70L3QsC4=" },
                 { "x": "Mi4g0LrQvtGB0YLQuG3QsCDRgtGK0LrQsNC9", "c": false, "r": "0JPRgNC10YjQvdC+LiDQmtC+0YHRgtC90LDRgtCwINGC0YrQutCw0L0g0YHRg9GJ0L4g0LUg0YHRitC10LTQuNC90LjRgtC10LvQvdCwLg==" },
@@ -15,10 +15,10 @@ var quizDatabase = {
             ]
         },
         {
-            "salt": "YTIzYmU4OWM5ZDRlMmE3MQ==",
-            "iv": "eDltNGsyaDhqNmY1",
-            "t": "UzFkMmYzZzVoNmo3azhsOXo0UHV5Q1orSVBlV3hDMEpSTXhSMU8+",
-            "q": "bThsOWs4ajdoNmc2ZjVkNHMzN3d4YzhzOXA0cjV0Nnk3dThpOW84ejRtOWs4ajdoNmc1ZjRkM3M=",
+            "salt": "YVhaU2RYbThqYTV0M3M5OQ==",
+            "iv": "bXk1aDdoOWs4ajY1",
+            "t": "9O7EbyNUnVf8V7Uj77U76t9GgP/R0QnI5Xg8V9U=",
+            "q": "r7c8j9o6f5d4k3l2s4e5r6t7u8i9o8z4m9k8j7h6g5f4d3s2a5r6t7u8i9o8zA==",
             "k": true,
             "s": "PGgzPlTDgZth0L3QuDog0JLRitCz0LvQtdGF0LjQtNGA0LDRgtC4PC9oMz48cD7QktGK0LPQu9C10YXQuNC00YDQscGC0LjRgtC1INGB0LAg0L7RgdC90L7QstC10L0g0LXQvdC10YDQsy4uLjwvcD+",
             "o": [
@@ -29,10 +29,10 @@ var quizDatabase = {
             ]
         },
         {
-            "salt": "YTBjMmQzZTRmNWc2aDdpOA==",
-            "iv": "bTluOGI3djZjNng1",
-            "t": "UzFkMmYzZzVoNmo3azhsOXo0UHV5Q1orSVBlV3hDMEpSTXhSMU8+",
-            "q": "WkdWeWNuVndiRzl1WldVbWRYUnpZVzVuYVc1bFlYUnBiMjV6Y0hKdmRXTjBlV05sYzE5cGJuUnZjbTFsZEdsdmJpQjNiM0prWDNkeFpYSTZ=",
+            "salt": "YVhaU2RYbThqYTV0M3M5OQ==",
+            "iv": "bXk1aDdoOWs4ajY1",
+            "t": "9O7EbyNUnVf8V7Uj77U76t9GgP/R0QnI5Xg8V9U=",
+            "q": "r7c8j9o6f5d4k3l2s4e5r6t7u8i9o8z4m9k8j7h6g5f4d3s2a5r6t7u8i9o8zA==",
             "k": true,
             "s": "PGgzPlTDgZth0L3QuDog0JzQuNGC0L7RhdC+0L3QtNGA0LjQuDwvaDM+PHA+0JzQuNGC0L7RhdC+0L3QtNGA0LjQuNGC0LUg0YHQsCDQtNCy0YPQvNC10LzQsdGA0LDQvdC90LguLi48L3A+",
             "o": [
