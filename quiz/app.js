@@ -43,10 +43,10 @@ async function initStaticQuiz() {
     var uni = document.getElementById('university-select').value;
     var sub = document.getElementById('subject-select').value;
     
-    // 🛡️ Проверка за наличие на ключ в URL адреса
+    // 🛡️ Първоначален опит за извличане на ключа от URL фрагмента (след #)
     var cryptoSecretPass = window.location.hash.substring(1);
     
-    // 🔔 КОРЕКЦИЯ: Интелигентен пасивен прозорец за директен вход при чист URL
+    // 🔔 КОРЕКЦИЯ: Ако потребителят влиза от чист URL, системата извежда диалогов прозорец
     if (!cryptoSecretPass) {
         cryptoSecretPass = prompt("🔒 Моля, въведете Вашия официален Лицензен Ключ за достъп до справочника:");
         if (!cryptoSecretPass || cryptoSecretPass.trim() === "") {
@@ -76,7 +76,7 @@ async function initStaticQuiz() {
                     var decryptedQuestion = await decryptAES256(item.q, item.salt, item.iv, cryptoSecretPass);
                     var decryptedSolution = await decryptAES256(item.s, item.salt, item.iv, cryptoSecretPass);
 
-                    // Валидация на декриптирането за защита от грешен ключ
+                    // Валидация на ключа за сигурност
                     if (!decryptedQuestion) {
                         alert("🔒 Неуспешно декриптиране. Въведеният лицензен ключ е грешен.");
                         return;
@@ -113,14 +113,20 @@ async function initStaticQuiz() {
             buildQuizDOM();
             showQuestion(0);
 
-            // 🛡️ Почистване на URL историята без презареждане
+            // 🛡️ ПОПРАВКА: Изчистване на URL историята строго в рамките на директория /quiz/
             try {
-                window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
-            } catch (e) { window.location.hash = ""; }
+                window.history.replaceState(
+                    null, 
+                    document.title, 
+                    window.location.origin + "/quiz/" + window.location.search
+                );
+            } catch (e) {
+                window.location.hash = ""; 
+            }
 
             var statusBox = document.getElementById('crypto-status-indicator');
             if (statusBox) {
-                statusBox.innerHTML = '<div class="crypto-secure-badge">🛡️ Справочникът е декриптиран: AES-256-GCM (Военно ниво на защита) | Книгата съдържа Биология и Химия</div>';
+                statusBox.innerHTML = '<div class="crypto-secure-badge">🛡️ Справочникът е декриптиран: AES-256-GCM (Военно ниво на защита) | Локация: /quiz/</div>';
             }
         }
     };
@@ -198,7 +204,7 @@ function revealAns(qIdx) {
 function skipQ(qIdx) {
     var card = document.getElementById('q-idx-' + qIdx); if (card.getAttribute('data-answered')) return;
     // 🔄 Кръгов SKIP алгоритъм: Премества елемента в края на опашката без загуба
-    var skipped = activePool.splice(qIdx, 1)[0]; activePool.push(skipped);
+    var skipped = activePool.splice(qIdx, 1); activePool.push(skipped);
     buildQuizDOM(); showQuestion(activeIdx);
 }
 
