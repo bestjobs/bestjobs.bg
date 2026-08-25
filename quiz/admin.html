@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
@@ -15,15 +15,24 @@
         input, select, textarea { width: 100%; padding: 12px; margin-top: 6px; border: 1px solid var(--border); border-radius: 8px; box-sizing: border-box; font-size: 0.95rem; outline: none; }
         input:focus, select:focus, textarea:focus { border-color: var(--primary); }
         textarea { height: 120px; font-family: inherit; resize: vertical; }
+        
         .guide-box { background: #eff6ff; border: 1px solid #bfdbfe; border-left: 4px solid #3b82f6; padding: 15px 20px; border-radius: 8px; margin-top: 20px; }
         .guide-box h3 { margin-top: 0; color: #1e3a8a; font-size: 1.05rem; }
         .guide-box ol { margin: 5px 0; padding-left: 20px; font-size: 0.9rem; color: #1e40af; }
         .guide-box li { margin-bottom: 4px; }
+        
         .import-zone { background: #f1f5f9; padding: 20px; border-radius: 8px; margin-top: 20px; border: 1px dashed var(--border); }
         .import-zone h3 { margin-top: 0; color: #334155; font-size: 1.1rem; }
+        
         .q-wrapper { background: var(--surface); border: 1px solid var(--border); border-top: 4px solid var(--primary); padding: 20px; border-radius: 8px; margin-top: 20px; position: relative; }
         .remove-btn { position: absolute; top: 12px; right: 12px; background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
         .remove-btn:hover { background: #dc2626; }
+        
+        /* 🎯 Оформление на фиксираните редове за отговори */
+        .opt-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+        .opt-row input[type="text"] { margin-top: 0; flex: 1; }
+        .opt-row input[type="radio"] { width: auto; margin: 0; cursor: pointer; transform: scale(1.2); }
+        
         .action-btn { background: #334155; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; width: 100%; font-weight: 600; font-size: 0.95rem; }
         .action-btn:hover { background: #1e293b; }
         .download-btn { background: var(--primary); color: white; padding: 16px; border: none; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 25px; text-transform: uppercase; font-weight: bold; font-size: 1rem; letter-spacing: 0.5px; }
@@ -34,6 +43,7 @@
 <div class="container">
     <div class="main-card">
         <h1>🛡️ Мулти-Криптогенератор за Справочници</h1>
+        
         <div class="grid-3">
             <div>
                 <label>🔑 Лицензен Мастер Ключ</label>
@@ -59,21 +69,25 @@
                 </select>
             </div>
         </div>
+
         <div class="guide-box">
             <h3>📋 Ръководство за бързо зареждане на въпроси:</h3>
             <ol>
-                <li><b>Ключ:</b> Въведете Вашия актуален секретен лицензен ключ в полето горе.</li>
-                <li><b>Синтаксис за импорт:</b> В полето за групово зареждане всеки въпрос задължително трябва да започва с ключовата дума <b>Въпрос:</b>. Всеки нов отговор трябва да е разположен на <b>нов ред</b> веднага под него.</li>
-                <li><b>Правило за верния отговор:</b> Първият ред под въпроса (Опция 1) автоматично се маркира като <b>верен отговор</b>. При реалния тест системата ще разбърка картите напълно.</li>
-                <li><b>Празни бланки:</b> Стартовата празна карта се филтрира пасивно и се премахва автоматично при генериране.</li>
+                <li><b>Ключ:</b> Въведете Вашия секретен продуктов ключ най-горе.</li>
+                <li><b>Фиксирани отговори:</b> Подредбата на отговорите в изпита съвпада точно с хартиеното издание. Чрез кръглия бутон (Radio) пред всеки отговор маркирайте кой е верният по книга.</li>
+                <li><b>Синтаксис за импорт:</b> Груповият текст трябва да следва модела: нов въпрос на ред с <i>Въпрос:</i>, последван от четирите фиксирани отговора на нови редове.</li>
+                <li><b>Автоматично филтриране:</b> Напълно празните карти се прескачат пасивно при запис.</li>
             </ol>
         </div>
+
         <div class="import-zone">
             <h3>📥 Групово зареждане от Текст, Word или PDF</h3>
-            <textarea id="bulk-text-input" placeholder="Въпрос: Кои тъкани изграждат костите?&#10;Костна и хрущялна тъкан (Маркира се автоматично като верен отговор)&#10;Мускулна тъкан&#10;Епителна тъкан&#10;Нервна тъкан"></textarea>
+            <textarea id="bulk-text-input" placeholder="Въпрос: Кои тъкани изграждат костите?&#10;Костна и хрущялна тъкан&#10;Мускулна тъкан&#10;Епителна тъкан&#10;Нервна тъкан"></textarea>
             <button class="action-btn" onclick="parseBulkText()">⚡ Автоматично разчитане и парсване</button>
         </div>
+
         <div id="questions-container"></div>
+        
         <button class="action-btn" style="background: #64748b;" onclick="addNewQuestionCard()">➕ Ръчно добавяне на въпрос</button>
         <button class="download-btn" onclick="generateAndDownloadCryptoDB()">🔒 Криптирай справочника и изтегли файл</button>
     </div>
@@ -81,7 +95,7 @@
 <script>
     let questionCounter = 0;
 
-    // ➕ Динамично генериране на празна изпитна карта на екрана
+    // ➕ Динамично генериране на изпитна карта с Radio бутони за фиксирани отговори
     function addNewQuestionCard(data = null) {
         questionCounter++; 
         const container = document.getElementById('questions-container'), card = document.createElement('div');
@@ -90,7 +104,13 @@
         
         let optsHTML = "";
         for(let i = 1; i <= 4; i++) {
-            optsHTML += `<input type="text" class="opt-${i}-text" placeholder="Отговор ${i} | Аргументация/Обяснение" value="${data && data.options[i-1] ? data.options[i-1].text : ""}">`;
+            // Първата опция се маркира по подразбиране, освен ако няма импортирани данни
+            let checkedAttr = (i === 1) ? "checked" : "";
+            optsHTML += `
+            <div class="opt-row">
+                <input type="radio" name="correct-ans-${questionCounter}" value="${i}" ${checkedAttr}>
+                <input type="text" class="opt-${i}-text" placeholder="Фиксиран Отговор ${i} по книгата" value="${data && data.options[i-1] ? data.options[i-1].text : ""}">
+            </div>`;
         }
         
         card.innerHTML = `<button class="remove-btn" onclick="this.parentElement.remove()">✖ Премахни</button>
@@ -118,7 +138,7 @@
         return { enc: btoa(String.fromCharCode(...new Uint8Array(ciphertext))), salt: btoa(String.fromCharCode(...salt)), iv: btoa(String.fromCharCode(...iv)) };
     }
 
-    // 🔒 АВТОМАТИЗИРАНО КРИПТИРАНЕ СЪС ЗАЩИТА СРЕЩУ ПРАЗНИ КАРТИ
+    // 🔒 АВТОМАТИЗИРАНО КРИПТИРАНЕ С ЧЕТЕНЕ НА СЕЛЕКТОР ЗА ВЕРЕН ОТГОВОР
     async function generateAndDownloadCryptoDB() {
         const pass = document.getElementById('enc-key').value;
         if(!pass || pass.trim() === "") { alert("🔒 Моля, първо въведете Лицензния Мастер Ключ в горното поле!"); return; }
@@ -126,13 +146,28 @@
         const cards = document.getElementsByClassName('q-wrapper'), db = { biology: [], chemistry: [] }, sub = document.getElementById('subject-select').value;
         let activeValidCardsCount = 0;
 
+        // Извличане на системния номер на всяка карта на екрана
         for (let card of cards) {
+            const currentCardId = card.id.replace("q-card-", "");
             const topicVal = card.querySelector('.q-topic').value, qVal = card.querySelector('.q-text').value;
-            if (!topicVal.trim() && !qVal.trim()) continue; // 🎯 АВТОМАТИЧНО ПРЕМАХВАНЕ НА ПРАЗНИ КАРТИ
+            
+            if (!topicVal.trim() && !qVal.trim()) continue; // АВТОМАТИЧНО ПРЕМАХВАНЕ НА ПРАЗНИ КАРТИ
 
             activeValidCardsCount++;
             const topicMeta = await encryptGCM(topicVal, pass), qEnc = await encryptGCM(qVal, pass), sEnc = await encryptGCM(card.querySelector('.q-theory').value, pass), opts=[];
-            for(let i=1; i<=4; i++) { const optEnc = await encryptGCM(card.querySelector(`.opt-${i}-text`).value, pass); opts.push({x: optEnc.enc, c: i===1, r: ""}); }
+            
+            // Прочитане на стойността на маркирания радио бутон за текущата карта
+            const correctRadio = card.querySelector(`input[name="correct-ans-${currentCardId}"]:checked`);
+            const correctIndex = correctRadio ? parseInt(correctRadio.value) : 1;
+
+            // Записване на отговорите в абсолютно твърд ред (1, 2, 3, 4) по книжното издание
+            for(let i = 1; i <= 4; i++) { 
+                const optText = card.querySelector(`.opt-${i}-text`).value;
+                const optEnc = await encryptGCM(optText, pass);
+                // Маркерът c става true само ако текущият индекс съвпада с избора на администратора
+                opts.push({ x: optEnc.enc, c: i === correctIndex, r: "" }); 
+            }
+            
             db[sub].push({ salt: topicMeta.salt, iv: topicMeta.iv, t: topicMeta.enc, q: qEnc.enc, k: card.querySelector('.has-theory').value === "true", s: sEnc.enc, o: opts });
         }
 
