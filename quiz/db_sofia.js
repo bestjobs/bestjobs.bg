@@ -1,4 +1,4 @@
-var quizDatabase = {
+var quizDatabase = { 
     "biology": [
         {
             "salt": "OTVjOWZlZjNiMDllNGM1Mg==",
