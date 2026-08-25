@@ -74,7 +74,7 @@
 
         <!-- 🔒 Динамичен криптографски индикатор за статус -->
         <div id="crypto-status-indicator"></div>
-        <!-- 📘 ИНФОРМАЦИОНЕН ПАНЕЛ: Инструкции, Сигурност и Поверителност -->
+                <!-- 📘 ИНФОРМАЦИОНЕН ПАНЕЛ: Инструкции, Сигурност и Поверителност -->
         <div id="info-panel">
             <section class="info-section">
                 <h2>📘 Ръководство за употреба</h2>
@@ -106,7 +106,12 @@
     </main>
 
     <footer>
-        <a href="/" title="HOME">bestjobs.bg/quiz/</a> &copy; 2026
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <a href="/quiz/" title="HOME">bestjobs.bg/quiz/</a>
+            <span>&copy; 2026</span>
+            <!-- 🛠️ Дискретен защитен линк за бърз достъп до крипто-генератора -->
+            <a href="admin.html" style="text-decoration: none; color: #64748b; font-size: 0.8rem; border-bottom: 1px dashed #cbd5e1;" title="Панел за управление">🛠️ Контролен панел</a>
+        </div>
     </footer>
 
     <script src="app.js"></script>
