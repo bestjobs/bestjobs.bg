@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-    <meta charset="UTF-8"><meta name="theme-color" content="#fff"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
+    <meta charset="UTF-8"><meta name="theme-color" content="#fff"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
     <title>QUIZ Интерактивна Подготовка за Медицински Университети с BestJobs.BG</title>
     <meta name="description" content="QUIZ Интерактивна Подготовка за Медицински Университети с BestJobs.BG 2027">
     <link rel="canonical" href="https://bestjobs.bg/quiz/"><link rel="icon" href="/favicon.ico"><link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon.png">
@@ -10,32 +9,38 @@
         /* Олекотен CSS: Използва вградените системни шрифтове за пестене на памет и батерия */
         body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f6f6; color: #2c3e50; padding: 15px; margin: 0; }
         .container { width: 100%; max-width: 100%; margin: 0; box-sizing: border-box; }
-        .menu-box { background: #ffffff; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); box-sizing: border-box; }
-        select { padding: 10px; font-size: 1rem; width: 100%; margin-bottom: 15px; border: 2px solid #eaeded; border-radius: 6px; outline: none; background: #ffffff; display: block; margin-top: 5px; }
+        
+        /* Основна мрежа за менюто */
+        .menu-box { background: #ffffff; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); box-sizing: border-box; display: grid; grid-template-columns: 1fr; gap: 15px; }
+        select { padding: 10px; font-size: 1rem; width: 100%; border: 2px solid #eaeded; border-radius: 6px; outline: none; background: #ffffff; display: block; margin-top: 5px; box-sizing: border-box; }
         label { font-weight: bold; display: block; }
         
-        .timer-inline { font-size: 1.1rem; font-weight: bold; color: #cb4335; display: none; margin-left: 10px; vertical-align: middle; }
-        .action-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+        .timer-inline { font-size: 1.1rem; font-weight: bold; color: #cb4335; display: none; align-self: center; justify-self: end; }
+        
+        /* Използване на Subgrid за долния ред в менюто */
+        .action-row { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: center; width: 100%; }
         
         .score-title { color: #117a65; font-size: 1.5rem; font-weight: bold; margin-bottom: 10px; }
         .score-grade { font-size: 1.8rem; font-weight: bold; color: #cb4335; margin-top: 15px; padding: 5px; border-bottom: 2px solid #cb4335; display: inline-block; }
         
-        .link { color: #0b5345; font-weight: bold; text-decoration: underline; cursor: pointer; display: inline-block; margin-right: 15px; margin-bottom: 10px; }
+        .link { color: #0b5345; font-weight: bold; text-decoration: underline; cursor: pointer; display: inline-block; }
+        .link:hover { color: #117a65; }
         
-        /* Премахнато !important — използва се по-висока специфичност на CSS селекторите при необходимост */
-        .link-next { color: #2c3e50; font-size: 1.1rem; margin-top: 20px; text-align: center; width: 100%; display: none; border: 1px dashed #2c3e50; padding: 10px 0; border-radius: 6px; background: #ffffff; }
+        .link-next { color: #2c3e50; font-size: 1.1rem; margin-top: 20px; text-align: center; width: 100%; display: none; border: 1px dashed #2c3e50; padding: 10px 0; border-radius: 6px; background: #ffffff; text-decoration: none; box-sizing: border-box; }
         .link-action { color: #27ae60; font-size: 0.9rem; }
         .link-sol { color: #3b82f6; font-size: 0.9rem; }
         
-        .question-card { background: #ffffff; padding: 25px; border-radius: 8px; margin-bottom: 20px; border-left: 6px solid #117a65; box-shadow: 0 1px 3px rgba(0,0,0,0.05); box-sizing: border-box; width: 100%; }
-        .option-item { border: 2px solid #eaeded; padding: 14px; margin-top: 8px; cursor: pointer; border-radius: 6px; box-sizing: border-box; }
+        /* Мрежова структура за картата с въпроса */
+        .question-card { background: #ffffff; padding: 25px; border-radius: 8px; margin-bottom: 20px; border-left: 6px solid #117a65; box-shadow: 0 1px 3px rgba(0,0,0,0.05); box-sizing: border-box; width: 100%; display: grid; grid-template-columns: 1fr; gap: 10px; }
+        .option-item { border: 2px solid #eaeded; padding: 14px; cursor: pointer; border-radius: 6px; box-sizing: border-box; }
         
-        /* Хардуерно чисти класове без тежки графични преливания и без !important */
+        /* Използване на CSS Subgrid за бутоните в картата */
+        .card-buttons { margin-top: 15px; border-top: 1px dashed #eaeded; padding-top: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, max-content)); gap: 15px; width: 100%; }
+        
         .correct { border-color: #27ae60; background-color: #e8f8f5; color: #27ae60; font-weight: bold; }
         .incorrect { border-color: #cb4335; background-color: #fdedec; color: #cb4335; }
         .reason-box { margin-top: 5px; color: #7f8c8d; font-size: 0.9rem; display: none; }
-        .solution-box { background: #f8fafc; border-left: 4px solid #3b82f6; padding: 15px; margin-top: 10px; display: none; box-sizing: border-box; }
-        .card-buttons { margin-top: 15px; display: flex; flex-wrap: wrap; gap: 5px; border-top: 1px dashed #eaeded; padding-top: 12px; }
+        .solution-box { background: #f8fafc; border-left: 4px solid #3b82f6; padding: 15px; margin-top: 10px; display: none; box-sizing: border-box; grid-column: 1 / -1; }
         
         #nav-container { display: none; }
     </style>
@@ -44,7 +49,7 @@
 
 <header><div class="container">
     <h1>QUIZ Интерактивна Подготовка за Медицински Университети с BestJobs.BG 2027</h1></header>
-<main>
+
     <div id="setup-menu" class="menu-box">
         <div id="selection-fields">
             <p>
@@ -55,7 +60,7 @@
                     <option value="plovdiv">Медицински Университет — Пловдив</option>
                     <option value="pleven">Медицински Университет — Плевен</option>
                     <option value="stara-zagora">Тракийски Университет — Стара Загора (МФ)</option>
-                    <option value="burgas">Университет "Проф. д-р Асен Златаров" — Бургас (МФ)</option>
+                    <option value="burgas">Университет "Проф. д-р Асен Zлатаров" — Бургас (МФ)</option>
                     <option value="su">Софийски Университет "Св. Климент Охридски" (МФ)</option>
                 </select>
             </p>
@@ -82,6 +87,7 @@
 </div>
 </main>
 <script>
+    // Олекотен софтуерен алгоритъм за пестене на RAM и батерия
     var isTestStarted = false;
     var currentQuestions = [];
     var currentQuestionIndex = 0;
@@ -110,6 +116,7 @@
             script.id = scriptId;
             script.src = scriptSrc;
             
+            // Механизъм On-Demand: Базата се зарежда в паметта само при старт
             script.onload = function() {
                 if (typeof quizDatabase !== 'undefined' && quizDatabase[subject]) {
                     currentQuestions = quizDatabase[subject].slice();
@@ -171,6 +178,7 @@
         document.getElementById('timer-display').innerText = "00:00:00";
         document.getElementById('exam-timer').style.display = "inline-block";
         
+        // Ниска консумация: извършва минимални стрингови операции веднъж на секунда
         timerInterval = setInterval(function() {
             totalSeconds++;
             var hours = Math.floor(totalSeconds / 3600);
@@ -252,7 +260,7 @@
             siblings[i].style.pointerEvents = 'none';
             if (siblings[i].getAttribute('data-correct') === 'true') siblings[i].classList.add('correct');
             var reason = siblings[i].getElementsByClassName('reason-box');
-            if (reason && reason.length > 0) reason[0].style.display = 'block';
+            if (reason && reason.length > 0) reason.style.display = 'block';
         }
         if (!isUserCorrect) element.classList.add('incorrect');
         document.getElementById('btn-next').style.display = "block";
@@ -269,7 +277,7 @@
             items[i].style.pointerEvents = 'none';
             if (items[i].getAttribute('data-correct') === 'true') items[i].classList.add('correct');
             var reason = items[i].getElementsByClassName('reason-box');
-            if (reason && reason.length > 0) reason[0].style.display = 'block';
+            if (reason && reason.length > 0) reason.style.display = 'block';
         }
         document.getElementById('btn-next').style.display = "block";
     }
