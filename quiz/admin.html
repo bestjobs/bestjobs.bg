@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
@@ -31,10 +31,9 @@
     <div class="main-card">
         <h1>🛡️ Военен Мулти-Криптогенератор за Справочници</h1>
         <div class="grid-3">
-            <!-- 🛡️ ПОПРАВКА: Полето е променено на password и няма заложена текстова стойност в кода -->
             <div>
                 <label>🔑 Лицензен Мастер Ключ</label>
-                <input type="password" id="enc-key" placeholder="Въведете Вашия секретен ключ...">
+                <input type="password" id="enc-key" placeholder="Въведете Секретния Лицензен Ключ...">
             </div>
             <div>
                 <label>💾 Справочник (Износ)</label>
@@ -68,6 +67,7 @@
 </div>
 <script>
     let questionCounter = 0;
+
     function addNewQuestionCard(data = null) {
         questionCounter++; const container = document.getElementById('questions-container'), card = document.createElement('div');
         card.className = 'q-wrapper'; card.id = `q-card-${questionCounter}`;
@@ -77,14 +77,16 @@
         <input type="text" class="q-topic" placeholder="Изпитна Тема (напр. Съединителна тъкан)" value="${data ? data.topic : ""}"><input type="text" class="q-text" placeholder="Текст на Изпитния Въпрос" value="${data ? data.question : ""}"><select class="has-theory"><option value="true">Включи теоретичен конспект</option><option value="false">Без теоретичен конспект</option></select><textarea class="q-theory" placeholder="Въведете развитата лекция / Текст на темата">${data ? data.theory : ""}</textarea>${optsHTML}`;
         container.appendChild(card);
     }
+
     function parseBulkText() {
         const text = document.getElementById('bulk-text-input').value, blocks = text.split(/Въпрос:/i);
         for(let i = 1; i < blocks.length; i++) {
             const lines = blocks[i].trim().split('\n'); if(lines.length < 2) continue;
             let options = []; for(let j=1; j<=4; j++) options.push({text: lines[j] || ""});
-            addNewQuestionCard({ topic: "Групов импорт", question: lines[0] || "", theory: "", options: options });
+            addNewQuestionCard({ topic: "Групов импорт", question: lines || "", theory: "", options: options });
         }
     }
+
     async function encryptGCM(text, password) {
         if (!text) return { enc: "", salt: "", iv: "" }; const enc = new TextEncoder(), salt = window.crypto.getRandomValues(new Uint8Array(16)), iv = window.crypto.getRandomValues(new Uint8Array(12));
         const keyMaterial = await window.crypto.subtle.importKey("raw", enc.encode(password), { name: "PBKDF2" }, false, ["deriveKey"]);
@@ -92,18 +94,24 @@
         const ciphertext = await window.crypto.subtle.encrypt({ name: "AES-GCM", iv: iv }, key, enc.encode(text));
         return { enc: btoa(String.fromCharCode(...new Uint8Array(ciphertext))), salt: btoa(String.fromCharCode(...salt)), iv: btoa(String.fromCharCode(...iv)) };
     }
+
     async function generateAndDownloadCryptoDB() {
         const pass = document.getElementById('enc-key').value;
         if(!pass || pass.trim() === "") { alert("🔒 Моля, първо въведете Лицензния Мастер Ключ в горното поле!"); return; }
         const cards = document.getElementsByClassName('q-wrapper'), db = { biology: [], chemistry: [] }, sub = document.getElementById('subject-select').value;
-        if(cards.length === 0) { alert("⚠️ Списъкът е празен! Добавете или парснете въпроси преди криптиране."); return; }
+        let activeValidCardsCount = 0;
+
         for (let card of cards) {
             const topicVal = card.querySelector('.q-topic').value, qVal = card.querySelector('.q-text').value;
-            if(!topicVal.trim() || !qVal.trim()) { alert("❌ Грешка: Открити са непопълнени теми или въпроси! Моля, попълнете ги или изтрийте празната карта на върха на екрана."); return; }
+            if (!topicVal.trim() && !qVal.trim()) continue; // 🎯 АВТОМАТИЧНО ПРЕМАХВАНЕ НА ПРАЗНИ КАРТИ
+
+            activeValidCardsCount++;
             const topicMeta = await encryptGCM(topicVal, pass), qEnc = await encryptGCM(qVal, pass), sEnc = await encryptGCM(card.querySelector('.q-theory').value, pass), opts=[];
             for(let i=1; i<=4; i++) { const optEnc = await encryptGCM(card.querySelector(`.opt-${i}-text`).value, pass); opts.push({x: optEnc.enc, c: i===1, r: ""}); }
             db[sub].push({ salt: topicMeta.salt, iv: topicMeta.iv, t: topicMeta.enc, q: qEnc.enc, k: card.querySelector('.has-theory').value === "true", s: sEnc.enc, o: opts });
         }
+
+        if(activeValidCardsCount === 0) { alert("⚠️ Списъкът е празен или съдържа само празни карти!"); return; }
         const blob = new Blob(["var quizDatabase = " + JSON.stringify(db) + ";"], { type: "application/javascript" });
         const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = document.getElementById('uni-filename').value; a.click();
     }
