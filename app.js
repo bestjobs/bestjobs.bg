@@ -5,15 +5,15 @@ var correctCnt = 0;
 var startTime = 0;
 var currentBookDatabase = null;
 
+// 🛡️ Антибот регистри и времеви контроли (Rate Limiting)
 var lastClickTime = 0;
 var botDetectionsCount = 0;
-
-// 🎯 СТРИКТНА АКЦЕНТАЦИЯ: Директна синхронизация без криптографски грешки
+// 🎯 Основна зареждаща функция с автоматично скриване на селекторите
 function initStaticQuiz() {
     var uni = document.getElementById('university-select').value;
     var sub = document.getElementById('subject-select').value;
     
-    // Система за проверка на Мастер Лиценз
+    // Автоматична проверка на Мастер Лиценза през URL фрагмент
     var cryptoSecretPass = window.location.hash.substring(1);
     var targetKey = "BestJobsBG_Sec_GCM_2027_v2_9fA3kX8pQ2mL5zW";
     
@@ -57,7 +57,7 @@ function initStaticQuiz() {
             return;
         }
 
-        // Зареждане на чистите текстови данни директно от RAM паметта
+        // Локално прехвърляне на чистите текстови данни в RAM паметта
         for (var i = 0; i < rawPool.length; i++) {
             activePool.push({
                 t: rawPool[i].t,
@@ -68,15 +68,21 @@ function initStaticQuiz() {
             });
         }
         
-        // 🎲 Разбъркват се ЕДИНСТВЕНО ВЪПРОСИТЕ, отговорите остават твърди по книгата
+        // 🎲 Разбъркват се ЕДИНСТВЕНО ВЪПРОСИТЕ (Картите), отговорите остават твърди по книгата
         for (var i = activePool.length - 1; i > 0; i--) {
             var j = Math.floor(Math.random() * (i + 1));
             var tmp = activePool[i]; activePool[i] = activePool[j]; activePool[j] = tmp;
         }
 
-        document.getElementById('g-pdf').style.display = "block";
+        // 🎯 АВТОМАТИЧНО СКРИВАНЕ: Изчистване на екрана от менюта за пълен фокус върху изпита
+        var setupMenu = document.getElementById('setup-menu');
+        if (setupMenu) setupMenu.style.display = 'none';
+        
         var infoPanel = document.getElementById('info-panel');
         if (infoPanel) infoPanel.style.display = 'none';
+
+        var pdfBtn = document.getElementById('g-pdf');
+        if (pdfBtn) pdfBtn.style.display = "block";
 
         activeIdx = 0; correctCnt = 0;
         startTime = performance.now(); 
@@ -98,6 +104,7 @@ function initStaticQuiz() {
     document.head.appendChild(script);
 }
 
+// 🏛️ DOM Генератор на изпитни карти с фиксиран ред на опциите
 function buildQuizDOM() {
     var space = document.getElementById('quiz-space');
     var html = '';
@@ -115,7 +122,6 @@ function buildQuizDOM() {
     }
     space.innerHTML = html;
 }
-
 function showQuestion(idx) {
     var cards = document.getElementsByClassName('q-card');
     for (var i = 0; i < cards.length; i++) cards[i].classList.remove('active');
@@ -131,6 +137,7 @@ function showQuestion(idx) {
 }
 
 function evalOpt(el, qIdx) {
+    // 🛡️ Антибот Rate Limiting филтър срещу бързо кликане
     var currentTime = Date.now();
     if (currentTime - lastClickTime < 250) {
         botDetectionsCount++;
@@ -168,16 +175,20 @@ function revealAns(qIdx) {
 
 function skipQ(qIdx) {
     var card = document.getElementById('q-idx-' + qIdx); if (card.getAttribute('data-answered')) return;
-    var skipped = activePool.splice(qIdx, 1); activePool.push(skipped);
+    // 🔄 Кръгов SKIP алгоритъм: Премества елемента в края на опашката без загуба на данни
+    var skipped = activePool.splice(qIdx, 1); activePool.push(skipped[0]);
     buildQuizDOM(); showQuestion(activeIdx);
 }
 
 function toggleS(btn) { var box = btn.nextElementSibling.nextElementSibling; box.style.display = (box.style.display === 'block') ? 'none' : 'block'; }
 function printL(qIdx) { document.getElementById('print-area').innerHTML = '<div class="print-l">' + activePool[qIdx].s + '</div>'; window.print(); }
 
+// 📋 Глобален износ на целия справочник (Раздел I и Раздел II наведнъж)
 async function printAllLectures() {
     var cryptoSecretPass = window.location.hash.substring(1) || prompt("Въведете лицензен ключ за достъп до пълния справочник:");
-    if (!cryptoSecretPass || !currentBookDatabase) return;
+    var targetKey = "BestJobsBG_Sec_GCM_2027_v2_9fA3kX8pQ2mL5zW";
+    
+    if (!cryptoSecretPass || cryptoSecretPass.trim() !== targetKey || !currentBookDatabase) return;
 
     var out = '<h1 style="text-align:center; font-size:20pt; margin-bottom:30px;">ОФИЦИАЛЕН КАНДИДАТСТУДЕНТСКИ СБОРНИК 2027</h1>';
     var subjects = ["biology", "chemistry"];
