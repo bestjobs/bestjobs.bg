@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- 🤖 АНТИ-БОТ МЕТА ТАГОВЕ: Пълна защита срещу индексиране от автоматизирани ботове -->
+    <!-- 🤖 АНТИ-БОТ МЕТА ТАГОВЕ: Блокират индексирането от роботизирани системи -->
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
     <meta name="googlebot" content="noindex, nofollow">
     <title>Интерактивна Медицинска Академия | BestJobs.BG</title>
@@ -38,7 +38,7 @@
         }
 
         .quiz-card {
-            padding: 14px 24px; /* Оптимизирани отстъпи за елиминиране на скрола */
+            padding: 14px 24px; /* Оптимизирани компактни отстъпи за елиминиране на скрола */
             box-sizing: border-box;
             width: 100%;
             flex-grow: 1;
@@ -73,7 +73,7 @@
         /* 🖥️ РОДИТЕЛСКИЯТ GRID (Определя 3 оси за големия монитор) */
         .options-grid {
             display: grid;
-            /* 1 колона: Номер, 2 колона: 35% за отговора, 3 колона: оставащото място за пояснението */
+            /* 1 колона: Номер, 2 колона: 35% за отговора, 3 колона: оставащото място за лекцията */
             grid-template-columns: max-content minmax(200px, 35%) 1fr;
             gap: 6px 16px;
             width: 100%;
@@ -81,7 +81,7 @@
 
         /* 🚀 ИСТИНСКИЯТ CSS SUBGRID (Наследяване на решетката) */
         .option-link {
-            grid-column: span 3; /* Заема трите колони */
+            grid-column: span 3; /* Картата заема и трите колони на родителя */
             display: grid;
             grid-template-columns: subgrid; /* Наследява колоните от .options-grid */
             align-items: center;
@@ -145,6 +145,7 @@
         .option-link:hover:not(.disabled) { border-color: #4a6fa5; background: #f1f5f9; }
         .action-link:hover:not(.disabled) { background: #3b5984; border-color: #3b5984; }
 
+        /* Системни състояния през Subgrid */
         .correct { background: #d1fae5!important; border-color: #2ec4b6!important; color: #065f46!important; }
         .correct .option-number { background: #2ec4b6!important; color: #fff!important; }
         .correct .option-individual-explanation { color: #047857!important; border-left-color: #2ec4b6!important; display: block!important; }
@@ -156,8 +157,28 @@
         .reveal-passive .option-individual-explanation { display: block!important; }
         .disabled { cursor: not-allowed; opacity: 0.98; pointer-events: none; }
 
-        .helper-links-container { display: flex; justify-content: space-between; gap: 10px; }
-        .helper-btn { font-size: 13.5px; font-weight: 600; color: #4b5563; text-decoration: none; padding: 6px 12px; border: 2px solid #d1d5db; border-radius: 6px; flex-grow: 1; text-align: center; cursor: pointer; background: #fff; }
+        /* 🛠️ КОРЕКЦИЯ: Контейнерът разпъва бутоните хоризонтално вътре в решетката */
+        .helper-links-container {
+            grid-column: span 3; /* Излиза от колоните на Subgrid и заема целия ред */
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 4px 0;
+        }
+
+        .helper-btn {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #4b5563;
+            text-decoration: none;
+            padding: 8px 12px;
+            border: 2px solid #d1d5db;
+            border-radius: 6px;
+            flex-grow: 1;
+            text-align: center;
+            cursor: pointer;
+            background: #fff;
+        }
         .helper-btn:hover { background: #f1f5f9; }
         #show-answer-btn { color: #2563eb; border-color: #93c5fd; }
         #show-answer-btn:hover { background: #eff6ff; }
@@ -194,17 +215,19 @@
             .syllabus-content { background: #fff!important; padding: 0!important; max-height: none!important; overflow: visible!important; font-size: 12pt!important; border:none!important; }
         }
 
+        /* На мобилен телефон Subgrid се изключва автоматично, за да се събере в екрана */
         @media (max-width: 900px) {
             .options-grid { grid-template-columns: 1fr; }
             .option-link { grid-column: span 1; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
             .option-individual-explanation { padding-left: 0; border-left: none; border-top: 1px dashed #cbd5e1; width: 100%; }
+            .helper-links-container { grid-column: span 1; }
         }
     </style>
 </head>
 <body>
 
     <main class="quiz-wrapper">
-        <!-- СТЪПКА 1: Избор на изпитна база -->
+        <!-- СТЪПКА 1: Начален екран -->
         <article class="quiz-card" id="setup-box">
             <h1 style="margin-top: 20px;">Интерактивна Медицинска Академия</h1>
             <label for="uni-select">Университетски център:</label>
@@ -230,14 +253,11 @@
         <article class="quiz-card hidden" id="quiz" aria-live="polite">
             <header><h2 id="question">Зареждане...</h2></header>
             
-            <!-- Помощна навигация (Заменена изцяло със сигурни линкове) -->
-            <div class="helper-links-container" id="helper-zone">
-                <a id="show-answer-btn" href="javascript:void(0)" class="helper-btn" rel="noopener noreferrer">🔍 Покажи верния отговор</a>
-                <a id="skip-btn" href="javascript:void(0)" class="helper-btn" rel="noopener noreferrer">➡️ Пропусни въпроса</a>
-            </div>
-
             <!-- Контейнер за ултра-широките хоризонтални Subgrid карти -->
-            <div class="options-grid" id="options" role="group" aria-label="Варианти за избор"></div>
+            <div class="options-grid" id="options" role="group" aria-label="Варианти за избор">
+                <!-- Връзките се генерират динамично от JS -->
+                <!-- Връзките за помощ (Покажи верния / Пропусни) ще застанат най-отдолу вътре в този контейнер -->
+            </div>
 
             <!-- Максимално обогатен теоретичен конспект -->
             <div id="syllabus-wrapper" class="syllabus-box hidden">
