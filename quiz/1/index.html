@@ -227,7 +227,7 @@
 <body>
 
     <main class="quiz-wrapper">
-        <!-- СТЪПКА 1: Начален екран -->
+        <!-- СТЪПКА 1: Начален екран (Избор на университет и конспект) -->
         <article class="quiz-card" id="setup-box">
             <h1 style="margin-top: 20px;">Интерактивна Медицинска Академия</h1>
             <label for="uni-select">Университетски център:</label>
@@ -245,11 +245,14 @@
                 <option value="biology">Биология (Академичен Държавен Справочник)</option>
                 <option value="chemistry">Химия (Обща, Неорганична и Органична)</option>
             </select>
-            <a id="start-btn" href="javascript:void(0)" class="action-link" style="margin-top: auto; margin-bottom: 20px;">🎬 Зареди материалите през CSS Subgrid</a>
+            
+            <!-- 🎬 ОБНОВЕН ИЗЧИСТЕН ЛИНК ЗА СТАРТ -->
+            <a id="start-btn" href="javascript:void(0)" class="action-link" style="margin-top: auto; margin-bottom: 20px;" rel="noopener noreferrer" title="Зареди избраните материали">Зареди базата и Старт на теста</a>
+            
             <div class="admin-footer"><a href="encoder.html" class="nav-btn-link">🛠️ Контролен панел</a></div>
         </article>
 
-        <!-- СТЪПКА 2: Основен изпитен панел (Въпроси, Subgrid карти и PDF) -->
+        <!-- СТЪПКА 2: Изпитен панел (Въпроси, CSS Subgrid карти и PDF) -->
         <article class="quiz-card hidden" id="quiz" aria-live="polite">
             <header><h2 id="question">Зареждане...</h2></header>
             
