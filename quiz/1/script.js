@@ -1,6 +1,6 @@
 /**
  * Интерактивна Медицинска Академия | BestJobs.BG
- * Криптографско ядро с вградена изолация на счупени бази данни
+ * Криптографско ядро с вградена изолация на счупени бази данни (Част 1)
  */
 
 let quizData = [];
@@ -35,7 +35,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 /**
- * Хардуерно ускорено AES-256-GCM декриптиране в оперативната памет (RAM)
+ * Нативно AES-256-GCM декриптиране през Web Crypto API (100k PBKDF2 итерации)
  */
 const decryptBook = async (encryptedObj, passphrase) => {
     const iv = new Uint8Array(encryptedObj.iv.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
@@ -49,10 +49,10 @@ const decryptBook = async (encryptedObj, passphrase) => {
     const decryptedBuffer = await window.crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, encryptedBytes);
     return JSON.parse(new TextDecoder().decode(decryptedBuffer));
 };
-
 /**
- * Динамично и изолирано извикване на университетските справочници
+ * Асинхронен импорт на файлове и защита от блокиране на интерфейса (Част 2)
  */
+
 const loadDatabase = async (e) => {
     e.preventDefault();
     const now = Date.now();
@@ -72,7 +72,7 @@ const loadDatabase = async (e) => {
     const uniName = uniSelect.options[uniSelect.selectedIndex].text;
     let module;
 
-    // 🛡️ СТЪПКА 1: Проверка за липсващ уеб файл (Грешка 404) – Отключва веднага сайта за нов избор
+    // 🛡️ СТЪПКА 1: Проверка за липсващ уеб файл (Грешка 404) – Не блокира сайта за друг избор
     try { 
         module = await import(`./${selectedUni}.js`); 
     } catch (err) { 
@@ -81,7 +81,7 @@ const loadDatabase = async (e) => {
         return;
     }
 
-    // 🛡️ СТЪПКА 2: Проверка за грешен ключ или счупен шифър – Не блокира интерфейса
+    // 🛡️ СТЪПКА 2: Проверка за грешна парола или повредена структура на шифъра
     try {
         const decryptedData = await decryptBook(module.encryptedData, activeKey);
         quizData = decryptedData[selectedSubject] ?? [];
@@ -97,30 +97,30 @@ const loadDatabase = async (e) => {
         resetToMenu();
     }
 };
-/**
- * Изпитен мениджмънт, CSS Subgrid рендериране, Пълна навигация и Защити
- */
 
 const resetToMenu = (e) => {
     if (e) e.preventDefault();
     urlPassphrase = "";
     quizEl?.classList.add("hidden");
     resultEl?.classList.add("hidden");
-    setupBox?.classList.remove("hidden"); // Връща безопасно потребителя в главното меню
+    setupBox?.classList.remove("hidden"); // Връща безопасно потребителя в менюто за нов избор
 };
 
 const startQuiz = () => { currentIdx = 0; score = 0; resultEl?.classList.add("hidden"); loadQuestion(); };
+/**
+ * CSS Subgrid хоризонтален рендеринг, Помощни връзки и Защити от копиране (Част 3)
+ */
 
 const loadQuestion = () => {
     nextBtn?.classList.add("hidden");
     syllabusWrapper?.classList.add("hidden");
-    optionsEl?.replaceChildren(); // Почистване на паметта (RAM)
+    optionsEl?.replaceChildren(); // Мигновено почистване на паметта (RAM)
     
     const current = quizData[currentIdx];
     questionEl.textContent = current.q; // Филтрация против XSS атаки
     progressEl.textContent = `Тема ${currentIdx + 1} от ${quizData.length}`;
 
-    // Изграждане на хоризонталните едноредови Subgrid карти
+    // Изграждане на хоризонталните едноредови Subgrid карти (Номер ➔ Текст ➔ Пояснение)
     current.o.forEach((opt, idx) => {
         const link = document.createElement("a");
         link.classList.add("option-link");
@@ -147,7 +147,7 @@ const loadQuestion = () => {
         optionsEl?.appendChild(link);
     });
 
-    // Инжектиране на работещите навигационни връзки в дънния ред на Grid-а
+    // Инжектиране на работещите навигационни връзки в дънния ред на Grid-а (span 3)
     const helperContainer = document.createElement("div");
     helperContainer.classList.add("helper-links-container");
 
@@ -208,11 +208,11 @@ printBtn?.addEventListener("click", (e) => { e.preventDefault(); window.print();
 nextBtn?.addEventListener("click", (e) => { e.preventDefault(); currentIdx++; currentIdx < quizData.length ? loadQuestion() : showResults(); });
 const showResults = () => { quizEl?.classList.add("hidden"); resultEl?.classList.remove("hidden"); scoreEl.textContent = score; totalEl.textContent = quizData.length; };
 
-// Закачане на главни събития
+// Закачане на събития за активиране
 startBtn?.addEventListener("click", loadDatabase);
 restartBtn?.addEventListener("click", resetToMenu);
 
-// 🛡️ АНТИ-ХАКЕР КЛЕТКА
+// 🛡️ АНТИ-ХАКЕР И АНТИ-СКРЕЙПЪР КЛЕТКА
 document.addEventListener("contextmenu", (e) => e.preventDefault());
 document.addEventListener("keydown", (e) => {
     if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 67 || e.keyCode === 74)) || (e.ctrlKey && e.keyCode === 85)) {
