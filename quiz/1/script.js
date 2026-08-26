@@ -3,12 +3,16 @@
  * Военно AES-256-GCM криптографско ядро с локална RAM изолация
  */
 
+### 💻 2. Логическият мениджър: `script.js`
+
+Обновен е да рендерира директни, независими деца в масива на връзката `<a>`, за да може уеб браузърът да ги разпредели автоматично в колоните на Subgrid мрежата.
+
+```javascript
 let quizData = [];
 let currentIdx = 0, score = 0;
 let lastClickTime = 0;
 let urlPassphrase = "";
 
-// Кеширане на елементи от уеб интерфейса
 const setupBox = document.querySelector("#setup-box");
 const quizEl = document.querySelector("#quiz");
 const questionEl = document.querySelector("#question");
@@ -30,47 +34,29 @@ const subjectSelect = document.querySelector("#subject-select");
 const startBtn = document.querySelector("#start-btn");
 const restartBtn = document.querySelector("#restart-btn");
 
-// 🔑 Прихващане на ключа от адреса в паметта преди заличаването му
 window.addEventListener("DOMContentLoaded", () => {
     if (window.location.hash) {
         urlPassphrase = decodeURIComponent(window.location.hash.substring(1)).trim();
     }
 });
 
-/**
- * Хардуерно ускорено AES-256-GCM декриптиране в оперативната памет (RAM)
- */
 const decryptBook = async (encryptedObj, passphrase) => {
     const iv = new Uint8Array(encryptedObj.iv.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
     const encryptedBytes = Uint8Array.from(atob(encryptedObj.ciphertext), c => c.charCodeAt(0));
     const enc = new TextEncoder();
-    
-    // Извличане на ключ през PBKDF2 (100k итерации за защита от суперкомпютри)
-    const keyMaterial = await window.crypto.subtle.importKey(
-        "raw", enc.encode(passphrase), { name: "PBKDF2" }, false, ["deriveKey"]
-    );
+    const keyMaterial = await window.crypto.subtle.importKey("raw", enc.encode(passphrase), { name: "PBKDF2" }, false, ["deriveKey"]);
     const key = await window.crypto.subtle.deriveKey(
         { name: "PBKDF2", salt: enc.encode("BestJobsStaticSalt2026"), iterations: 100000, hash: "SHA-256" },
         keyMaterial, { name: "AES-GCM", length: 256 }, false, ["decrypt"]
     );
-    
     const decryptedBuffer = await window.crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, encryptedBytes);
     return JSON.parse(new TextDecoder().decode(decryptedBuffer));
 };
 
-/**
- * Динамично и изолирано извикване на избраната университетска книга
- */
 const loadDatabase = async (e) => {
     e.preventDefault();
     const now = Date.now();
-    
-    // 🛡️ АНТИ-БОТ: Времеви филтър против софтуерно кликане и скрайпинг
-    if (now - lastClickTime < 350) {
-        alert("Засечена е автоматизирана активност.");
-        window.location.reload();
-        return;
-    }
+    if (now - lastClickTime < 350) return;
     lastClickTime = now;
 
     let activeKey = urlPassphrase;
@@ -86,28 +72,19 @@ const loadDatabase = async (e) => {
     let module;
 
     try { module = await import(`./${selectedUni}.js`); } 
-    catch (err) { alert("Избраният справочник все още не е качен на сървъра."); resetToMenu(); return; }
+    catch (err) { alert("Справочникът все още не е достъпен на сървъра."); resetToMenu(); return; }
 
     try {
         const decryptedData = await decryptBook(module.encryptedData, activeKey);
         quizData = decryptedData[selectedSubject] ?? [];
         if (quizData.length === 0) { alert("Няма намерени въпроси."); resetToMenu(); return; }
-        
-        // 🔒 ИЗЧИСТВАНЕ НА URL: Изтрива паролата от екрана в същата милисекунда
-        if (window.location.hash) { 
-            history.replaceState(null, document.title, window.location.pathname); 
-            urlPassphrase = ""; 
-        }
-        
-        activeKey = null; // Почистване на локалния шифър от RAM паметта
+        if (window.location.hash) { history.replaceState(null, document.title, window.location.pathname); urlPassphrase = ""; }
+        activeKey = null;
         setupBox?.classList.add("hidden");
         quizEl?.classList.remove("hidden");
         startQuiz();
-    } catch (err) { alert("Грешка: Невалиден ключ или повреден файл."); resetToMenu(); }
+    } catch (err) { alert("Грешка: Невалиден ключ."); resetToMenu(); }
 };
-/**
- * Изпитен мениджмънт, Вертикален рендеринг, Навигация и Печат
- */
 
 const resetToMenu = (e) => {
     if (e) e.preventDefault();
@@ -120,42 +97,42 @@ const resetToMenu = (e) => {
 const startQuiz = () => { currentIdx = 0; score = 0; resultEl?.classList.add("hidden"); loadQuestion(); };
 
 /**
- * 🛠️ ВЕРТИКАЛЕН РЕНДЕРИНГ: Изграждане на карти с вградени индивидуални разяснения
+ * 🔢 СЪВМЕСТИМО ЗАРЕЖДАНЕ ЗА SUBGRID СТРУКТУРАТА
  */
 const loadQuestion = () => {
     nextBtn?.classList.add("hidden");
     syllabusWrapper?.classList.add("hidden");
     helperZone?.classList.remove("hidden");
-    optionsEl?.replaceChildren(); // Мигновено олекотено изчистване на DOM
+    optionsEl?.replaceChildren();
     
     const current = quizData[currentIdx];
-    questionEl.textContent = current.q; // XSS Филтрация
+    questionEl.textContent = current.q;
     progressEl.textContent = `Тема ${currentIdx + 1} от ${quizData.length}`;
 
     current.o.forEach((opt, idx) => {
         const link = document.createElement("a");
         link.classList.add("option-link");
         link.href = "javascript:void(0)";
-        
-        const headerBlock = document.createElement("div");
-        headerBlock.classList.add("option-header-block");
-        
+        link.setAttribute("rel", "noopener noreferrer");
+
+        // Първо дете ➔ Колона 1 на Subgrid (Номер)
         const numSpan = document.createElement("span");
         numSpan.classList.add("option-number");
         numSpan.textContent = idx + 1;
 
+        // Второ дете ➔ Колона 2 на Subgrid (Текст на отговора)
         const textSpan = document.createElement("span");
         textSpan.classList.add("option-text");
         textSpan.textContent = opt;
 
-        headerBlock.appendChild(numSpan);
-        headerBlock.appendChild(textSpan);
-        link.appendChild(headerBlock);
-
-        // Инжектиране на скритото индивидуално разяснение под текста на отговора
-        const expDiv = document.createElement("div");
+        // Трето дете ➔ Колона 3 на Subgrid (Изравнено хоризонтално разяснение)
+        const expDiv = document.createElement("span");
         expDiv.classList.add("option-individual-explanation");
-        expDiv.textContent = current.e_all ? current.e_all[idx] : (idx === current.c ? "Правилен избор." : "Грешен избор.");
+        expDiv.textContent = current.e_all ? current.e_all[idx] : (idx === current.c ? "ВЕРНО." : "ГРЕШНО.");
+
+        // Директно закачане към линка (Subgrid подрежда тези три елемента по решетката на родителя)
+        link.appendChild(numSpan);
+        link.appendChild(textSpan);
         link.appendChild(expDiv);
 
         link.addEventListener("click", (evt) => { evt.preventDefault(); checkAnswer(idx, link); });
@@ -166,31 +143,28 @@ const loadQuestion = () => {
 const checkAnswer = (selectedIdx, selectedLink) => {
     const current = quizData[currentIdx];
     const links = optionsEl?.querySelectorAll(".option-link") ?? [];
-
-    helperZone?.classList.add("hidden"); // Скрива навигационните линкове
+    helperZone?.classList.add("hidden");
 
     if (selectedIdx === current.c) {
         selectedLink.classList.add("correct");
         score++;
     } else {
         selectedLink.classList.add("wrong");
-        links[current.c]?.classList.add("correct"); // Разкрива верния при грешка
+        links[current.c]?.classList.add("correct");
     }
 
-    // Блокиране на картите и разкриване на разясненията по всички редове
     links.forEach(l => { 
         l.classList.add("disabled"); 
-        l.classList.add("reveal-passive");
+        l.classList.add("reveal-passive"); 
     });
 
     if (syllabusText && syllabusWrapper && current.s) {
-        syllabusText.textContent = current.s; // Зареждане на мащабната лекция
+        syllabusText.textContent = current.s;
         syllabusWrapper.classList.remove("hidden");
     }
     nextBtn?.classList.remove("hidden");
 };
 
-// 🔍 ПОМОЩНА ВРЪЗКА: Показване на верния вариант без добавяне на точка
 showAnswerBtn?.addEventListener("click", (e) => {
     e.preventDefault();
     const current = quizData[currentIdx];
@@ -205,38 +179,19 @@ showAnswerBtn?.addEventListener("click", (e) => {
     nextBtn?.classList.remove("hidden");
 });
 
-// ➡️ ПОМОЩНА ВРЪЗКА: Пропускане (Избутва въпроса най-отзад в опашката за учене)
 skipBtn?.addEventListener("click", (e) => {
     e.preventDefault();
-    const skippedItem = quizData.splice(currentIdx, 1)[0]; 
+    if (quizData.length <= 1) return;
+    const skippedItem = quizData.splice(currentIdx, 1); 
     quizData.push(skippedItem); 
     loadQuestion(); 
 });
 
 printBtn?.addEventListener("click", (e) => { e.preventDefault(); window.print(); });
+nextBtn?.addEventListener("click", (e) => { e.preventDefault(); currentIdx++; currentIdx < quizData.length ? loadQuestion() : showResults(); });
+const showResults = () => { quizEl?.classList.add("hidden"); resultEl?.classList.remove("hidden"); scoreEl.textContent = score; totalEl.textContent = quizData.length; };
 
-nextBtn?.addEventListener("click", (e) => {
-    e.preventDefault();
-    currentIdx++;
-    currentIdx < quizData.length ? loadQuestion() : showResults();
-});
-
-const showResults = () => { 
-    quizEl?.classList.add("hidden"); 
-    resultEl?.classList.remove("hidden"); 
-    scoreEl.textContent = score; 
-    totalEl.textContent = quizData.length; 
-};
-
-// Закачане на главни събития
 startBtn?.addEventListener("click", loadDatabase);
 restartBtn?.addEventListener("click", resetToMenu);
-
-// 🛡️ ИНТЕРФЕЙСНА ЗАЩИТА ОТ КОПИРАНЕ И ИНСПЕКТИРАНЕ
 document.addEventListener("contextmenu", (e) => e.preventDefault());
-document.addEventListener("keydown", (e) => {
-    if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 67 || e.keyCode === 74)) || (e.ctrlKey && e.keyCode === 85)) {
-        e.preventDefault();
-        return false;
-    }
-});
+document.addEventListener("keydown", (e) => { if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 67 || e.keyCode === 74)) || (e.ctrlKey && e.keyCode === 85)) { e.preventDefault(); return false; } });
