@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- 🤖 АНТИ-БОТ МЕТА ТАГОВЕ: Забраняват индексирането от роботите на търсачките -->
+    <!-- 🤖 АНТИ-БОТ МЕТА ТАГОВЕ: Блокират неоторизирани роботоризирани системи -->
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
     <meta name="googlebot" content="noindex, nofollow">
     <title>Интерактивна Подготовка за Медицински Университети | BestJobs.BG</title>
@@ -15,7 +15,7 @@
             background: #f1f5f9;
             font-family: system-ui, -apple-system, sans-serif;
             color: #333;
-            /* 🚫 ЗАЩИТА НА НИВО БРАУЗЪР: Забранява маркирането и копирането на текст */
+            /* 🚫 ЗАЩИТА НА НИВО БРАУЗЪР: Спира маркирането и копирането на текстове */
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
@@ -59,7 +59,6 @@
         }
 
         h3 { font-size: 17px; text-align: left; color: #1e293b; }
-
         label {
             font-size: 14px;
             font-weight: 600;
@@ -101,12 +100,32 @@
             transition: all 0.15s ease;
         }
 
+        /* 🔢 КАРТИ С ЦИФРОВА НОМЕРАЦИЯ */
         .option-link {
             text-align: left;
             grid-row: span 1;
-            display: grid;
-            grid-template-rows: subgrid;
+            display: flex;
             align-items: center;
+            gap: 12px;
+        }
+
+        .option-number {
+            background: #e2e8f0;
+            color: #475569;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .option-text {
+            flex-grow: 1;
+            line-height: 1.4;
         }
 
         .action-link {
@@ -118,10 +137,15 @@
         }
 
         .option-link:hover:not(.disabled) { border-color: #4a6fa5; background: #f1f5f9; }
+        .option-link:hover:not(.disabled) .option-number { background: #4a6fa5; color: #fff; }
         .action-link:hover:not(.disabled) { background: #3b5984; border-color: #3b5984; color: #fff; }
 
         .correct { background: #d1fae5!important; border-color: #2ec4b6!important; color: #065f46!important; }
+        .correct .option-number { background: #2ec4b6!important; color: #fff!important; }
+        
         .wrong { background: #fee2e2!important; border-color: #e71d36!important; color: #991b1b!important; }
+        .wrong .option-number { background: #e71d36!important; color: #fff!important; }
+        
         .disabled { cursor: not-allowed; opacity: 0.8; pointer-events: none; }
 
         .explanation-box {
@@ -175,18 +199,8 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        .admin-footer {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 10px;
-        }
-
-        .nav-btn-link {
-            font-size: 12.5px;
-            color: #94a3b8;
-            text-decoration: none;
-            font-weight: 500;
-        }
+        .admin-footer { display: flex; justify-content: flex-end; margin-top: 10px; }
+        .nav-btn-link { font-size: 12.5px; color: #94a3b8; text-decoration: none; font-weight: 500; }
         .nav-btn-link:hover { color: #4a6fa5; text-decoration: underline; }
 
         .quiz-footer {
@@ -222,7 +236,7 @@
 <body>
 
     <main class="quiz-wrapper">
-        <!-- СТЪПКА 1: Начален екран (Избор на университет и предмет) -->
+        <!-- СТЪПКА 1: Начален избор -->
         <article class="quiz-card" id="setup-box">
             <h1 style="margin-top: 10px;">Интерактивна Подготовка</h1>
             
@@ -245,11 +259,11 @@
             <a id="start-btn" href="javascript:void(0)" class="action-link" style="margin-top: auto; margin-bottom: 5px;" rel="noopener noreferrer" title="Стартирай избрания изпит">🎬 Старт на изпита</a>
             
             <div class="admin-footer">
-                <a href="encoder.html" class="nav-btn-link" rel="noopener noreferrer" title="Отиди към криптиращия модул за администратори">🛠️ Контролен панел</a>
+                <a href="encoder.html" class="nav-btn-link" rel="noopener noreferrer" title="Отиди към контролния панел">🛠️ Контролен панел</a>
             </div>
         </article>
 
-        <!-- СТЪПКА 2: Изпитен панел (Въпроси, Варианти, Конспект) -->
+        <!-- СТЪПКА 2: Основен изпитен панел -->
         <article class="quiz-card hidden" id="quiz" aria-live="polite">
             <header><h2 id="question">Зареждане...</h2></header>
             <div class="options-grid" id="options" role="group" aria-label="Варианти"></div>
@@ -259,7 +273,7 @@
             <div id="syllabus-wrapper" class="syllabus-box hidden">
                 <div class="syllabus-header">
                     <h3>📚 Теоретичен конспект:</h3>
-                    <a id="print-btn" href="javascript:void(0)" class="print-link" rel="noopener noreferrer" title="Запиши тази тема в PDF или я принтирай">🖨️ PDF / Принт</a>
+                    <a id="print-btn" href="javascript:void(0)" class="print-link" rel="noopener noreferrer" title="Запиши тази тема в PDF">🖨️ PDF / Принт</a>
                 </div>
                 <div id="syllabus-text" class="syllabus-content"></div>
             </div>
@@ -270,15 +284,15 @@
             </footer>
         </article>
 
-        <!-- СТЪПКА 3: Краен резултат -->
+        <!-- СТЪПКА 3: Резултати -->
         <section class="quiz-card hidden" id="result-box" aria-live="assertive">
             <h2 style="margin-top: 10px;">Изпитът приключи</h2>
             <p style="text-align: center; font-size: 18px;">Резултат: <strong id="score" style="color: #4a6fa5; font-size: 24px;">0</strong> от <span id="total-questions">0</span></p>
-            <a id="restart-btn" href="javascript:void(0)" class="action-link" style="margin-top: auto; margin-bottom: 10px;" rel="noopener noreferrer" title="Върни се в главното меню">Нов изпит</a>
+            <a id="restart-btn" href="javascript:void(0)" class="action-link" style="margin-top: auto; margin-bottom: 10px;" rel="noopener noreferrer" title="Върни се в менюто">Нов изпит</a>
         </section>
     </main>
 
-    <!-- Зареждане като защитен ES6 модул (Изпълнява се след пълното зареждане на HTML структурата) -->
+    <!-- Зареждане на скрипта като сигурен ES6 модул -->
     <script type="module" src="script.js" defer></script>
 </body>
 </html>
