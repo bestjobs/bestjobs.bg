@@ -2,52 +2,77 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- 🤖 АНТИ-БОТ МЕТА ТАГОВЕ: Забраняват индексирането от роботите на търсачките -->
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+    <meta name="googlebot" content="noindex, nofollow">
     <title>Интерактивна Подготовка за Медицински Университети | BestJobs.BG</title>
     <style>
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background: #f6f8fa;
-            color: #333;
-            display: grid;
-            place-items: center;
-            min-height: 100vh;
+        html, body {
+            height: 100%;
             margin: 0;
-            padding: 15px;
+            padding: 0;
+            background: #f1f5f9;
+            font-family: system-ui, -apple-system, sans-serif;
+            color: #333;
+            /* 🚫 ЗАЩИТА НА НИВО БРАУЗЪР: Забранява маркирането и копирането на текст */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .quiz-wrapper {
+            width: 100%;
+            max-width: 768px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            box-shadow: 0 0 25px rgba(0,0,0,0.05);
             box-sizing: border-box;
         }
 
         .quiz-card {
-            background: #fff;
-            padding: 24px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 30px;
+            box-sizing: border-box;
             width: 100%;
-            max-width: 480px;
-            display: grid;
-            gap: 16px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         h1, h2, h3 {
             margin: 0;
-            font-size: 18px;
+            font-size: 22px;
             line-height: 1.3;
             text-align: center;
+            color: #0f172a;
         }
+
+        h3 { font-size: 17px; text-align: left; color: #1e293b; }
 
         label {
             font-size: 14px;
             font-weight: 600;
             color: #4a6fa5;
-            margin-bottom: -8px;
+            margin-bottom: -10px;
         }
 
         select {
             width: 100%;
-            padding: 12px;
-            font-size: 15px;
+            padding: 14px;
+            font-size: 16px;
             border: 2px solid #e2e8f0;
-            border-radius: 6px;
+            border-radius: 8px;
             background: #fff;
             outline: none;
             cursor: pointer;
@@ -57,95 +82,154 @@
         .options-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+            gap: 14px;
+        }
+
+        .option-link, .action-link {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            color: #334155;
+            text-align: center;
+            outline: none;
+            box-sizing: border-box;
+            cursor: pointer;
+            transition: all 0.15s ease;
         }
 
         .option-link {
-            background: #f0f4f8;
-            border: 2px solid #e2e8f0;
-            border-radius: 6px;
-            padding: 12px;
-            font-size: 15px;
-            font-weight: 500;
-            text-decoration: none;
-            color: #333;
+            text-align: left;
             grid-row: span 1;
             display: grid;
             grid-template-rows: subgrid;
             align-items: center;
-            outline: none;
         }
 
-        .option-link:hover:not(.disabled) { border-color: #4a6fa5; }
+        .action-link {
+            background: #4a6fa5;
+            color: #fff;
+            border-color: #4a6fa5;
+            width: 100%;
+            display: block;
+        }
+
+        .option-link:hover:not(.disabled) { border-color: #4a6fa5; background: #f1f5f9; }
+        .action-link:hover:not(.disabled) { background: #3b5984; border-color: #3b5984; color: #fff; }
+
         .correct { background: #d1fae5!important; border-color: #2ec4b6!important; color: #065f46!important; }
         .wrong { background: #fee2e2!important; border-color: #e71d36!important; color: #991b1b!important; }
-        .option-link.disabled { cursor: not-allowed; opacity: 0.8; pointer-events: none; }
+        .disabled { cursor: not-allowed; opacity: 0.8; pointer-events: none; }
 
-        /* Стил за обясненията след отговор */
         .explanation-box {
             background: #eff6ff;
             border-left: 4px solid #3b82f6;
-            padding: 12px;
-            font-size: 14px;
-            line-height: 1.4;
-            border-radius: 0 6px 6px 0;
+            padding: 16px;
+            font-size: 15px;
+            line-height: 1.5;
+            border-radius: 0 8px 8px 0;
+            color: #1e40af;
         }
 
-        /* Нов олекотен блок за Конспект */
         .syllabus-box {
             margin-top: 10px;
             border-top: 2px dashed #e2e8f0;
             padding-top: 15px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .syllabus-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .print-link {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #2563eb;
+            text-decoration: none;
+            padding: 6px 12px;
+            border: 1px solid #2563eb;
+            border-radius: 6px;
+            background: #fff;
         }
 
         .syllabus-content {
-            font-size: 13.5px;
-            line-height: 1.5;
-            color: #475569;
+            font-size: 16px;
+            line-height: 1.6;
+            letter-spacing: 0.3px;
+            color: #334155;
             background: #f8fafc;
-            padding: 12px;
-            border-radius: 6px;
-            max-height: 200px;
-            overflow-y: auto; /* Скрол за мобилни устройства */
+            padding: 18px;
+            border-radius: 8px;
+            overflow-y: auto;
+            flex-grow: 1;
+            max-height: 40vh;
+            -webkit-overflow-scrolling: touch;
         }
+
+        .admin-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+
+        .nav-btn-link {
+            font-size: 12.5px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .nav-btn-link:hover { color: #4a6fa5; text-decoration: underline; }
 
         .quiz-footer {
             display: grid;
             grid-template-columns: 1fr auto;
             align-items: center;
             border-top: 1px solid #e2e8f0;
-            padding-top: 12px;
+            padding-top: 16px;
+            margin-top: auto;
         }
 
-        #progress { font-size: 13px; color: #64748b; font-weight: 600; }
-
-        button {
-            background: #4a6fa5;
-            color: #fff;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        #next-btn { width: auto; }
+        #progress { font-size: 14px; color: #64748b; font-weight: 600; }
+        #next-btn { width: auto; padding: 12px 24px; }
         .hidden { display: none !important; }
-        @media (max-width: 400px) { .options-grid { grid-template-columns: 1fr; } }
+
+        @media print {
+            body, html, .quiz-wrapper, .quiz-card { background: #fff!important; color: #000!important; height: auto!important; display: block!important; box-shadow: none!important; }
+            #setup-box, #quiz header, #options, #explanation, .syllabus-header, .quiz-footer, #result-box, .admin-footer { display: none !important; }
+            .syllabus-box { border: none!important; padding: 0!important; margin: 0!important; }
+            .syllabus-content { background: #fff!important; padding: 0!important; max-height: none!important; overflow: visible!important; font-size: 12pt!important; }
+        }
+
+        @media (max-width: 768px) {
+            body { align-items: stretch; background: #fff; }
+            .quiz-wrapper { max-width: 100%; height: 100vh; box-shadow: none; }
+            .quiz-card { padding: 16px; gap: 14px; }
+            h1, h2 { font-size: 19px; }
+            .options-grid { grid-template-columns: 1fr; }
+            .option-link { padding: 14px; font-size: 15px; }
+        }
     </style>
 </head>
 <body>
 
     <main class="quiz-wrapper">
-        <!-- СТЪПКА 1: Начален екран -->
+        <!-- СТЪПКА 1: Начален екран (Избор на университет и предмет) -->
         <article class="quiz-card" id="setup-box">
-            <h1>Интерактивна Подготовка</h1>
+            <h1 style="margin-top: 10px;">Интерактивна Подготовка</h1>
+            
             <label for="uni-select">Изберете университет:</label>
             <select id="uni-select">
                 <option value="mu-sofia">МУ - София</option>
-                <option value="mu-varna">МУ -  Варна</option>
+                <option value="mu-varna">МУ - Варна</option>
                 <option value="mu-plovdiv">МУ - Пловдив</option>
                 <option value="mu-pleven">МУ - Плевен</option>
                 <option value="tu-stara-zagora">Тракийски У - Ст. Загора (МФ)</option>
@@ -158,37 +242,43 @@
                 <option value="biology">Биология (8-12 клас)</option>
                 <option value="chemistry">Химия (Обща, Неорганична, Органична)</option>
             </select>
-            <button id="start-btn" type="button">🎬 Старт на изпита</button>
+            <a id="start-btn" href="javascript:void(0)" class="action-link" style="margin-top: auto; margin-bottom: 5px;" rel="noopener noreferrer" title="Стартирай избрания изпит">🎬 Старт на изпита</a>
+            
+            <div class="admin-footer">
+                <a href="encoder.html" class="nav-btn-link" rel="noopener noreferrer" title="Отиди към криптиращия модул за администратори">🛠️ Контролен панел</a>
+            </div>
         </article>
 
-        <!-- СТЪПКА 2: Изпитен панел -->
+        <!-- СТЪПКА 2: Изпитен панел (Въпроси, Варианти, Конспект) -->
         <article class="quiz-card hidden" id="quiz" aria-live="polite">
             <header><h2 id="question">Зареждане...</h2></header>
             <div class="options-grid" id="options" role="group" aria-label="Варианти"></div>
             
-            <!-- Динамично разяснение (Скрито по подразбиране) -->
             <div id="explanation" class="explanation-box hidden"></div>
 
-            <!-- Вграден Конспект/Теория -->
             <div id="syllabus-wrapper" class="syllabus-box hidden">
-                <h3>📚 Теоретичен конспект по темата:</h3>
+                <div class="syllabus-header">
+                    <h3>📚 Теоретичен конспект:</h3>
+                    <a id="print-btn" href="javascript:void(0)" class="print-link" rel="noopener noreferrer" title="Запиши тази тема в PDF или я принтирай">🖨️ PDF / Принт</a>
+                </div>
                 <div id="syllabus-text" class="syllabus-content"></div>
             </div>
 
             <footer class="quiz-footer">
                 <span id="progress" aria-atomic="true"></span>
-                <button id="next-btn" class="hidden" type="button">Напред</button>
+                <a id="next-btn" href="javascript:void(0)" class="action-link hidden" rel="noopener noreferrer" title="Премени към следващия въпрос">Напред</a>
             </footer>
         </article>
 
         <!-- СТЪПКА 3: Краен резултат -->
         <section class="quiz-card hidden" id="result-box" aria-live="assertive">
-            <h2>Изпитът приключи</h2>
-            <p>Резултат: <strong id="score">0</strong> от <span id="total-questions">0</span></p>
-            <button id="restart-btn" type="button">Нов изпит</button>
+            <h2 style="margin-top: 10px;">Изпитът приключи</h2>
+            <p style="text-align: center; font-size: 18px;">Резултат: <strong id="score" style="color: #4a6fa5; font-size: 24px;">0</strong> от <span id="total-questions">0</span></p>
+            <a id="restart-btn" href="javascript:void(0)" class="action-link" style="margin-top: auto; margin-bottom: 10px;" rel="noopener noreferrer" title="Върни се в главното меню">Нов изпит</a>
         </section>
     </main>
 
+    <!-- Зареждане като защитен ES6 модул (Изпълнява се след пълното зареждане на HTML структурата) -->
     <script type="module" src="script.js" defer></script>
 </body>
 </html>
