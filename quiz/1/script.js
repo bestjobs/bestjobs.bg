@@ -1,6 +1,6 @@
 /**
  * Интерактивна Медицинска Академия | BestJobs.BG
- * Военно AES-256-GCM криптографско ядро с локална RAM изолация
+ * Криптографско ядро с вградена изолация на счупени бази данни
  */
 
 let quizData = [];
@@ -8,7 +8,7 @@ let currentIdx = 0, score = 0;
 let lastClickTime = 0;
 let urlPassphrase = "";
 
-// Кеширане на елементи от широкоекранния интерфейс
+// Селектиране на всички широкоекранни DOM обекти
 const setupBox = document.querySelector("#setup-box");
 const quizEl = document.querySelector("#quiz");
 const questionEl = document.querySelector("#question");
@@ -35,39 +35,28 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 /**
- * Дешифриране в оперативната памет (RAM) чрез хардуерните инструкции на процесора
+ * Хардуерно ускорено AES-256-GCM декриптиране в оперативната памет (RAM)
  */
 const decryptBook = async (encryptedObj, passphrase) => {
     const iv = new Uint8Array(encryptedObj.iv.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
     const encryptedBytes = Uint8Array.from(atob(encryptedObj.ciphertext), c => c.charCodeAt(0));
     const enc = new TextEncoder();
-    
-    // Ключова деривация през PBKDF2 (100 000 итерации за тежест срещу скрапери)
-    const keyMaterial = await window.crypto.subtle.importKey(
-        "raw", enc.encode(passphrase), { name: "PBKDF2" }, false, ["deriveKey"]
-    );
+    const keyMaterial = await window.crypto.subtle.importKey("raw", enc.encode(passphrase), { name: "PBKDF2" }, false, ["deriveKey"]);
     const key = await window.crypto.subtle.deriveKey(
         { name: "PBKDF2", salt: enc.encode("BestJobsStaticSalt2026"), iterations: 100000, hash: "SHA-256" },
         keyMaterial, { name: "AES-GCM", length: 256 }, false, ["decrypt"]
     );
-    
     const decryptedBuffer = await window.crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, encryptedBytes);
     return JSON.parse(new TextDecoder().decode(decryptedBuffer));
 };
 
 /**
- * Динамично зареждане на кодирания университетски справочник при поискване
+ * Динамично и изолирано извикване на университетските справочници
  */
 const loadDatabase = async (e) => {
     e.preventDefault();
     const now = Date.now();
-    
-    // 🛡️ АНТИ-БОТ: Времеви филтър (Rate Limiting) против софтуерни кликове
-    if (now - lastClickTime < 350) {
-        alert("Засечена е автоматизирана активност.");
-        window.location.reload();
-        return;
-    }
+    if (now - lastClickTime < 350) return;
     lastClickTime = now;
 
     let activeKey = urlPassphrase;
@@ -80,30 +69,36 @@ const loadDatabase = async (e) => {
 
     const selectedUni = uniSelect?.value;
     const selectedSubject = subjectSelect?.value;
+    const uniName = uniSelect.options[uniSelect.selectedIndex].text;
     let module;
 
-    try { module = await import(`./${selectedUni}.js`); } 
-    catch (err) { alert("Справочникът за избрания университет все още не е достъпен на сървъра."); resetToMenu(); return; }
+    // 🛡️ СТЪПКА 1: Проверка за липсващ уеб файл (Грешка 404) – Отключва веднага сайта за нов избор
+    try { 
+        module = await import(`./${selectedUni}.js`); 
+    } catch (err) { 
+        alert(`Справочникът за "${uniName}" все още не е качен или е недостъпен. Моля, изберете друг университет.`);
+        resetToMenu();
+        return;
+    }
 
+    // 🛡️ СТЪПКА 2: Проверка за грешен ключ или счупен шифър – Не блокира интерфейса
     try {
         const decryptedData = await decryptBook(module.encryptedData, activeKey);
         quizData = decryptedData[selectedSubject] ?? [];
-        if (quizData.length === 0) { alert("Няма намерени въпроси за този предмет."); resetToMenu(); return; }
+        if (quizData.length === 0) throw new Error("Празен справочник");
         
-        // 🔒 ИЗЧИСТВАНЕ НА URL: Заличава ключа от адресната лента веднага след декриптирането
-        if (window.location.hash) { 
-            history.replaceState(null, document.title, window.location.pathname); 
-            urlPassphrase = ""; 
-        }
-        
-        activeKey = null; // Пълно заличаване на локалния шифър от RAM паметта
+        if (window.location.hash) { history.replaceState(null, document.title, window.location.pathname); urlPassphrase = ""; }
+        activeKey = null;
         setupBox?.classList.add("hidden");
         quizEl?.classList.remove("hidden");
         startQuiz();
-    } catch (err) { alert("Грешка: Невалиден ключ за достъп или повреден пакет."); resetToMenu(); }
+    } catch (err) { 
+        alert(`Грешка при достъпа до "${uniName}": Въвели сте грешен секретен ключ или данните във файла са повредени. Опитайте отново.`);
+        resetToMenu();
+    }
 };
 /**
- * Изпитен мениджмънт, CSS Subgrid инжектиране, Навигация и Печат
+ * Изпитен мениджмънт, CSS Subgrid рендериране, Пълна навигация и Защити
  */
 
 const resetToMenu = (e) => {
@@ -111,41 +106,35 @@ const resetToMenu = (e) => {
     urlPassphrase = "";
     quizEl?.classList.add("hidden");
     resultEl?.classList.add("hidden");
-    setupBox?.classList.remove("hidden");
+    setupBox?.classList.remove("hidden"); // Връща безопасно потребителя в главното меню
 };
 
 const startQuiz = () => { currentIdx = 0; score = 0; resultEl?.classList.add("hidden"); loadQuestion(); };
 
-/**
- * 🖥️ CSS SUBGRID РЕНДЕРИРАНЕ: Инжектиране на отговорите и помощната лента вътре в решетката
- */
 const loadQuestion = () => {
     nextBtn?.classList.add("hidden");
     syllabusWrapper?.classList.add("hidden");
-    optionsEl?.replaceChildren(); // Мигновено и чисто изчистване на DOM дървото
+    optionsEl?.replaceChildren(); // Почистване на паметта (RAM)
     
     const current = quizData[currentIdx];
-    questionEl.textContent = current.q; // Анти-XSS нативна филтрация
+    questionEl.textContent = current.q; // Филтрация против XSS атаки
     progressEl.textContent = `Тема ${currentIdx + 1} от ${quizData.length}`;
 
-    // 1. Изграждане на четирите едноредови Subgrid карти с отговори и разяснения
+    // Изграждане на хоризонталните едноредови Subgrid карти
     current.o.forEach((opt, idx) => {
         const link = document.createElement("a");
         link.classList.add("option-link");
         link.href = "javascript:void(0)";
         link.setAttribute("rel", "noopener noreferrer");
 
-        // Дете 1 ➔ Колона 1 на Subgrid (Цифров номер)
         const numSpan = document.createElement("span");
         numSpan.classList.add("option-number");
         numSpan.textContent = idx + 1;
 
-        // Дете 2 ➔ Колона 2 на Subgrid (Текст на отговора)
         const textSpan = document.createElement("span");
         textSpan.classList.add("option-text");
         textSpan.textContent = opt;
 
-        // Дете 3 ➔ Колона 3 на Subgrid (Изравнено хоризонтално разяснение)
         const expDiv = document.createElement("span");
         expDiv.classList.add("option-individual-explanation");
         expDiv.textContent = current.e_all ? current.e_all[idx] : (idx === current.c ? "ВЕРНО." : "ГРЕШНО.");
@@ -158,7 +147,7 @@ const loadQuestion = () => {
         optionsEl?.appendChild(link);
     });
 
-    // 2. 🛠️ НАВИГАЦИОННА ПОПРАВКА: Изграждане на помощната лента ВЪТРЕ в дънния ред на Grid-а
+    // Инжектиране на работещите навигационни връзки в дънния ред на Grid-а
     const helperContainer = document.createElement("div");
     helperContainer.classList.add("helper-links-container");
 
@@ -177,14 +166,12 @@ const loadQuestion = () => {
 
     helperContainer.appendChild(showAnswerBtnLocal);
     helperContainer.appendChild(skipBtnLocal);
-    optionsEl?.appendChild(helperContainer); // Поставя я на дъното на решетката, задействайки събитията
+    optionsEl?.appendChild(helperContainer);
 };
 
 const checkAnswer = (selectedIdx, selectedLink) => {
     const current = quizData[currentIdx];
     const links = optionsEl?.querySelectorAll(".option-link") ?? [];
-    
-    // Скрива лентата с помощни линкове веднага след избор, за да изолира разсейването
     document.querySelector(".helper-links-container")?.classList.add("hidden");
 
     if (selectedIdx === current.c) {
@@ -192,37 +179,24 @@ const checkAnswer = (selectedIdx, selectedLink) => {
         score++;
     } else {
         selectedLink.classList.add("wrong");
-        links[current.c]?.classList.add("correct"); // Разкрива верния вариант
+        links[current.c]?.classList.add("correct");
     }
 
-    // Блокиране на кликовете и разкриване на разясненията по всички редове едновременно
-    links.forEach(l => { 
-        l.classList.add("disabled"); 
-        l.classList.add("reveal-passive"); 
-    });
-
-    if (syllabusText && syllabusWrapper && current.s) {
-        syllabusText.textContent = current.s; // Зареждане на мащабната теория
-        syllabusWrapper.classList.remove("hidden");
-    }
+    links.forEach(l => { l.classList.add("disabled"); l.classList.add("reveal-passive"); });
+    if (syllabusText && syllabusWrapper && current.s) { syllabusText.textContent = current.s; syllabusWrapper.classList.remove("hidden"); }
     nextBtn?.classList.remove("hidden");
 };
 
-// 🔍 ФУНКЦИЯ: Разкриване на верния отговор без добавяне на изпитна точка
 const revealTrueAnswer = () => {
     const current = quizData[currentIdx];
     const links = optionsEl?.querySelectorAll(".option-link") ?? [];
     document.querySelector(".helper-links-container")?.classList.add("hidden");
     links[current.c]?.classList.add("correct");
     links.forEach(l => { l.classList.add("disabled"); l.classList.add("reveal-passive"); });
-    if (syllabusText && syllabusWrapper && current.s) { 
-        syllabusText.textContent = current.s; 
-        syllabusWrapper.classList.remove("hidden"); 
-    }
+    if (syllabusText && syllabusWrapper && current.s) { syllabusText.textContent = current.s; syllabusWrapper.classList.remove("hidden"); }
     nextBtn?.classList.remove("hidden");
 };
 
-// ➡️ ФУНКЦИЯ: Пропускане (Премахва текущия въпрос и го прехвърля в края на опашката)
 const skipCurrentQuestion = () => {
     if (quizData.length <= 1) return;
     const skippedItem = quizData.splice(currentIdx, 1)[0]; 
@@ -238,7 +212,7 @@ const showResults = () => { quizEl?.classList.add("hidden"); resultEl?.classList
 startBtn?.addEventListener("click", loadDatabase);
 restartBtn?.addEventListener("click", resetToMenu);
 
-// 🛡️ ИНТЕРФЕЙСНА АНТИ-ХАКЕР ЗАЩИТА (Забрана на копиране и отваряне на конзола)
+// 🛡️ АНТИ-ХАКЕР КЛЕТКА
 document.addEventListener("contextmenu", (e) => e.preventDefault());
 document.addEventListener("keydown", (e) => {
     if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 67 || e.keyCode === 74)) || (e.ctrlKey && e.keyCode === 85)) {
