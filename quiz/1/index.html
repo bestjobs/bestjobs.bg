@@ -28,7 +28,7 @@
             gap: 16px;
         }
 
-        h1, h2 {
+        h1, h2, h3 {
             margin: 0;
             font-size: 18px;
             line-height: 1.3;
@@ -52,10 +52,6 @@
             outline: none;
             cursor: pointer;
             -webkit-appearance: none;
-        }
-
-        select:focus {
-            border-color: #4a6fa5;
         }
 
         .options-grid {
@@ -84,6 +80,34 @@
         .correct { background: #d1fae5!important; border-color: #2ec4b6!important; color: #065f46!important; }
         .wrong { background: #fee2e2!important; border-color: #e71d36!important; color: #991b1b!important; }
         .option-link.disabled { cursor: not-allowed; opacity: 0.8; pointer-events: none; }
+
+        /* Стил за обясненията след отговор */
+        .explanation-box {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 12px;
+            font-size: 14px;
+            line-height: 1.4;
+            border-radius: 0 6px 6px 0;
+        }
+
+        /* Нов олекотен блок за Конспект */
+        .syllabus-box {
+            margin-top: 10px;
+            border-top: 2px dashed #e2e8f0;
+            padding-top: 15px;
+        }
+
+        .syllabus-content {
+            font-size: 13.5px;
+            line-height: 1.5;
+            color: #475569;
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 6px;
+            max-height: 200px;
+            overflow-y: auto; /* Скрол за мобилни устройства */
+        }
 
         .quiz-footer {
             display: grid;
@@ -115,14 +139,13 @@
 <body>
 
     <main class="quiz-wrapper">
-        <!-- Начален екран за избор -->
+        <!-- СТЪПКА 1: Начален екран -->
         <article class="quiz-card" id="setup-box">
             <h1>Интерактивна Подготовка</h1>
-            
             <label for="uni-select">Изберете университет:</label>
             <select id="uni-select">
                 <option value="mu-sofia">МУ - София</option>
-                <option value="mu-varna">МУ - Варна</option>
+                <option value="mu-varna">МУ -  Варна</option>
                 <option value="mu-plovdiv">МУ - Пловдив</option>
                 <option value="mu-pleven">МУ - Плевен</option>
                 <option value="tu-stara-zagora">Тракийски У - Ст. Загора (МФ)</option>
@@ -135,21 +158,30 @@
                 <option value="biology">Биология (8-12 клас)</option>
                 <option value="chemistry">Химия (Обща, Неорганична, Органична)</option>
             </select>
-
             <button id="start-btn" type="button">🎬 Старт на изпита</button>
         </article>
 
-        <!-- Изпитен панел -->
+        <!-- СТЪПКА 2: Изпитен панел -->
         <article class="quiz-card hidden" id="quiz" aria-live="polite">
             <header><h2 id="question">Зареждане...</h2></header>
             <div class="options-grid" id="options" role="group" aria-label="Варианти"></div>
+            
+            <!-- Динамично разяснение (Скрито по подразбиране) -->
+            <div id="explanation" class="explanation-box hidden"></div>
+
+            <!-- Вграден Конспект/Теория -->
+            <div id="syllabus-wrapper" class="syllabus-box hidden">
+                <h3>📚 Теоретичен конспект по темата:</h3>
+                <div id="syllabus-text" class="syllabus-content"></div>
+            </div>
+
             <footer class="quiz-footer">
                 <span id="progress" aria-atomic="true"></span>
                 <button id="next-btn" class="hidden" type="button">Напред</button>
             </footer>
         </article>
 
-        <!-- Прозорец с резултати -->
+        <!-- СТЪПКА 3: Краен резултат -->
         <section class="quiz-card hidden" id="result-box" aria-live="assertive">
             <h2>Изпитът приключи</h2>
             <p>Резултат: <strong id="score">0</strong> от <span id="total-questions">0</span></p>
@@ -157,7 +189,6 @@
         </section>
     </main>
 
-    <!-- Зареждане като защитен ES6 модул -->
     <script type="module" src="script.js" defer></script>
 </body>
 </html>
