@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Военен AES-256-GCM Генератор</title>
+    <style>
+        body { font-family: sans-serif; padding: 30px; background: #f0f4f8; }
+        textarea { width: 100%; height: 150px; font-family: monospace; }
+        input, button { padding: 10px; font-size: 16px; margin: 10px 0; width: 100%; box-sizing: border-box; }
+        button { background: #2ec4b6; color: white; border: none; cursor: pointer; font-weight: bold; }
+        .output-box { background: #fff; padding: 15px; border: 1px solid #ccc; white-space: pre-wrap; word-break: break-all; font-family: monospace; margin-top: 20px;}
+    </style>
+</head>
+<body>
+    <h2>Генератор на защитени книги за BestJobs Quiz</h2>
+    
+    <label>1. Въведете Вашата Секретна Парола:</label>
+    <input type="text" id="passphrase" value="BestJobsMed2026SecureKey">
+
+    <label>2. Поставете Вашите въпроси в чист JSON формат:</label>
+    <textarea id="json-input">[
+  {
+    "q": "Пример за първи въпрос по Биология?",
+    "o": ["Отговор А", "Отговор Б", "Отговор В", "Отговор Г"],
+    "c": 0
+  }
+]</textarea>
+
+    <button onclick="encryptData()">🔒 Криптирай по Военен Стандарт</button>
+
+    <h3>3. Готов код за Вашия университетски файл (Копирайте всичко отдолу):</h3>
+    <div class="output-box" id="output">Кликнете бутона, за да генерирате шифъра...</div>
+
+    <script>
+        async function encryptData() {
+            const passphrase = document.getElementById('passphrase').value.trim();
+            const jsonText = document.getElementById('json-input').value.trim();
+            
+            try {
+                // Масиви за предметите
+                const rawStructure = {
+                    biology: JSON.parse(jsonText),
+                    chemistry: [] // Може да добавите и химия тук по същия начин
+                };
+
+                const enc = new TextEncoder();
+                const encodedData = enc.encode(JSON.stringify(rawStructure));
+
+                // Генериране на случаен 12-байтов IV за AES-GCM
+                const iv = window.crypto.getRandomValues(new Uint8Array(12));
+
+                // Генериране на ключ чрез PBKDF2 (идентично със срипта в сайта)
+                const keyMaterial = await window.crypto.subtle.importKey(
+                    "raw", enc.encode(passphrase), { name: "PBKDF2" }, false, ["deriveKey"]
+                );
+
+                const key = await window.crypto.subtle.deriveKey(
+                    {
+                        name: "PBKDF2",
+                        salt: enc.encode("BestJobsStaticSalt2026"),
+                        iterations: 100000,
+                        hash: "SHA-256"
+                    },
+                    keyMaterial,
+                    { name: "AES-GCM", length: 256 },
+                    false,
+                    ["encrypt"]
+                );
+
+                // Военно шифриране
+                const ciphertextBuffer = await window.crypto.subtle.encrypt(
+                    { name: "AES-GCM", iv: iv },
+                    key,
+                    encodedData
+                );
+
+                // Конвертиране до Hex и Base64 формати за съхранение в JS файл
+                const ivHex = Array.from(iv).map(b => b.toString(16).padStart(2, '0')).join('');
+                const ciphertextBase64 = btoa(String.fromCharCode(...new Uint8Array(ciphertextBuffer)));
+
+                // Форматиране на готовия изходен код
+                const finalJSCode = `// Защитена книга (AES-256-GCM) - Защитено от извличане\nexport const encryptedData = {\n    iv: "${ivHex}",\n    ciphertext: "${ciphertextBase64}"\n};`;
+
+                document.getElementById('output').innerText = finalJSCode;
+            } catch (e) {
+                alert("Грешка при криптирането. Проверете дали JSON форматът е валиден.");
+                console.error(e);
+            }
+        }
+    </script>
+</body>
+</html>
