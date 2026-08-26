@@ -153,12 +153,10 @@
 
     <div class="wrapper">
         <div class="encoder-header">
-            <h2>🛠️ Военен Скриптор за Справочници (Разширена структура)</h2>
+            <h2>🛠️ Военен Скриптор за Справочници (AES-256-GCM)</h2>
             <a href="index.html" class="back-to-site-link" rel="noopener noreferrer" title="Върни се обратно към изпитния панел">🖥️ Към теста</a>
         </div>
-        
-        <label for="passphrase">Текущ Максимално Усложнен Ключ ( Скрит от потребителския код ):</label>
-        <input type="text" id="passphrase" value="mK9$vX!2pQ#7zW9&bA4*eR1_tY8%uI3@oP5(mK9$vX!2pQ#7zW9&bA4*eR1_tY8%uI3@oP5" readonly>
+        <p style="font-size: 14px; color: #64748b; margin-top: -15px; margin-bottom: 20px;">Модул за запечатване на данни. Генерира неразбиваем криптиран код за лесно обновяване на файловете в GitHub.</p>
 
         <!-- ЗОНА ЗА ВНОС НА ДОКУМЕНТИ -->
         <div class="import-box">
@@ -308,7 +306,16 @@
         }
 
         async function encryptSyllabusBook() {
-            const passphrase = document.getElementById('passphrase').value.trim();
+            // 🔒 ИЗИСКВАНЕ НА КЛЮЧА В ДВИЖЕНИЕ: Ключът никога не престоява във файла в GitHub
+            let passphrase = prompt("Въведете Вашия максимално усложнен Мастер ключ за криптиране:");
+            if (passphrase === null) return;
+            passphrase = passphrase.trim();
+            
+            if (!passphrase) {
+                alert("Криптирането е прекратено. Ключът не може да бъде празен.");
+                return;
+            }
+
             const bioText = document.getElementById('bio-input').value.trim();
             const chemText = document.getElementById('chem-input').value.trim();
             const outputEl = document.getElementById('output');
@@ -337,6 +344,9 @@
 
                 const ivHex = Array.from(iv).map(b => b.toString(16).padStart(2, '0')).join('');
                 const ciphertextBase64 = btoa(String.fromCharCode(...new Uint8Array(ciphertextBuffer)));
+
+                // 🔒 Почистване на следите: пренаписваме локалната променлива с ключа в паметта
+                passphrase = null;
 
                 outputEl.textContent = `// Защитена книга за университет (AES-256-GCM) - Включва Обяснения и Конспект\nexport const encryptedData = {\n    iv: "${ivHex}",\n    ciphertext: "${ciphertextBase64}"\n};`;
             } catch (e) {
