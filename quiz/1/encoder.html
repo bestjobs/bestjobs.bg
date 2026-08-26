@@ -2,54 +2,72 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Военен AES-256-GCM Генератор</title>
+    <title>Максимално Усложнен AES-256-GCM Генератор</title>
     <style>
-        body { font-family: sans-serif; padding: 30px; background: #f0f4f8; }
-        textarea { width: 100%; height: 150px; font-family: monospace; }
-        input, button { padding: 10px; font-size: 16px; margin: 10px 0; width: 100%; box-sizing: border-box; }
-        button { background: #2ec4b6; color: white; border: none; cursor: pointer; font-weight: bold; }
-        .output-box { background: #fff; padding: 15px; border: 1px solid #ccc; white-space: pre-wrap; word-break: break-all; font-family: monospace; margin-top: 20px;}
+        body { font-family: system-ui, -apple-system, sans-serif; padding: 30px; background: #f0f4f8; color: #333; }
+        textarea { width: 100%; height: 180px; font-family: monospace; padding: 10px; border-radius: 6px; border: 2px solid #e2e8f0; }
+        input, button { padding: 12px; font-size: 15px; margin: 10px 0; width: 100%; box-sizing: border-box; border-radius: 6px; }
+        input { border: 2px solid #e2e8f0; font-family: monospace; background: #fafafa; }
+        button { background: #4a6fa5; color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { background: #3b5984; }
+        .output-box { background: #fff; padding: 15px; border: 2px solid #e2e8f0; border-radius: 6px; white-space: pre-wrap; word-break: break-all; font-family: monospace; margin-top: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .flex-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     </style>
 </head>
 <body>
-    <h2>Генератор на защитени книги за BestJobs Quiz</h2>
+    <h2>🔒 Военен Скриптор за Справочници (AES-256-GCM)</h2>
     
-    <label>1. Въведете Вашата Секретна Парола:</label>
-    <input type="text" id="passphrase" value="BestJobsMed2026SecureKey">
+    <label><strong>Текущ Максимално Усложнен Ключ ( Скрит от сайта в GitHub ):</strong></label>
+    <input type="text" id="passphrase" value="mK9$vX!2pQ#7zW9&bA4*eR1_tY8%uI3@oP5(mK9$vX!2pQ#7zW9&bA4*eR1_tY8%uI3@oP5" readonly>
 
-    <label>2. Поставете Вашите въпроси в чист JSON формат:</label>
-    <textarea id="json-input">[
+    <div class="flex-container">
+        <div>
+            <label><strong>1. Поставете въпросите по БИОЛОГИЯ (JSON):</strong></label>
+            <textarea id="bio-input">[
   {
-    "q": "Пример за първи въпрос по Биология?",
-    "o": ["Отговор А", "Отговор Б", "Отговор В", "Отговор Г"],
-    "c": 0
+    "q": "Коя органела е енергийното депо на клетката?",
+    "o": ["Ядро", "Митохондрий", "Рибозома", "Лизозома"],
+    "c": 1
   }
 ]</textarea>
+        </div>
+        <div>
+            <label><strong>2. Поставете въпросите по ХИМИЯ (JSON):</strong></label>
+            <textarea id="chem-input">[
+  {
+    "q": "Каква връзка се създава между натрий и хлор в NaCl?",
+    "o": ["Ковалентна", "Йонна", "Водородна", "Метална"],
+    "c": 1
+  }
+]</textarea>
+        </div>
+    </div>
 
-    <button onclick="encryptData()">🔒 Криптирай по Военен Стандарт</button>
+    <button onclick="encryptData()">⚙️ Криптирай Справочника при Поискване</button>
 
-    <h3>3. Готов код за Вашия университетски файл (Копирайте всичко отдолу):</h3>
-    <div class="output-box" id="output">Кликнете бутона, за да генерирате шифъра...</div>
+    <h3>3. Готов защитен код за университетския файл (напр. mu-sofia.js):</h3>
+    <div class="output-box" id="output">Попълнете данните горе и натиснете бутона...</div>
 
     <script>
         async function encryptData() {
             const passphrase = document.getElementById('passphrase').value.trim();
-            const jsonText = document.getElementById('json-input').value.trim();
+            const bioText = document.getElementById('bio-input').value.trim();
+            const chemText = document.getElementById('chem-input').value.trim();
             
             try {
-                // Масиви за предметите
+                // Създаване на обединена структура за конкретната книга
                 const rawStructure = {
-                    biology: JSON.parse(jsonText),
-                    chemistry: [] // Може да добавите и химия тук по същия начин
+                    biology: JSON.parse(bioText),
+                    chemistry: JSON.parse(chemText)
                 };
 
                 const enc = new TextEncoder();
                 const encodedData = enc.encode(JSON.stringify(rawStructure));
 
-                // Генериране на случаен 12-байтов IV за AES-GCM
+                // 12-байтов хардуерен Крипто-IV вектор
                 const iv = window.crypto.getRandomValues(new Uint8Array(12));
 
-                // Генериране на ключ чрез PBKDF2 (идентично със срипта в сайта)
+                // Ключово извличане PBKDF2 (100 000 итерации за тежест срещу суперкомпютри)
                 const keyMaterial = await window.crypto.subtle.importKey(
                     "raw", enc.encode(passphrase), { name: "PBKDF2" }, false, ["deriveKey"]
                 );
@@ -67,23 +85,21 @@
                     ["encrypt"]
                 );
 
-                // Военно шифриране
+                // Истинско криптиране на целия масив
                 const ciphertextBuffer = await window.crypto.subtle.encrypt(
                     { name: "AES-GCM", iv: iv },
                     key,
                     encodedData
                 );
 
-                // Конвертиране до Hex и Base64 формати за съхранение в JS файл
                 const ivHex = Array.from(iv).map(b => b.toString(16).padStart(2, '0')).join('');
                 const ciphertextBase64 = btoa(String.fromCharCode(...new Uint8Array(ciphertextBuffer)));
 
-                // Форматиране на готовия изходен код
-                const finalJSCode = `// Защитена книга (AES-256-GCM) - Защитено от извличане\nexport const encryptedData = {\n    iv: "${ivHex}",\n    ciphertext: "${ciphertextBase64}"\n};`;
+                const finalJSCode = `// Защитена книга за университет (AES-256-GCM) - Защитено от извличане\nexport const encryptedData = {\n    iv: "${ivHex}",\n    ciphertext: "${ciphertextBase64}"\n};`;
 
                 document.getElementById('output').innerText = finalJSCode;
             } catch (e) {
-                alert("Грешка при криптирането. Проверете дали JSON форматът е валиден.");
+                alert("Възникна грешка. Моля, проверете дали структурата на въпросите е валиден JSON (квадратни скоби, кавички и запетаи).");
                 console.error(e);
             }
         }
