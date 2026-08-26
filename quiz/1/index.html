@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- 🤖 АНТИ-БОТ МЕТА ТАГОВЕ: Блокират индексирането от роботизирани системи -->
+    <!-- 🤖 АНТИ-БОТ МЕТА ТАГОВЕ: Пълна защита срещу индексиране от автоматизирани ботове -->
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
     <meta name="googlebot" content="noindex, nofollow">
     <title>Интерактивна Медицинска Академия | BestJobs.BG</title>
@@ -15,7 +15,7 @@
             background: #f8fafc;
             font-family: system-ui, -apple-system, sans-serif;
             color: #0f172a;
-            /* 🚫 ЗАЩИТА НА НИВО БРАУЗЪР: Спира маркирането и копирането на текстове */
+            /* 🚫 ЗАЩИТА НА НИВО БРАУЗЪР: Пълна забрана за маркиране, селекция и копиране */
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
@@ -28,7 +28,6 @@
             align-items: stretch;
         }
 
-        /* 🖥️ ИЗПЪЛВАНЕ НА ЦЕЛИЯ ЕКРАН: Сайтът заема 100% от Вашия широк монитор */
         .quiz-wrapper {
             width: 100vw;
             height: 100vh;
@@ -39,96 +38,92 @@
         }
 
         .quiz-card {
-            padding: 30px;
+            padding: 14px 24px; /* Оптимизирани отстъпи за елиминиране на скрола */
             box-sizing: border-box;
             width: 100%;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 10px;
             overflow-y: auto;
         }
 
         h1, h2, h3 {
             margin: 0;
-            font-size: 26px;
-            line-height: 1.3;
+            font-size: 22px;
+            line-height: 1.2;
             text-align: center;
             color: #1e293b;
         }
 
-        h2 { font-size: 24px; text-align: left; font-weight: 700; border-bottom: 2px solid #f1f5f9; padding-bottom: 12px; }
-        h3 { font-size: 18px; text-align: left; color: #334155; margin-bottom: 4px; }
+        h2 { font-size: 19px; text-align: left; font-weight: 700; border-bottom: 2px solid #f1f5f9; padding-bottom: 4px; }
+        h3 { font-size: 15px; text-align: left; color: #334155; margin-bottom: 2px; }
 
-        label { font-size: 15px; font-weight: 700; color: #4a6fa5; }
+        label { font-size: 14px; font-weight: 700; color: #4a6fa5; }
 
         select {
             width: 100%;
-            padding: 16px;
-            font-size: 16px;
+            padding: 8px;
+            font-size: 15px;
             border: 2px solid #e2e8f0;
             border-radius: 8px;
             background: #fff;
             outline: none;
-            cursor: pointer;
         }
-        /* 🛑 ПОДРЕДБА ЕДИН ПОД ДРУГ: Линковете за отговор заемат цели самостоятелни редове */
+        /* 🖥️ РОДИТЕЛСКИЯТ GRID (Определя 3 оси за големия монитор) */
         .options-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
+            display: grid;
+            /* 1 колона: Номер, 2 колона: 35% за отговора, 3 колона: оставащото място за пояснението */
+            grid-template-columns: max-content minmax(200px, 35%) 1fr;
+            gap: 6px 16px;
             width: 100%;
         }
 
+        /* 🚀 ИСТИНСКИЯТ CSS SUBGRID (Наследяване на решетката) */
         .option-link {
+            grid-column: span 3; /* Заема трите колони */
+            display: grid;
+            grid-template-columns: subgrid; /* Наследява колоните от .options-grid */
+            align-items: center;
+            
             background: #f8fafc;
             border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 20px;
-            font-size: 17px;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 19px;
             font-weight: 600;
             text-decoration: none;
-            color: #334155;
+            color: #1e293b;
             outline: none;
             box-sizing: border-box;
             cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            transition: all 0.15s ease;
-        }
-
-        .option-header-block {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            width: 100%;
+            transition: all 0.1s ease;
         }
 
         .option-number {
             background: #e2e8f0;
             color: #475569;
-            width: 32px;
-            height: 32px;
+            width: 26px;
+            height: 26px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
-            flex-shrink: 0;
         }
 
-        .option-text { flex-grow: 1; line-height: 1.5; }
+        .option-text {
+            line-height: 1.3;
+        }
 
-        /* 💡 ИНДИВИДУАЛНО ПОЯСНЕНИЕ КЪМ СЪОТВЕТНИЯ ОТГОВОР */
         .option-individual-explanation {
             font-size: 15px;
-            line-height: 1.5;
+            line-height: 1.3;
             font-weight: 500;
-            color: #475569;
-            padding-top: 8px;
-            border-top: 1px dashed #cbd5e1;
+            color: #64748b;
+            padding-left: 16px;
+            border-left: 2px dashed #cbd5e1;
             display: none;
         }
 
@@ -136,14 +131,15 @@
             background: #4a6fa5;
             color: #fff;
             border: 2px solid #4a6fa5;
-            border-radius: 8px;
-            padding: 16px;
-            font-size: 17px;
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 16px;
             font-weight: 700;
             text-decoration: none;
             text-align: center;
             cursor: pointer;
             box-sizing: border-box;
+            display: block;
         }
 
         .option-link:hover:not(.disabled) { border-color: #4a6fa5; background: #f1f5f9; }
@@ -151,93 +147,44 @@
 
         .correct { background: #d1fae5!important; border-color: #2ec4b6!important; color: #065f46!important; }
         .correct .option-number { background: #2ec4b6!important; color: #fff!important; }
-        .correct .option-individual-explanation { color: #047857!important; border-top-color: #a7f3d0!important; display: block!important; }
+        .correct .option-individual-explanation { color: #047857!important; border-left-color: #2ec4b6!important; display: block!important; }
         
         .wrong { background: #fee2e2!important; border-color: #e71d36!important; color: #991b1b!important; }
         .wrong .option-number { background: #e71d36!important; color: #fff!important; }
-        .wrong .option-individual-explanation { color: #b91c1c!important; border-top-color: #fca5a5!important; display: block!important; }
+        .wrong .option-individual-explanation { color: #b91c1c!important; border-left-color: #e71d36!important; display: block!important; }
         
         .reveal-passive .option-individual-explanation { display: block!important; }
-        .disabled { cursor: not-allowed; opacity: 0.9; pointer-events: none; }
+        .disabled { cursor: not-allowed; opacity: 0.98; pointer-events: none; }
 
-        .helper-links-container {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            margin: 5px 0;
-        }
-        .helper-btn {
-            font-size: 15px;
-            font-weight: 600;
-            color: #4b5563;
-            text-decoration: none;
-            padding: 10px 16px;
-            border: 2px solid #d1d5db;
-            border-radius: 6px;
-            flex-grow: 1;
-            text-align: center;
-        }
-        .helper-btn:hover { background: #f1f5f9; color: #1f2937; border-color: #9ca3af; }
+        .helper-links-container { display: flex; justify-content: space-between; gap: 10px; }
+        .helper-btn { font-size: 13.5px; font-weight: 600; color: #4b5563; text-decoration: none; padding: 6px 12px; border: 2px solid #d1d5db; border-radius: 6px; flex-grow: 1; text-align: center; cursor: pointer; background: #fff; }
+        .helper-btn:hover { background: #f1f5f9; }
         #show-answer-btn { color: #2563eb; border-color: #93c5fd; }
         #show-answer-btn:hover { background: #eff6ff; }
 
-        /* 📖 МАКСИМАЛНО ОБОГАТЕН ЛЕКЦИОНЕН БЛОК */
-        .syllabus-box {
-            margin-top: 15px;
-            border-top: 3px double #e2e8f0;
-            padding-top: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .syllabus-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .print-link {
-            font-size: 14px;
-            font-weight: 700;
-            color: #2563eb;
-            text-decoration: none;
-            padding: 8px 16px;
-            border: 2px solid #2563eb;
-            border-radius: 6px;
-            background: #fff;
-        }
-        .print-link:hover { background: #eff6ff; }
-
+        .syllabus-box { margin-top: 6px; border-top: 2px solid #e2e8f0; padding-top: 8px; display: flex; flex-direction: column; }
+        .syllabus-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+        .print-link { font-size: 12.5px; font-weight: 700; color: #2563eb; text-decoration: none; padding: 4px 8px; border: 1px solid #2563eb; border-radius: 4px; }
+        
         .syllabus-content {
-            font-size: 17px;
-            line-height: 1.7;
-            letter-spacing: 0.2px;
+            font-size: 16px;
+            line-height: 1.5;
             color: #1e293b;
             background: #f8fafc;
-            padding: 24px;
-            border-radius: 8px;
-            border-left: 5px solid #4a6fa5;
+            padding: 12px 16px;
+            border-radius: 6px;
+            border-left: 4px solid #4a6fa5;
             overflow-y: auto;
-            max-height: 45vh;
+            max-height: 38vh;
             white-space: pre-line;
         }
 
-        .admin-footer { display: flex; justify-content: flex-end; margin-top: 10px; }
-        .nav-btn-link { font-size: 13px; color: #94a3b8; text-decoration: none; font-weight: 500; }
-        .nav-btn-link:hover { color: #4a6fa5; }
+        .admin-footer { display: flex; justify-content: flex-end; margin-top: 2px; }
+        .nav-btn-link { font-size: 11px; color: #94a3b8; text-decoration: none; }
 
-        .quiz-footer {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            align-items: center;
-            border-top: 1px solid #e2e8f0;
-            padding-top: 16px;
-            margin-top: auto;
-        }
-
-        #progress { font-size: 15px; color: #475569; font-weight: 700; }
-        #next-btn { width: auto; padding: 12px 30px; }
+        .quiz-footer { display: grid; grid-template-columns: 1fr auto; align-items: center; border-top: 1px solid #e2e8f0; padding-top: 8px; margin-top: auto; }
+        #progress { font-size: 14px; color: #475569; font-weight: 700; }
+        #next-btn { width: auto; padding: 8px 20px; }
         .hidden { display: none !important; }
 
         @media print {
@@ -246,16 +193,21 @@
             .syllabus-box { border: none!important; padding: 0!important; margin: 0!important; }
             .syllabus-content { background: #fff!important; padding: 0!important; max-height: none!important; overflow: visible!important; font-size: 12pt!important; border:none!important; }
         }
+
+        @media (max-width: 900px) {
+            .options-grid { grid-template-columns: 1fr; }
+            .option-link { grid-column: span 1; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+            .option-individual-explanation { padding-left: 0; border-left: none; border-top: 1px dashed #cbd5e1; width: 100%; }
+        }
     </style>
 </head>
 <body>
 
     <main class="quiz-wrapper">
-        <!-- СТЪПКА 1: Избор на университет и изпитен конспект -->
+        <!-- СТЪПКА 1: Избор на изпитна база -->
         <article class="quiz-card" id="setup-box">
-            <h1 style="margin-top: 30px;">Интерактивна Медицинска Академия</h1>
-            
-            <label for="uni-select">Изберете университетски център:</label>
+            <h1 style="margin-top: 20px;">Интерактивна Медицинска Академия</h1>
+            <label for="uni-select">Университетски център:</label>
             <select id="uni-select">
                 <option value="mu-sofia">МУ - София (Медицински Факултет)</option>
                 <option value="mu-varna">МУ - Варна</option>
@@ -265,56 +217,52 @@
                 <option value="bu-burgas">У-т "Ас. Златаров" - Бургас (МФ)</option>
                 <option value="su-sofia">СУ "Св. Климент Охридски" (МФ)</option>
             </select>
-
-            <label for="subject-select">Изберете изпитен конспект:</label>
+            <label for="subject-select">Изпитен конспект:</label>
             <select id="subject-select">
                 <option value="biology">Биология (Академичен Държавен Справочник)</option>
                 <option value="chemistry">Химия (Обща, Неорганична и Органична)</option>
             </select>
-            <a id="start-btn" href="javascript:void(0)" class="action-link" style="margin-top: auto; margin-bottom: 20px;">🎬 Зареди изпитните материали на цял екран</a>
-            
-            <div class="admin-footer">
-                <a href="encoder.html" class="nav-btn-link">🛠️ Контролен панел на справочниците</a>
-            </div>
+            <a id="start-btn" href="javascript:void(0)" class="action-link" style="margin-top: auto; margin-bottom: 20px;">🎬 Зареди материалите през CSS Subgrid</a>
+            <div class="admin-footer"><a href="encoder.html" class="nav-btn-link">🛠️ Контролен панел</a></div>
         </article>
 
-        <!-- СТЪПКА 2: Широкоекранен изпитен и лекционен панел -->
+        <!-- СТЪПКА 2: Основен изпитен панел (Въпроси, Subgrid карти и PDF) -->
         <article class="quiz-card hidden" id="quiz" aria-live="polite">
-            <header><h2 id="question">Зареждане на въпроса...</h2></header>
+            <header><h2 id="question">Зареждане...</h2></header>
             
-            <!-- Подравнени един под друг отговори с разяснения -->
-            <div class="options-grid" id="options" role="group" aria-label="Варианти за избор"></div>
-            
-            <!-- ПОМОЩНИ ВРЪЗКИ: Покажи верен отговор и Пропусни -->
+            <!-- Помощна навигация (Заменена изцяло със сигурни линкове) -->
             <div class="helper-links-container" id="helper-zone">
-                <a id="show-answer-btn" href="javascript:void(0)" class="helper-btn" title="Покажи детайлния верен отговор без наказание">🔍 Покажи верния отговор</a>
-                <a id="skip-btn" href="javascript:void(0)" class="helper-btn" title="Пропусни въпроса и го остави за накрая">➡️ Пропусни въпроса</a>
+                <a id="show-answer-btn" href="javascript:void(0)" class="helper-btn" rel="noopener noreferrer">🔍 Покажи верния отговор</a>
+                <a id="skip-btn" href="javascript:void(0)" class="helper-btn" rel="noopener noreferrer">➡️ Пропусни въпроса</a>
             </div>
 
-            <!-- Мащабен учебен конспект -->
+            <!-- Контейнер за ултра-широките хоризонтални Subgrid карти -->
+            <div class="options-grid" id="options" role="group" aria-label="Варианти за избор"></div>
+
+            <!-- Максимално обогатен теоретичен конспект -->
             <div id="syllabus-wrapper" class="syllabus-box hidden">
                 <div class="syllabus-header">
-                    <h3>📚 Пълноформатен академичен лекционен курс по темата:</h3>
-                    <a id="print-btn" href="javascript:void(0)" class="print-link">🖨️ Запиши урока като PDF</a>
+                    <h3>📚 Теоретичен конспект по темата:</h3>
+                    <a id="print-btn" href="javascript:void(0)" class="print-link" rel="noopener noreferrer">🖨️ PDF / Принт</a>
                 </div>
                 <div id="syllabus-text" class="syllabus-content"></div>
             </div>
 
             <footer class="quiz-footer">
                 <span id="progress" aria-atomic="true"></span>
-                <a id="next-btn" href="javascript:void(0)" class="action-link hidden">Зареди следващ въпрос от конспекта</a>
+                <a id="next-btn" href="javascript:void(0)" class="action-link hidden" rel="noopener noreferrer">Зареди следващ въпрос</a>
             </footer>
         </article>
 
-        <!-- СТЪПКА 3: Краен прозорец с резултати -->
+        <!-- СТЪПКА 3: Краен резултат -->
         <section class="quiz-card hidden" id="result-box" aria-live="assertive">
-            <h2 style="margin-top: 30px; text-align: center;">Изпитната сесия приключи</h2>
-            <p style="text-align: center; font-size: 20px;">Вашият краен резултат: <strong id="score" style="color: #4a6fa5; font-size: 28px;">0</strong> от <span id="total-questions">0</span> уловени теми.</p>
-            <a id="restart-btn" href="javascript:void(0)" class="action-link" style="margin-top: auto; margin-bottom: 20px;">Нова учебна сесия</a>
+            <h2 style="margin-top: 20px;">Сесията приключи</h2>
+            <p style="text-align: center; font-size: 18px;">Краен резултат: <strong id="score" style="color: #4a6fa5; font-size: 24px;">0</strong> от <span id="total-questions">0</span></p>
+            <a id="restart-btn" href="javascript:void(0)" class="action-link" style="margin-top: auto; margin-bottom: 20px;" rel="noopener noreferrer">Нова учебна сесия</a>
         </section>
     </main>
 
-    <!-- Зареждане като защитен ES6 модул -->
+    <!-- Сигурно криптографско ядро -->
     <script type="module" src="script.js" defer></script>
 </body>
 </html>
