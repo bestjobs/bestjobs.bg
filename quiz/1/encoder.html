@@ -8,17 +8,18 @@
     <meta name="googlebot" content="noindex, nofollow">
     <title>AES-256-GCM Контролен Панел за Справочници | BestJobs.BG</title>
     
-    <!-- 📄 Сесийни библиотеки за четене на Word (.docx) и PDF директно през браузъра -->
+    <!-- 📄 Сесийни сигурни библиотеки за четене на Word (.docx) и PDF директно в браузъра -->
     <script src="https://cloudflare.com" defer></script>
     <script src="https://cloudflare.com" defer></script>
 
     <style>
         body { 
             font-family: system-ui, -apple-system, sans-serif; 
-            padding: 25px; 
+            padding: 20px; 
             background: #f0f4f8; 
             color: #333; 
             margin: 0; 
+            /* 🚫 ЗАЩИТА НА НИВО БРАУЗЪР: Забранява маркирането на интерфейса */
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
@@ -26,10 +27,10 @@
         }
         
         .wrapper { 
-            max-width: 1200px; 
+            max-width: 1400px; 
             margin: 0 auto; 
             background: #fff; 
-            padding: 25px; 
+            padding: 24px; 
             border-radius: 8px; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
         }
@@ -39,8 +40,8 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 2px solid #f1f5f9;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
         }
         
         .encoder-header h2 { margin: 0; color: #1e293b; font-size: 22px; }
@@ -58,26 +59,13 @@
         .back-to-site-link:hover { background: #4a6fa5; color: white; }
 
         label { font-weight: 600; font-size: 14px; color: #4a6fa5; display: block; margin-bottom: 5px; }
-        
-        input[type="text"] { 
-            width: 100%; 
-            padding: 12px; 
-            font-size: 14px; 
-            border: 2px solid #e2e8f0; 
-            border-radius: 6px; 
-            box-sizing: border-box; 
-            font-family: monospace; 
-            background: #f8fafc; 
-            margin-bottom: 20px; 
-            color: #64748b;
-        }
 
         .import-box {
             background: #f8fafc;
             border: 2px dashed #cbd5e1;
             border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 16px;
+            margin-bottom: 16px;
             text-align: center;
         }
 
@@ -91,20 +79,21 @@
         .file-zone {
             background: #fff;
             border: 1px solid #e2e8f0;
-            padding: 15px;
+            padding: 12px;
             border-radius: 6px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         input[type="file"] { font-size: 13px; color: #64748b; }
-        .grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        .grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 16px; }
         
+        /* Разрешаваме селектиране САМО вътре в текстовите полета за лесна редакция */
         textarea { 
             width: 100%; 
-            height: 320px; 
+            height: 380px; 
             font-family: monospace; 
             font-size: 13px; 
             padding: 12px; 
@@ -120,20 +109,20 @@
         }
         textarea:focus { border-color: #4a6fa5; outline: none; }
         
-        .main-action-btn { background: #4a6fa5; color: white; border: none; padding: 15px; font-size: 16px; cursor: pointer; font-weight: bold; width: 100%; border-radius: 6px; transition: background 0.2s; }
+        .main-action-btn { background: #4a6fa5; color: white; border: none; padding: 14px; font-size: 16px; cursor: pointer; font-weight: bold; width: 100%; border-radius: 6px; transition: background 0.2s; }
         .main-action-btn:hover { background: #3b5984; }
         
         .output-box { 
             background: #f8fafc; 
-            padding: 15px; 
+            padding: 12px; 
             border: 2px solid #e2e8f0; 
             border-radius: 6px; 
             white-space: pre-wrap; 
             word-break: break-all; 
             font-family: monospace; 
             font-size: 13px; 
-            margin-top: 20px; 
-            max-height: 300px; 
+            margin-top: 16px; 
+            max-height: 250px; 
             overflow-y: auto; 
             color: #0f172a; 
             -webkit-user-select: text;
@@ -141,11 +130,11 @@
             -ms-user-select: text;
             user-select: text;
         }
-        .copy-info { font-size: 12px; color: #64748b; margin-top: 5px; text-align: right; }
+        .copy-info { font-size: 12px; color: #64748b; margin-top: 4px; text-align: right; }
         
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             .grid-inputs, .file-inputs-grid { grid-template-columns: 1fr; }
-            .encoder-header { flex-direction: column; gap: 15px; text-align: center; }
+            .encoder-header { flex-direction: column; gap: 12px; text-align: center; }
         }
     </style>
 </head>
@@ -154,14 +143,15 @@
     <div class="wrapper">
         <div class="encoder-header">
             <h2>🛠️ Военен Скриптор за Справочници (AES-256-GCM)</h2>
-            <a href="index.html" class="back-to-site-link" rel="noopener noreferrer" title="Върни се обратно към изпитния панел">🖥️ Към теста</a>
+            <!-- ЛИНК ОБРАТНО КЪМ ИНДЕКСА -->
+            <a href="index.html" class="back-to-site-link" rel="noopener noreferrer">🖥️ Към теста</a>
         </div>
-        <p style="font-size: 14px; color: #64748b; margin-top: -15px; margin-bottom: 20px;">Модул за запечатване на данни. Генерира неразбиваем криптиран код за лесно обновяване на файловете в GitHub.</p>
+        <p style="font-size: 14px; color: #64748b; margin-top: -10px; margin-bottom: 16px;">Паролата е премахната от кода за сигурност. При натискане на бутона за запечатване, браузърът ще я поиска в RAM паметта.</p>
 
         <!-- ЗОНА ЗА ВНОС НА ДОКУМЕНТИ -->
         <div class="import-box">
             <strong style="color: #1e293b; font-size: 15px;">📥 Директен внос на файлове (.txt, .docx, .pdf)</strong>
-            <p style="font-size: 13px; color: #64748b; margin: 5px 0 15px 0;">Изберете документи. Системата ще ги анализира автоматично в JSON структура.</p>
+            <p style="font-size: 13px; color: #64748b; margin: 4px 0 12px 0;">Системата автоматично анализира текстовете и ги структурира в четирикомпонентния модел.</p>
             
             <div class="file-inputs-grid">
                 <div class="file-zone">
@@ -181,10 +171,20 @@
                 <textarea id="bio-input">[
   {
     "q": "Кои клетъчни органели притежават собствена ДНК и двойна мембрана?",
-    "o": ["Ядро", "Митохондрии и хлоропласти", "Рибозоми", "Лизозоми"],
+    "o": [
+      "Ядро",
+      "Митохондрии и хлоропласти",
+      "Рибозоми",
+      "Лизозоми"
+    ],
     "c": 1,
-    "e": "Митохондриите и хлоропластите са полуавтономни органели. Те имат собствена кръгова ДНК и рибозоми, подобни на прокариотните, което подкрепя ендосимбиотната теория.",
-    "s": "ТЕМА: Клетъчни органели с мембранен строеж. Двумембранни органели. Структура на митохондрии (кристи, матрикс) и хлоропласти (тилакоиди, строма). Функции: клетъчно дишане и фотосинтеза."
+    "e_all": [
+      "ГРЕШНО: Ядрото съдържа основния геном на клетката и има двойна мембрана, но по дефиниция то представлява самостоятелна клетъчна структура, а не е специализиран органел в цитоплазмата.",
+      "ВЕРНО! Митохондриите и хлоропластите са полуавтономни двумембранни цитоплазмени органели. Те имат собствена кръгова ДНК молекула и 70S рибозоми, което напълно доказва техния прокариотен произход.",
+      "ГРЕШНО: Рибозомите са съставени от рРНК и белтъци, нямат никаква мембранна обвивка (немембранни органели) и не съдържат собствена ДНК верига.",
+      "ГРЕШНО: Лизозомите са мехурчета, обвити само от една единична мембрана. Те съдържат хидролитични ензими за вътреклетъчно смилане, но нямат собствен автономен генетичен апарат."
+    ],
+    "s": "ТЕМА: СТРУКТУРА И ФУНКЦИЯ НА ДВУМЕМБРАННИТЕ ОРГАНЕЛИ.\n\nМитохондрии: Изградени са от външна мембрана (гладка, съдържа порини) и вътрешна мембрана, която формира гънки (кристи). В нея са локализирани преносителите на електроннотранспортните вериги (ЕТВ) и молекулните машини F₀F₁-АТФ синтаза. Вътрешното пространство (матрикс) съдържа ензимите от Цикъла на Кребс, кръгова ДНК и 70S рибозоми.\n\nХлоропласти: Присъщи за фотосинтезиращи еукариоти. Имат външна и вътрешна мембрана, обгръщащи стромата. Вътрешната мембранна система изгражда сплеснати везикули (тилакоиди), подредени в стълбчета (грани). В мембраните на тилакоидите са закотвени фотосистеми I и II за улавяне на светлинни кванти. В стромата се затваря кръгова ДНК, 70S рибозоми и ензимите от Цикъла на Калвин (фиксиране на CO₂)."
   }
 ]</textarea>
             </div>
@@ -193,23 +193,33 @@
                 <textarea id="chem-input">[
   {
     "q": "Кое от посочените съединения има ковалентна полярна химична връзка?",
-    "o": ["NaCl", "H2O", "O2", "KBr"],
+    "o": [
+      "NaCl",
+      "H2O",
+      "O2",
+      "KBr"
+    ],
     "c": 1,
-    "e": "В молекулата на водата (H2O) връзката е ковалентна полярна, тъй като електроотрицателността на кислорода е по-голяма от тази на водорода и общата електронна двойка е изтеглена към О-атом.",
-    "s": "ТЕМА: Химична връзка. Ковалентна химична връзка - полярна и неполярна. Електроотрицателност. Диполен момент на молекулите. Примери за полярни молекули (H2O, HCl, NH3)."
+    "e_all": [
+      "ГРЕШНО: NaCl притежава силно йонна кристална решетка поради голяма разлика в електроотрицателността между натриевия катион и хлоридния анион.",
+      "ВЕРНО! В молекулата на водата (H₂O) химичната връзка е ковалентна полярна. Тя се образува между неметални атоми с различна електроотрицателност, при което общите електронни двойки са трайно изтеглени към кислородното ядро.",
+      "ГРЕШНО: Молекулата на кислорода (O₂) съдържа ковалентна неполярна връзка – електронната плътност е разпределена напълно симетрично между хомоядрените атоми.",
+      "ГРЕШНО: KBr е типично йонно съединение, изградено от алкален метал и халоген със значителна разлика в стойностите на електроотрицателност по Полинг."
+    ],
+    "s": "ТЕМА: МЕХАНИЗЪМ НА ОБРАЗУВАНЕ НА КОВАЛЕНТНА ПОЛЯРНА ВРЪЗКА.\n\nКовалентната връзка се изгражда чрез препокрива че на еквивалентни или хибридизирани атомни орбитали и формиране на общи електронни двойки. В молекулата на водата (H₂O), кислородният атом притежава висока електроотрицателност (χ = 3.44 по Полинг), а водородните атоми – по-ниска (χ = 2.20). Разликата (Δ χ = 1.24) обуславя асиметрично изтегляне на споделените електронни двойки към кислородното ядро. Кислородният атом е в състояние на sp³-хибридизация. Поради силното отблъскване на двете несподелени електронни двойки, молекулата придобива ъглова геометрия с валентен ъгъл 104.5°. Диполните моменти на двете полярни връзки O-H се сумират векторно, превръщайки молекулата в силен дипол."
   }
 ]</textarea>
             </div>
         </div>
 
-        <button onclick="encryptSyllabusBook()" class="main-action-btn">⚙️ Запечатай и генерирай код за GitHub</button>
+        <button onclick="encryptSyllabusBook()" class="main-action-btn">⚙️ Запечатай Справочника чрез Военен Алгоритъм</button>
 
-        <h3>3. Изходен защитен код:</h3>
-        <div class="output-box" id="output">Попълнете изпитните конспекти по-горе и натиснете бутона...</div>
-        <div class="copy-info">Копирайте съдържанието на кутията и подменете изцяло кода в съответния файл (напр. mu-sofia.js).</div>
+        <h3>3. Изходен защитен код за GitHub:</h3>
+        <div class="output-box" id="output">Попълнете изпитните материали по-горе и натиснете бутона...</div>
+        <div class="copy-info">Копирайте съдържанието на кутията и подменете изцяло кода в съответния университетски файл (напр. mu-sofia.js).</div>
     </div>
     <script>
-        // Инициализиране на PDF.js спомагателната нишка
+        // Инициализиране на PDF.js работника веднага след зареждане на библиотеката
         window.addEventListener('load', () => {
             if (typeof pdfjsLib !== 'undefined') {
                 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cloudflare.com';
@@ -234,7 +244,7 @@
                 const jsonResult = smartTextToJSON(extractedText);
                 document.getElementById(targetTextAreaId).value = JSON.stringify(jsonResult, null, 2);
             } catch (err) {
-                alert("Грешка при дешифрирането на файла.");
+                alert("Грешка при обработката на документа.");
             }
         }
 
@@ -273,6 +283,9 @@
             reader.readAsArrayBuffer(file);
         });
 
+        /**
+         * 🧠 АЛГОРИТЪМ ЗА АВТОМАТИЧНО СТРУКТУРИРАНЕ И ИНДИВИДУАЛНИ ПОЯСНЕНИЯ
+         */
         function smartTextToJSON(text) {
             const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
             const questions = [];
@@ -280,16 +293,18 @@
 
             lines.forEach(line => {
                 if (/^\d+[\s\.)]/.test(line) || line.toLowerCase().startsWith('въпрос')) {
-                    if (currentObj && currentObj.o.length >= 2) questions.push(currentObj);
+                    if (currentObj && currentObj.o.length >= 2) {
+                        finalizeQuestion(currentObj);
+                        questions.push(currentObj);
+                    }
                     currentObj = {
                         q: line.replace(/^\d+[\s\.)]/, '').trim(),
-                        o: [], c: 0,
-                        e: "Липсва разяснение. Добавете описание.",
-                        s: "ТЕМА: Въведете съответната тема от учебния конспект."
+                        o: [], c: 0, e_all: [],
+                        s: "ТЕМА: Въведете съответния голям теоретичен конспект по темата от официалните учебници на МОН за 8-11 клас."
                     };
                 } 
-                else if (currentObj && (/^[A-Ga-gА-Яа-я][\s\.)]/.test(line) || line.startsWith('-') || line.startsWith('*'))) {
-                    let cleanOpt = line.replace(/^[A-Ga-gА-Яа-я][\s\.)]/, '').replace(/^[-*]/, '').trim();
+                else if (currentObj && (/^[A-Ga-gА-Яа-я1-4][\s\.)]/.test(line) || line.startsWith('-') || line.startsWith('*'))) {
+                    let cleanOpt = line.replace(/^[A-Ga-gА-Яа-я1-4][\s\.)]/, '').replace(/^[-*]/, '').trim();
                     if (cleanOpt.toLowerCase().includes('(верен)')) {
                         currentObj.c = currentObj.o.length;
                         cleanOpt = cleanOpt.replace(/\(верен\)/i, '').trim();
@@ -301,20 +316,32 @@
                 }
             });
 
-            if (currentObj && currentObj.o.length >= 2) questions.push(currentObj);
-            return questions.length > 0 ? questions : [{ q: "Примерен въпрос?", o: ["А", "Б", "В", "Г"], c: 0, e: "Обяснение", s: "Конспект" }];
+            if (currentObj && currentObj.o.length >= 2) {
+                finalizeQuestion(currentObj);
+                questions.push(currentObj);
+            }
+            return questions.length > 0 ? questions : [];
+        }
+
+        function finalizeQuestion(obj) {
+            // Автоматично запълване на масива e_all с четири отделни разяснения спрямо верния вариант
+            obj.e_all = [];
+            for (let i = 0; i < obj.o.length; i++) {
+                if (i === obj.c) {
+                    obj.e_all.push(`ВЕРНО! Вариант ${i+1} е научно издържан и отговаря на конспекта на МОН.`);
+                } else {
+                    obj.e_all.push(`ГРЕШНО: Вариант ${i+1} не съответства на условията на поставената задача.`);
+                }
+            }
         }
 
         async function encryptSyllabusBook() {
-            // 🔒 ИЗИСКВАНЕ НА КЛЮЧА В ДВИЖЕНИЕ: Ключът никога не престоява във файла в GitHub
-            let passphrase = prompt("Въведете Вашия максимално усложнен Мастер ключ за криптиране:");
+            // 🔒 ИЗИСКВАНЕ НА КЛЮЧА В RAM ПАМЕТТА НА КОМПЮТЪРА
+            let passphrase = prompt("Въведете Вашия секретен 70-символен Мастер ключ за запечатване:");
             if (passphrase === null) return;
             passphrase = passphrase.trim();
             
-            if (!passphrase) {
-                alert("Криптирането е прекратено. Ключът не може да бъде празен.");
-                return;
-            }
+            if (!passphrase) return alert("Криптирането е спряно. Паролата не може да бъде празна.");
 
             const bioText = document.getElementById('bio-input').value.trim();
             const chemText = document.getElementById('chem-input').value.trim();
@@ -345,15 +372,16 @@
                 const ivHex = Array.from(iv).map(b => b.toString(16).padStart(2, '0')).join('');
                 const ciphertextBase64 = btoa(String.fromCharCode(...new Uint8Array(ciphertextBuffer)));
 
-                // 🔒 Почистване на следите: пренаписваме локалната променлива с ключа в паметта
+                // 🔒 Незабавно заличаване на паролата от летливата памет
                 passphrase = null;
 
                 outputEl.textContent = `// Защитена книга за университет (AES-256-GCM) - Включва Обяснения и Конспект\nexport const encryptedData = {\n    iv: "${ivHex}",\n    ciphertext: "${ciphertextBase64}"\n};`;
             } catch (e) {
-                outputEl.textContent = "❌ ГРЕШКА ПРИ СИНТАКСИСА:\nПроверете JSON формата на въпросите.";
+                outputEl.textContent = "❌ ГРЕШКА ПРИ СИНТАКСИСА:\nПроверете JSON структурата. Всеки предмет трябва да съдържа отваряща и затваряща квадратна скоба [ ].";
             }
         }
 
+        // Защита на самия контролен панел от външно неоторизирано извличане
         document.addEventListener("contextmenu", (e) => {
             if (e.target.tagName !== 'TEXTAREA' && e.target.id !== 'output' && e.target.tagName !== 'INPUT') e.preventDefault();
         });
