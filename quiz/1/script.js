@@ -25,7 +25,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// Военно декриптиране в RAM през хардуерно ускорения Web Crypto API (AES-256-GCM)
+// Нативно AES-256-GCM декриптиране през Web Crypto API
 const decryptBook = async (encryptedObj, passphrase) => {
     const iv = new Uint8Array(encryptedObj.iv.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
     const encryptedBytes = Uint8Array.from(atob(encryptedObj.ciphertext), c => c.charCodeAt(0));
@@ -62,18 +62,17 @@ const loadDatabase = async () => {
     // 🛡️ Анти-бот защита (Rate Limiting)
     const now = Date.now();
     if (now - lastClickTime < 250) { 
-        alert("Засечено е софтуерно извличане.");
-        window.location.reload();
+        alert("Засечено е твърде бързо кликане. Моля, изчакайте.");
         return;
     }
     lastClickTime = now;
 
     let activeKey = urlPassphrase;
     
-    // Ако няма ключ в линка, браузърът отваря нативен prompt прозорец
+    // Ако няма ключ в линка, изискваме го с prompt
     if (!activeKey) {
         activeKey = prompt("Въведете секретен ключ за достъп до справочника:");
-        if (activeKey === null) return; 
+        if (activeKey === null) return; // Потребителят е натиснал Отказ
         activeKey = activeKey.trim();
     }
 
@@ -84,34 +83,57 @@ const loadDatabase = async () => {
 
     const selectedUni = uniSelect?.value;
     const selectedSubject = subjectSelect?.value;
+    let module;
 
+    // 🛡️ СТЪПКА 1: Безопасно изтегляне на файла от GitHub (Грешка 404 / Липсващ файл)
     try {
-        // Динамично извикване на съответния файл (On-Demand)
-        const module = await import(`./${selectedUni}.js`);
+        module = await import(`./${selectedUni}.js`);
+    } catch (importError) {
+        alert(`Справочникът за избрания университет (${uniSelect.options[uniSelect.selectedIndex].text}) все още не е качен или е недостъпен.`);
+        resetToMenu();
+        return;
+    }
+
+    // 🛡️ СТЪПКА 2: Безопасно декриптиране (Грешна парола или повреден файл)
+    try {
+        if (!module?.encryptedData) throw new Error("Missing encryptedData");
         
-        // Изпълнение на криптографския алгоритъм
         const decryptedData = await decryptBook(module.encryptedData, activeKey);
         quizData = decryptedData[selectedSubject] ?? [];
         
         if (quizData.length === 0) {
-            alert("Няма намерени въпроси за този предмет.");
+            alert("Няма намерени въпроси за този конкретен предмет в базата.");
+            resetToMenu();
             return;
         }
 
-        // 🔒 ИЗЧИСТВАНЕ НА URL: Заличава ключа от адресната лента незабавно
+        // 🔒 ИЗЧИСТВАНЕ НА URL: Заличава ключа от адресната лента веднага след успеха
         if (window.location.hash) {
             history.replaceState(null, document.title, window.location.pathname + window.location.search);
-            urlPassphrase = ""; // Премахване на следите от RAM паметта
+            urlPassphrase = ""; 
         }
 
-        activeKey = null; // Изчистване на локалния шифър
+        activeKey = null; // Заличаване от RAM
 
         setupBox?.classList.add("hidden");
         quizEl?.classList.remove("hidden");
         startQuiz();
-    } catch (e) {
-        alert("Грешка: Невалиден ключ за достъп или повреден справочник.");
+
+    } catch (cryptoError) {
+        alert("Грешка: Грешен ключ за достъп или данните във файла са повредени.");
+        resetToMenu();
     }
+};
+
+// 🛡️ Помощна функция за безопасно връщане в начално състояние без презареждане
+const resetToMenu = () => {
+    urlPassphrase = ""; // Нулира грешния ключ от URL лентата
+    if (window.location.hash) {
+        history.replaceState(null, document.title, window.location.pathname + window.location.search);
+    }
+    quizEl?.classList.add("hidden");
+    resultEl?.classList.add("hidden");
+    setupBox?.classList.remove("hidden");
 };
 
 const startQuiz = () => {
@@ -126,7 +148,7 @@ const loadQuestion = () => {
     optionsEl?.replaceChildren();
     
     const current = quizData[currentIdx];
-    questionEl.textContent = current.q; // Анти-XSS нативна защита
+    questionEl.textContent = current.q; // Защита от XSS
     progressEl.textContent = `${currentIdx + 1} / ${quizData.length}`;
 
     current.o.forEach((opt, idx) => {
@@ -159,7 +181,7 @@ const checkAnswer = (selectedIdx, selectedLink) => {
 
     links.forEach(l => {
         l.classList.add("disabled");
-        l.removeAttribute("href"); // Защита от повторно кликане
+        l.removeAttribute("href");
     });
     nextBtn?.classList.remove("hidden");
 };
@@ -177,7 +199,4 @@ const showResults = () => {
 };
 
 startBtn?.addEventListener("click", loadDatabase);
-restartBtn?.addEventListener("click", () => {
-    resultEl?.classList.add("hidden");
-    setupBox?.classList.remove("hidden");
-});
+restartBtn?.addEventListener("click", resetToMenu);
